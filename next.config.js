@@ -1,4 +1,4 @@
-const withMDX = require('@next/mdx')({
-  extension: /\.(md|mdx)$/,
-})
-module.exports = withMDX()
+/** @type {import('next').NextConfig} */
+module.exports = {
+  reactStrictMode: true,
+}
