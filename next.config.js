@@ -1,2 +1,4 @@
-const withNextra = require('nextra')('nextra-theme-blog', './theme.config.js')
-module.exports = withNextra()
+const withMDX = require('@next/mdx')({
+  extension: /\.(md|mdx)$/,
+})
+module.exports = withMDX()
