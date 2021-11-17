@@ -19,7 +19,19 @@ const Home: NextPage = () => (
       </h1>
 
       <p className="text-gray-600 my-8 text-xl">
-        Where I talk about tech and rant about things
+        Where I {" "}
+        <span className="text-blue-600 font-semibold">
+          talk {" "}
+        </span>
+      about {" "}
+        <span className="text-blue-600 font-semibold">
+          tech {" "}
+        </span>
+        and rant about {" "}
+        <span className="text-blue-600 font-semibold">
+          things
+        </span>
+        .
       </p>
 
       <div className={styles.grid}>
@@ -36,19 +48,6 @@ const Home: NextPage = () => (
       </div>
     </main>
 
-    <footer className={styles.footer}>
-      <a
-        href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Powered by
-        {' '}
-        <span className={styles.logo}>
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-        </span>
-      </a>
-    </footer>
   </div>
 );
 

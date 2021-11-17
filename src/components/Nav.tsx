@@ -3,13 +3,13 @@ import { FaEnvelope, FaGithub } from 'react-icons/fa';
 import { FunctionComponent } from 'react';
 
 export const Nav: FunctionComponent = () => (
-  <nav className="inset-x-0 fixed flex flex-1 items-center justify-between flex-wrap p-6 py-22 text-gray-500">
+  <nav className="inset-x-0 flex flex-1 items-center justify-between flex-wrap p-6 py-22 text-gray-500">
     <a
       href="/"
       className="flex items-center flex-shrink-0 mr-6"
     >
       <span className="text-gray-700 text-2xl tracking-tight">
-        Jack
+        Jack {" "}
         <span className="text-blue-600 font-bold">Pordi</span>
       </span>
     </a>
@@ -24,17 +24,17 @@ export const Nav: FunctionComponent = () => (
     <div className="w-full lg:flex-grow lg:flex lg:items-center lg:w-auto">
       <div className="text-xl lg:flex-grow lg:items-center lg:flex justify-end">
         <Link href="/about" passHref>
-          <div className="block mt-4 lg:inline-block lg:mt-0 cursor-pointer hover:text-black mr-6 transition transform hover:scale-110">
+          <div className="block mt-4 lg:inline-block lg:mt-0 cursor-pointer hover:text-blue-600 hover:font-semibold mr-6 transition transform hover:scale-110">
             About
           </div>
         </Link>
         <Link href="/posts" passHref>
-          <div className="block mt-4 lg:inline-block lg:mt-0 cursor-pointer hover:text-black mr-6 transition transform hover:scale-110">
+          <div className="block mt-4 lg:inline-block lg:mt-0 cursor-pointer hover:text-blue-600 hover:font-semibold mr-6 transition transform hover:scale-110">
             Posts
           </div>
         </Link>
         <a
-          className="mr-6 transition hover:text-black transform hover:scale-110"
+          className="mr-6 transition transform hover:scale-125 hover:text-blue-600"
           href="mailto: contact@jackpordi.com"
         >
           <FaEnvelope
@@ -42,7 +42,7 @@ export const Nav: FunctionComponent = () => (
           />
         </a>
         <a
-          className="mr-6 transition hover:text-black transform hover:scale-110"
+          className="mr-6 transition transform hover:scale-125 hover:text-blue-600"
           href="https://github.com/jackel119"
         >
           <FaGithub
