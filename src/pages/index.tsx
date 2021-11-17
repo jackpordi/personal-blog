@@ -1,17 +1,20 @@
+import fs from 'fs';
+import path from 'path';
+import matter from 'gray-matter';
 import { PostPreviewCard } from 'components/PostPreviewCard';
-import moment from 'moment';
-import type { NextPage } from 'next';
+import type { GetStaticProps } from 'next';
 import Head from 'next/head';
 import { FrontMatter } from 'types';
 import styles from '../styles/Home.module.css';
 
-const samplePostFrontMatter: FrontMatter = {
-  title: "Blog Post",
-  abstract: "Blog posty post details blah blah blah. Me very good at coding. This is going to be a very nice long sentence.",
-  date: moment().format(),
+interface Props {
+  posts: {
+    id: string;
+    frontMatter: FrontMatter;
+  }[];
 }
 
-const Home: NextPage = () => (
+const Home = ({ posts }: Props) => (
   <div className="pb-4">
     <Head>
       <title>Jack Pordi</title>
@@ -27,15 +30,25 @@ const Home: NextPage = () => (
       </h1>
 
       <p className="text-gray-600 my-8 text-xl">
-        Where I {" "}
+        Where I
+        {' '}
+        {' '}
         <span className="text-blue-600 font-semibold">
-          talk {" "}
+          talk
+          {' '}
+          {' '}
         </span>
-        about {" "}
+        about
+        {' '}
+        {' '}
         <span className="text-blue-600 font-semibold">
-          tech {" "}
+          tech
+          {' '}
+          {' '}
         </span>
-        and rant about {" "}
+        and rant about
+        {' '}
+        {' '}
         <span className="text-blue-600 font-semibold">
           things
         </span>
@@ -43,13 +56,33 @@ const Home: NextPage = () => (
       </p>
 
       <div className={styles.grid}>
-        <PostPreviewCard post={samplePostFrontMatter}/>
-        <PostPreviewCard post={samplePostFrontMatter}/>
-        <PostPreviewCard post={samplePostFrontMatter}/>
+        {posts.map((p) => (
+          <PostPreviewCard key={p.id} id={p.id} post={p.frontMatter} />
+        ))}
       </div>
     </main>
 
   </div>
 );
+
+export const getStaticProps: GetStaticProps = async () => {
+  const files = fs.readdirSync(path.join('src', 'posts'));
+
+  const posts = files.map((filename) => {
+    const markdownWithMeta = fs.readFileSync(path.join('src', 'posts', filename), 'utf-8');
+    const { data: frontMatter } = matter(markdownWithMeta);
+
+    return {
+      frontMatter,
+      id: filename.split('.')[0],
+    };
+  });
+
+  return {
+    props: {
+      posts,
+    },
+  };
+};
 
 export default Home;

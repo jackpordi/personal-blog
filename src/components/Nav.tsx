@@ -9,7 +9,9 @@ export const Nav: FunctionComponent = () => (
       className="flex items-center flex-shrink-0 mr-6"
     >
       <span className="text-gray-700 text-2xl tracking-tight">
-        Jack {" "}
+        Jack
+        {' '}
+        {' '}
         <span className="text-blue-600 font-bold">Pordi</span>
       </span>
     </a>
