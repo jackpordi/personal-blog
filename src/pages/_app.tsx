@@ -6,9 +6,9 @@ import { Footer } from 'components/Footer';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <div>
+    <div className="min-h-screen pb-12">
       <Nav />
-      <div className="container max-w-6xl mx-auto px-4 pt-16">
+      <div className="container max-w-6xl mx-auto px-4">
         <Component
           {...pageProps}
         />

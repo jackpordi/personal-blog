@@ -1,10 +1,18 @@
+import { PostPreviewCard } from 'components/PostPreviewCard';
+import moment from 'moment';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
+import { FrontMatter } from 'types';
 import styles from '../styles/Home.module.css';
 
+const samplePostFrontMatter: FrontMatter = {
+  title: "Blog Post",
+  abstract: "Blog posty post details blah blah blah. Me very good at coding. This is going to be a very nice long sentence.",
+  date: moment().format(),
+}
+
 const Home: NextPage = () => (
-  <div className={styles.container}>
+  <div className="pb-4">
     <Head>
       <title>Jack Pordi</title>
       <meta name="description" content="Jack Pordi's Blog" />
@@ -23,7 +31,7 @@ const Home: NextPage = () => (
         <span className="text-blue-600 font-semibold">
           talk {" "}
         </span>
-      about {" "}
+        about {" "}
         <span className="text-blue-600 font-semibold">
           tech {" "}
         </span>
@@ -35,16 +43,9 @@ const Home: NextPage = () => (
       </p>
 
       <div className={styles.grid}>
-        <a href="https://nextjs.org/docs" className={styles.card}>
-          <h2 className="font-semibold">Blog post #1</h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a href="https://nextjs.org/learn" className={styles.card}>
-          <h2 className="font-semibold">Blog post #2</h2>
-          <p>Learn about Next.js in an interactive course with quizzes!</p>
-        </a>
-
+        <PostPreviewCard post={samplePostFrontMatter}/>
+        <PostPreviewCard post={samplePostFrontMatter}/>
+        <PostPreviewCard post={samplePostFrontMatter}/>
       </div>
     </main>
 

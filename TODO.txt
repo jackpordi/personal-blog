@@ -1,4 +1,5 @@
 Post previews in home page
 Add an introductory post
 Handle post tags
+Make responsive
 Add utterances
