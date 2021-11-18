@@ -6,6 +6,7 @@ import { Post } from 'types';
 import { ParsedUrlQuery } from 'querystring';
 import { MDXComponents } from 'mdx-components';
 import { getAllPostPaths, getPost } from '../../../utils';
+import Head from 'next/head';
 
 interface PostPath extends ParsedUrlQuery {
   postId: string;
@@ -35,6 +36,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 const PostPage: NextPage<Post> = ({ info, mdx }) => (
   <div className="items-center flex flex-col">
+    <Head>
+      <title>{info.title}</title>
+      <meta property="og:title" content={info.title} key="title" />
+      <meta name="description" content={info.abstract} />
+      <meta name="author" content="Jack Pordi" />
+    </Head>
     <div className="my-8 items-center block max-w-3xl flex-1">
       <div className="mb-6">
         <h1 className="font-semibold text-4xl mb-2">{info.title}</h1>
