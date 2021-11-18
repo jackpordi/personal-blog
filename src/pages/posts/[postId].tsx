@@ -1,4 +1,5 @@
 import { MDXRemote } from 'next-mdx-remote';
+import Script from "next/script";
 import {
   GetStaticPaths, GetStaticProps, GetStaticPropsContext, NextPage,
 } from 'next';
@@ -48,6 +49,14 @@ const PostPage: NextPage<Post> = ({ info, mdx }) => (
         <h2 className="font-semibold text-xl text-gray-700">{info.abstract}</h2>
       </div>
       <MDXRemote {...mdx} components={MDXComponents} />
+      <Script src="https://utteranc.es/client.js"
+        // @ts-ignore
+        repo="jackel119/personal-blog"
+        issue-term="pathname"
+        theme="github-light"
+        crossOrigin="anonymous"
+        async>
+      </Script>
     </div>
   </div>
 );
