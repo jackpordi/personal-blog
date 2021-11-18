@@ -1,14 +1,11 @@
-import fs from 'fs';
-import path from 'path';
-import { serialize } from 'next-mdx-remote/serialize';
 import { MDXRemote } from 'next-mdx-remote';
-import matter from 'gray-matter';
 import {
   GetStaticPaths, GetStaticProps, GetStaticPropsContext, NextPage,
 } from 'next';
 import { Post } from 'types';
 import { ParsedUrlQuery } from 'querystring';
 import { MDXComponents } from 'mdx-components';
+import { getAllPostPaths, getPost } from '../../../utils';
 
 interface PostPath extends ParsedUrlQuery {
   postId: string;
@@ -17,24 +14,17 @@ interface PostPath extends ParsedUrlQuery {
 export const getStaticProps: GetStaticProps<Post, PostPath> = async (ctx: GetStaticPropsContext<PostPath>) => {
   const { postId } = ctx.params!;
 
-  const markdownWithMeta = fs.readFileSync(path.join('src/posts', `${postId}.mdx`), 'utf-8');
-
-  const { data: info, content } = matter(markdownWithMeta);
-  const mdx = await serialize(content);
-
-  const post: Post = { info, mdx } as Post;
+  const post: Post = await getPost(postId);
   return {
     props: post,
   };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const files = fs.readdirSync(path.join('src', 'posts'));
+  const files = await getAllPostPaths();
 
-  const posts = files.map((filename) => ({
-    params: {
-      postId: filename.split('.')[0],
-    },
+  const posts = files.map((postId) => ({
+    params: { postId, },
   }));
 
   return {

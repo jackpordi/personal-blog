@@ -7,6 +7,7 @@ interface Props {
 }
 
 export function PostPreviewCard({ post, id }: Props) {
+  console.log(post);
   return (
     <Link href={`posts/${id}`}>
       <div className="transform transitionmargin-2 text-left group my-4 max-w-2xl cursor-pointer">

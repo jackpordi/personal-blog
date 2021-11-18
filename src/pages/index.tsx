@@ -1,17 +1,13 @@
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
 import { PostPreviewCard } from 'components/PostPreviewCard';
 import type { GetStaticProps } from 'next';
 import Head from 'next/head';
-import { FrontMatter } from 'types';
+import { Post } from 'types';
 import styles from '../styles/Home.module.css';
+import { getAllPosts } from '../../utils';
+import moment from 'moment';
 
 interface Props {
-  posts: {
-    id: string;
-    frontMatter: FrontMatter;
-  }[];
+  posts: Post[];
 }
 
 const Home = ({ posts }: Props) => (
@@ -32,22 +28,17 @@ const Home = ({ posts }: Props) => (
       <p className="text-gray-600 my-8 text-xl">
         Where I
         {' '}
-        {' '}
         <span className="text-blue-600 font-semibold">
           talk
-          {' '}
           {' '}
         </span>
         about
         {' '}
-        {' '}
         <span className="text-blue-600 font-semibold">
           tech
           {' '}
-          {' '}
         </span>
         and rant about
-        {' '}
         {' '}
         <span className="text-blue-600 font-semibold">
           things
@@ -57,7 +48,7 @@ const Home = ({ posts }: Props) => (
 
       <div className={styles.grid}>
         {posts.map((p) => (
-          <PostPreviewCard key={p.id} id={p.id} post={p.frontMatter} />
+          <PostPreviewCard key={p.id} id={p.id} post={p.info} />
         ))}
       </div>
     </main>
@@ -66,17 +57,9 @@ const Home = ({ posts }: Props) => (
 );
 
 export const getStaticProps: GetStaticProps = async () => {
-  const files = fs.readdirSync(path.join('src', 'posts'));
+  const posts = await getAllPosts();
 
-  const posts = files.map((filename) => {
-    const markdownWithMeta = fs.readFileSync(path.join('src', 'posts', filename), 'utf-8');
-    const { data: frontMatter } = matter(markdownWithMeta);
-
-    return {
-      frontMatter,
-      id: filename.split('.')[0],
-    };
-  });
+  posts.sort((a, b) => moment(a.info.date).diff(moment(b.info.date)));
 
   return {
     props: {

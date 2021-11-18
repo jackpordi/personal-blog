@@ -7,6 +7,7 @@ export interface FrontMatter {
 }
 
 export interface Post {
+  id: string;
   info: FrontMatter;
   mdx: MDXRemoteSerializeResult;
 }
