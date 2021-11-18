@@ -18,14 +18,14 @@ const Home = ({ posts }: Props) => (
       <link rel="icon" href="/favicon.ico" />
     </Head>
 
-    <main className={styles.main}>
-      <h1 className="text-7xl items-center font-bold">
+    <main className="flex flex-col flex-1 justify-start items-center py-2 md:py-4 lg:py-6">
+      <h1 className="text-5xl md:text-7xl items-center font-bold">
         <span className="text-blue-600">Welcome</span>
         {' '}
         to my blog!
       </h1>
 
-      <p className="text-gray-600 my-8 text-xl">
+      <p className="text-gray-600 my-4 md:my-8 text-xl">
         Where I
         {' '}
         <span className="text-blue-600 font-semibold">

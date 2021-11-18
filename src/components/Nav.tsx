@@ -8,9 +8,8 @@ export const Nav: FunctionComponent = () => (
       href="/"
       className="flex items-center flex-shrink-0 mr-6"
     >
-      <span className="text-gray-700 text-2xl tracking-tight">
+      <span className="text-gray-700 text-3xl md:text-3xl tracking-tight">
         Jack
-        {' '}
         {' '}
         <span className="text-blue-600 font-bold">Pordi</span>
       </span>
@@ -23,7 +22,7 @@ export const Nav: FunctionComponent = () => (
         </svg>
       </button>
     </div>
-    <div className="w-full lg:flex-grow lg:flex lg:items-center lg:w-auto">
+    <div className="w-full lg:flex-grow hidden md:flex lg:items-center lg:w-auto">
       <div className="text-xl lg:flex-grow lg:items-center lg:flex justify-end">
         <Link href="/" passHref>
           <div className="block mt-4 lg:inline-block lg:mt-0 cursor-pointer hover:text-blue-600 hover:font-semibold mr-6 transition transform hover:scale-115">
