@@ -4,8 +4,12 @@ import type { AppProps } from 'next/app';
 import { Nav } from 'components/Nav';
 import { Footer } from 'components/Footer';
 import Head from 'next/head';
+import { useTrackpageView } from 'hooks/useTrackPageView';
 
 function MyApp({ Component, pageProps }: AppProps) {
+
+  useTrackpageView();
+
   return (
     <>
       <Head>

@@ -22,7 +22,7 @@ export const Nav: FunctionComponent = () => (
         </svg>
       </button>
     </div>
-    <div className="w-full lg:flex-grow hidden md:flex lg:items-center lg:w-auto">
+    <div className="w-full lg:flex-grow hidden lg:flex lg:items-center lg:w-auto">
       <div className="text-xl lg:flex-grow lg:items-center lg:flex justify-end">
         <Link href="/" passHref>
           <div className="block mt-4 lg:inline-block lg:mt-0 cursor-pointer hover:text-blue-600 hover:font-semibold mr-6 transition transform hover:scale-115">
