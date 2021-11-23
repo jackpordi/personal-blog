@@ -43,8 +43,6 @@ class MyDocument extends Document {
             dangerouslySetInnerHTML={{
               __html: `window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
-            console.log("Here");
-            console.log(gtag);
             gtag('js', new Date());
             gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
               page_path: window.location.pathname,
