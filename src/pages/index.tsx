@@ -2,9 +2,10 @@ import { PostPreviewCard } from 'components/PostPreviewCard';
 import type { GetStaticProps } from 'next';
 import Head from 'next/head';
 import { Post } from 'types';
-import styles from '../styles/Home.module.css';
-import { getAllPosts } from '../../utils';
 import moment from 'moment';
+import styles from '../styles/Home.module.css';
+
+import { getAllPosts } from '../utils';
 
 interface Props {
   posts: Post[];

@@ -6,8 +6,9 @@ import {
 import { Post } from 'types';
 import { ParsedUrlQuery } from 'querystring';
 import { MDXComponents } from 'mdx-components';
-import { getAllPostPaths, getPost } from '../../../utils';
 import Head from 'next/head';
+
+import { getAllPostPaths, getPost } from '../../utils';
 
 interface PostPath extends ParsedUrlQuery {
   postId: string;
