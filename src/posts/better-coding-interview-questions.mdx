@@ -1,0 +1,93 @@
+---
+title: Coding interview questions suck. But can they be better?
+abstract: Leetcodes aren't reflective of the software engineering job, yet they're the leading method used when hiring to test technical ability. What better questions might we be able to ask in coding interviews?
+date: 2021-12-08T21:55:00-0000
+---
+
+__Algorithmic-style questions__ (also known by the genericized name of LeetCode and HackerRank) have become an industry standard of technical tests for software engineering roles, thanks to FAANG (well, MANGA) companies popularizing them for the past decade. However, go to any online community of software engineers and you won't have any difficulty in finding complaints about them. _They're too hard_, _they're unrealistic_, _they're irrelevant to the actual job_ are all common complaints, and one might be tempted to think this is a standard case of rejects collectively whining the loudest. But I don't think it's just that (and presumably neither do you, if you're reading this) - not only are the criticisms logically valid, but it's also not too difficult to find stories of hiring managers who end up hiring candidates who perform well in coding tests but are in the end ultimately not very good at their job.
+
+Before I get into the meat of what I think could be better, it's important to realize that there _is_ some value in AQs.
+
+- __For junior/inexperienced hires, it's the only way to know if they can write code or not.__ You can't expect a fresh grad out of university to know frameworks that aren't typically taught in CS-courses, like React, or Spring, or whatever. You can, however, expect that they'd have at least one or two programming languages they'd be comfortable enough to write business logic code in.
+- __They're excellent bullshit-filters.__ If a candidate says they have X years of experience in language Y, but they fail to write remotely syntactically correct code in that same language or are unable to use basic built-in language features or standard libraries, then they're _probably_ bullshitting.
+- __AQs _can_ be open-ended and "scale" well.__ What I mean by this, is that even though there may be an optimal O(n) solution, if the candidate can write an O(n^2) solution in a reasonable amount of time, can explain/structure their code well, then often this is generally a "good enough" criteria to hire.
+
+On the other hand, the flaws are obvious:
+
+- __They're not reflective of what the job entails.__ Knowing how to efficiently generate Pascal's triangle or search substrings has very little to do with writing frontend javascript or building a backend server for a CRUD app, or how the candidate might fare when they have to work with an existing complex codebase.
+- __The best way to do them well is to practice doing lots of them.__ Whilst I think good engineers should be able to write efficient code, the reality is that the optimal solutions for many of these questions rely on some sort of obscure trick that you'll only learn via having done dozens of them on LeetCode or HackerRank. Realistically, any algorithmic problems I encounter in a real-life engineering context would most likely have been encountered by numerous other (much smarter) people before, and if not already in a textbook somewhere the solution would likely be a mere Google search away.
+- I don't think I need to mention how many times I've been given a problem that's been ripped off the first page of LeetCode.
+- __Many employers/interviewers don't know how to do them well,__ and/or are not able to approach the question themselves, and/or don't appreciate the open-endedness or difficulty of the question. They just want to do an algorithm question because that's what big tech does. I've heard horror stories of people being interviewed with AQs by interviewers who can't follow along. On the other hand, I've also been asked _bog-standard_ questions like substring matching, which is a very known and solved question in computer science. I tried to recall and reconstruct the solution but instead, the interviewer tried to nudge me towards a less optimal/correct solution.
+- __Improving algorithmic efficiency/complexity can run counter to things like code quality and readability.__ Take generating/printing Pascal's triangle, for example. The optimal solution is to notice that the next element of each row can be calculated from the previous one via a mathematical formula, but that method requires writing a loop that tracks and increments multiple mutable variables. In my opinion, that's not nearly as readable or easily understandable (or safe) as using a more functional (but less efficient) style of list comprehensions or array maps that directly generate the values. So, in some ways, testing for algorithmic efficiency means you're unable to test for code readability/quality.
+
+## What are we actually looking for?
+
+The problems are clear, but what would a better solution look like? Well, for starters, I think it's important to contextualize the goals of what you want to hire for. If all that's needed is a pure HTML/CSS code monkey, then you can probably just give them a relevant take-home task. But in many cases, if you want to hire a smart, adaptable and well-rounded software _engineer_ that will play a crucial role in shaping out the tech of your company for years to come, then you're going to have a finer criterion. The following might be an example:
+
+- Good problem-solving skills.
+- Good knowledge of X languages/framework (or similar that will be transferrable), as well as understanding the advantages/disadvantages of those various tools/technologies.
+- Good high-level overview of software architecture and how their code might be deployed to or used in production.
+- Good interpersonal skills for working with other members of the engineering team.
+
+Notably, AQs only assess the first point, maybe the second one, and arguably neither to their fullest extent. The third point is often assessed pretty easily with a couple of questions (_"What's the difference between client side rendering and server side rendering?", "What's the advantage of docker/kubernetes compared to VMs?", etc_) either at the end of or in a separate interview, so our coding question won't need to concern itself with that. The fourth point is usually covered best, in my experience, via a conversational pair programming method. Note that when I say pair programming, I absolutely _do_ mean pair programming. Not the interviewer staring at you awkwardly as you struggle on, occasionally giving one or two hints in disappointment. _Actual_ pair programming, where they treat you as a coworker working towards the same goal. I find it pretty obvious that the best way of seeing what it's like to work with someone, is to work with them on a problem. I think the main reason this isn't done more with AQs is that they are so one-dimensional that the answer would be given away.
+
+## Interviews are a two-way street
+
+Another important factor too often ignored is that interviews are a two-way street (or at least, they really should be). When interviewing for a company, in my head I'm also asking the following questions:
+
+- __What kind of engineering challenges do they face? Will it be something I enjoy doing?__ I recently interviewed for a company that had a very cool and interesting product. Their interview questions? Iterate through a list of numbers and do something something something something.......you get the point. Completely unrelated to their engineering.
+- __Do I like talking to this person and can I see myself enjoying working with them?__ AQs don't give away very much in this regard, as usually, the interviewer is just nodding along as you go through your solution, or writing down "REJECT" on their notepad as they give you more hints.
+- __Do I think this interview process will also yield me great coworkers in the future?__ This one is self-explanatory, but if I think the interview process can be gamed or fluked on by others, it's a major red flag to me.
+
+The best interviews I've had have ticked all three and left me with a feeling of excitement and actually really wanting to work there. The worst interviews have left me feeling used and empty like nothing more than a cog in their recruitment wheel.
+
+## Scalable questions
+
+In software engineering, "scalability" is often talked about a lot, in the sense that code should be able to be easily adapted and modified as requirements change. I think we can apply the same concept here, in trying to find a question that can be used in a variety of settings and seniority levels. Here's one such premise that I thought of at my last job (and would have used it in interviews had I stayed longer):
+
+> You're building a platform that allows users to have (multiple) pictures in their profile. How would you design/write code that allows users to add, remove and change their pictures?
+
+Note that this is the _premise_ of the question, and is still a little bit vague. I wouldn't expect a candidate (particularly junior ones) to be able to be in a position to get started right away from those 2 sentences alone, but this is where the important details and context in. Say, you're interviewing a junior who may not have a lot of experience (particularly with specific libraries/frameworks), then you can frame it a little more specifically:
+
+> Write a class __ProfileImagesEditor__, that takes in an array of image URLs (represented as strings) in its constructor representing the current user's photos. Write methods for that class that represent adding, deleting, and replacing images. Lastly, write two additional methods - one for previewing the new images, and one for getting all the final _changes_ made.
+```
+// Example
+const editor = new ProfileImagesEditor(["A", "B", "C"]);
+editor.delete("A") // Should result in a preview() of [ "B", "C" ]
+editor.replace("B", "D") // Should result in a preview() of [ "D", "C" ]
+editor.add("E") // Should result in a preview() of [ "D", "C", "E" ]
+editor.changes() // Should summarize all the changes somehow...
+```
+
+Another good way to explain the above is to mention that this is pretty much the functionality of changing one's photos on Tinder - you can make changes and preview them but they won't commit until you click save on the entire thing. 
+
+## Adapting the question
+
+Note that there's still a little vagueness (which may be a good opportunity to see the candidate's ability to ask good questions), but you could do the following variations on the same premise:
+
+- Making order of images matter or not (e.g. allowing insertion at a specific index, etc). If it's a backend candidate, you could ask them about how ordering could be implemented/preserved in SQL/NoSQL schema/queries as well.
+- Checking/disallowing duplicates or validating URLs.
+- If the candidate is _very_ junior and not accustomed to OOP, you could have them write the same logic but in a loop that takes in standard console input instead.
+- If you're hiring for a frontend React role, you might ask them to implement this logic in React hooks instead. This would be an _excellent_ way of testing someone's understanding of React's functional components and hooks.
+- Ensuring that the calculated changes are summarized and minimal (e.g. if you add "D" then remove it immediately thereafter, the changes are effectively none) and not just a log/array of actions.
+- You could start with just the addition and/or deletion (without the changes), then introduce replacement later, then maybe the summarized changes, and see how the candidate responds and adapts their code. For example, without the delta changes, alone most people would just do it by keeping a copy of the array and modifying it inplace.
+
+You can probably think of more ways to add twists to this question, but more importantly, you should be able to see the positives of this approach:
+
+- __Still has all the advantages I listed of AQs__. 
+- __It's very clearly a real problem__ that real software engineers have to encounter. Bonus if it's also indicative of the kind of work that happens at the company.
+- __There's no "all or nothing" approach to this.__ A great candidate might be able to do all of it, but most half-decent candidates should be able to write the add, delete, replace functions and not feel terrible about their progress.
+- __There's no obscure "trick" required__, like utilizing multiple array pointers for a sliding window or a hashmap to memoize values.
+- __It's great for pair programming__. If you're interviewing for a senior role, you could even (as an interviewer) pretend to be a junior dev. Make a few mistakes, or ask a few questions and see how they respond. Or just work with them as equals, and debate how to approach it (e.g. whether to use OOP, how to store/calculate the changes, etc).
+- __It works in different skill levels and languages/stacks/paradigms__ - OOP, simple input loops, React components/hooks, SQL schemas. _Hell, I could see a Haskeller doing this with a state monad_.
+- __You can ramp up and down how much context they have__ and see what questions they ask or what their understanding of the problem is. For example - the final changes delta calculation, why is it important? (_Spoiler: so if you're on a frontend, then you can efficiently send the changes that need to be made to the backend, and not perform any unnecessary work like re-writing a URL or re-uploading an image that's already there_).
+- __You can keep it even more open-ended to test their creativity__ and see how they design the functionality. For example, they could choose to forego the preview-changes-commit model and commit the changes directly, in which case you may have scope to ask them about the UX repercussions of that choice (assuming you're hiring for a role where UX-oriented thinking matters).
+- __There's potential for you to be pleasantly surprised__ by juniors who can foresee the advantages/disadvantages of different design choices.
+
+I'm not saying that it doesn't come without negatives, though. For one, this relies on the interviewer being sociable and making the interviewee comfortable enough to pair program with them constructively - especially if you want to do it in an open-ended way. And for another, some candidates will simply be too used to AQs and struggle to perform well in this format. It also doesn't _directly_ test a candidate's ability to write code with good complexity. But for the most part, I do think this is a strictly better way of assessing a candidate's coding (and other) abilities than LeetCode.
+
+## So what?
+
+Whilst the example I've given above is pretty clear, I appreciate it's not for everyone. Fundamentally, not _all_ software development roles require being able to tackle open-ended challenges and having to make big design choices. This approach isn't aimed at software houses that churn our CRUD applications or do web development consultancy, and that's okay. 
+
+I'm not an expert on hiring and am certainly not arrogant enough to think I've solved the industry's problems in one blog post - just merely posting my thoughts on what I think a good process is in the hopes that it'll have a good impact somewhere someday. __Whatever your thoughts are, I'd love to hear them either in the comments or via contacting me directly [here](mailto:contact@jackpordi.com)__.

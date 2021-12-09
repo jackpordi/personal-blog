@@ -1,4 +1,6 @@
+import moment from 'moment';
 import Link from 'next/link';
+import { useMemo } from 'react';
 import { FrontMatter } from 'types';
 
 interface Props {
@@ -7,17 +9,21 @@ interface Props {
 }
 
 export function PostPreviewCard({ post, id }: Props) {
+
+  const displayDate = useMemo(() => moment(post.date).format("H:mm MMMM Do YYYY"), [ post ]);
+
   return (
-    <Link href={`posts/${id}`}>
-      <div className="transform transitionmargin-2 text-left group my-4 max-w-2xl cursor-pointer">
+    <Link className="w-full" href={`posts/${id}`}>
+      <div className="w-full transform transitionmargin-2 text-left group my-4 max-w-2xl cursor-pointer">
 
         <h2 className="text-2xl group-hover:text-blue-600 font-semibold">{post.title}</h2>
         <p className="text-gray-700 text-lg mt-2 group-hover:text-black ">
           {post.abstract}
         </p>
-        <p className="text-black mt-4">
-          <span className="group-hover:text-blue-600">Read More &rarr;</span>
-        </p>
+        <div className="flex flex-row text-black mt-4 justify-between w-full">
+          <div className="group-hover:text-blue-600">Read More &rarr;</div>
+          <div className="text-gray-600">{displayDate}</div>
+        </div>
       </div>
     </Link>
   );

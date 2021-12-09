@@ -16,4 +16,6 @@ export const MDXComponents: Components = {
   ol: ({ children }) => <ol className="list-decimal list-inside text-gray-800 mb-4">{children}</ol>,
   li: ({ children }) => <li style={{ paddingLeft: "1em", textIndent: "-1em" }}><span className="-ml-1">{children}</span></li>,
   blockquote: ({ children }) => <blockquote className="bg-gray-100 my-2 px-4 py-1 rounded-md italic items-center">{children}</blockquote>,
+  // @ts-ignore href not part of FunctionComponent props
+  a: ({ children, href }) => <a href={href} className="hover:underline text-blue-600">{children}</a>,
 };

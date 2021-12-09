@@ -60,7 +60,7 @@ const Home = ({ posts }: Props) => (
 export const getStaticProps: GetStaticProps = async () => {
   const posts = await getAllPosts();
 
-  posts.sort((a, b) => moment(a.info.date).diff(moment(b.info.date)));
+  posts.sort((a, b) => moment(b.info.date).diff(moment(a.info.date)));
 
   return {
     props: {
