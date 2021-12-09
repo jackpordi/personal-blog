@@ -11,7 +11,7 @@ export const MDXComponents: Components = {
   h3: ({ children }) => <h3 className="text-gray-800 text-xl font-semibold my-2">{children}</h3>,
   h4: ({ children }) => <h4 className="text-gray-800 text-lg font-semibold my-2">{children}</h4>,
   h5: ({ children }) => <h5 className="text-gray-800 text-md font-semibold">{children}</h5>,
-  code: ({ children }) => <code className="bg-gray-100 block p-2 my-4 rounded-md">{children}</code>,
+  code: ({ children }) => <pre className="whitespace-pre-wrap"><code className="text-sm bg-gray-100 block p-2 my-4 rounded-md">{children}</code></pre>,
   ul: ({ children }) => <ul className="list-disc list-inside text-gray-800 mb-4">{children}</ul>,
   ol: ({ children }) => <ol className="list-decimal list-inside text-gray-800 mb-4">{children}</ol>,
   li: ({ children }) => <li style={{ paddingLeft: "1em", textIndent: "-1em" }}><span className="-ml-1">{children}</span></li>,

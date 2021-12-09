@@ -44,7 +44,7 @@ const PostPage: NextPage<Post> = ({ info, mdx }) => (
       <meta name="description" content={info.abstract} />
       <meta name="author" content="Jack Pordi" />
     </Head>
-    <div className="my-0 md:my-8 items-center block max-w-3xl flex-1">
+    <div className="ml-2 md:mx-0 my-0 md:my-8 items-center block max-w-3xl flex-1">
       <div className="mb-6">
         <h1 className="font-semibold text-4xl mb-2">{info.title}</h1>
         <h2 className="font-semibold text-xl text-gray-700">{info.abstract}</h2>
