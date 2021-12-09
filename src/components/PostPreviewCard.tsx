@@ -13,7 +13,7 @@ export function PostPreviewCard({ post, id }: Props) {
   const displayDate = useMemo(() => moment(post.date).format("H:mm MMMM Do YYYY"), [ post ]);
 
   return (
-    <Link className="w-full" href={`posts/${id}`}>
+    <Link href={`posts/${id}`}>
       <div className="w-full transform transitionmargin-2 text-left group my-4 max-w-2xl cursor-pointer">
 
         <h2 className="text-2xl group-hover:text-blue-600 font-semibold">{post.title}</h2>
