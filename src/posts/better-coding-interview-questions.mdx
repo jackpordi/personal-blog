@@ -47,17 +47,18 @@ In software engineering, "scalability" is often talked about a lot, in the sense
 
 > You're building a platform that allows users to have (multiple) pictures in their profile. How would you design/write code that allows users to add, remove and change their pictures?
 
-Note that this is the _premise_ of the question, and is still a little bit vague. I wouldn't expect a candidate (particularly junior ones) to be able to be in a position to get started right away from those 2 sentences alone, but this is where the important details and context in. Say, you're interviewing a junior who may not have a lot of experience (particularly with specific libraries/frameworks), then you can frame it a little more specifically:
+Note that this is the _premise_ of the question, and is still a little bit vague. I wouldn't expect a candidate (particularly junior ones) to be in a position to get started right away from those 2 sentences alone, but this is where the important details and context come in. Say, you're interviewing a junior who may not have a lot of experience (particularly with specific libraries/frameworks), then you can frame it a little more specifically:
 
 > Write a class __ProfileImagesEditor__, that takes in an array of image URLs (represented as strings) in its constructor representing the current user's photos. Write methods for that class that represent adding, deleting, and replacing images. Lastly, write two additional methods - one for previewing the new images, and one for getting all the final _changes_ made.
 
-```
+And then provide some code examples...
+
+```javascript
 // Example
 const editor = new ProfileImagesEditor(["A", "B", "C"]);
-editor.delete("A") // Should result in a preview() of [ "B", "C" ]
-editor.replace("B", "D") // Should result in a preview() of [ "D", "C" ]
-editor.add("E") // Should result in a preview() of [ "D", "C", "E" ]
-editor.changes() // Should summarize all the changes somehow...
+editor.delete("A"); // Should result in a preview() of [ "B", "C" ]
+editor.replace("B", "D"); // Should result in a preview() of [ "D", "C" ]
+editor.add("E"); // Should result in a preview() of [ "D", "C", "E" ]
 ```
 
 Another good way to explain the above is to mention that this is pretty much the functionality of changing one's photos on Tinder - you can make changes and preview them but they won't commit until you click save on the entire thing. 

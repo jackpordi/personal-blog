@@ -2,6 +2,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import matter from 'gray-matter';
 import { serialize } from 'next-mdx-remote/serialize';
+import rehypeHighlight from "rehype-highlight";
 
 import { Post } from "types";
 
@@ -10,7 +11,11 @@ export async function getPost(postId: string): Promise<Post> {
   const markdownWithMeta = await fs.readFile(path.join('src/posts', `${postId}.mdx`), 'utf-8');
 
   const { data: info, content } = matter(markdownWithMeta);
-  const mdx = await serialize(content);
+  const mdx = await serialize(content, {
+    mdxOptions: {
+      rehypePlugins: [ rehypeHighlight ]
+    },
+  });
 
   const post: Post = { 
     id: postId,
