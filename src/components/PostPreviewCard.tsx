@@ -1,3 +1,4 @@
+import { useDisplayDate } from 'hooks/useDisplayDate';
 import moment from 'moment';
 import Link from 'next/link';
 import { useMemo } from 'react';
@@ -10,7 +11,7 @@ interface Props {
 
 export function PostPreviewCard({ post, id }: Props) {
 
-  const displayDate = useMemo(() => moment(post.date).format("H:mm MMMM Do YYYY"), [ post ]);
+  const displayDate = useDisplayDate(post.date);
 
   return (
     <Link href={`posts/${id}`}>
