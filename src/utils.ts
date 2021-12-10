@@ -13,6 +13,7 @@ export async function getPost(postId: string): Promise<Post> {
   const { data: info, content } = matter(markdownWithMeta);
   const mdx = await serialize(content, {
     mdxOptions: {
+      // @ts-ignore
       rehypePlugins: [ rehypeHighlight ]
     },
   });
