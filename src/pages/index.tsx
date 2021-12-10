@@ -1,11 +1,12 @@
-import { PostPreviewCard } from 'components/PostPreviewCard';
-import type { GetStaticProps } from 'next';
-import Head from 'next/head';
-import { Post } from 'types';
-import moment from 'moment';
-import styles from '../styles/Home.module.css';
+import type { GetStaticProps } from "next";
+import Head from "next/head";
+import moment from "moment";
 
-import { getAllPosts } from '../utils';
+import { Post } from "types";
+import { PostPreviewCard } from "components/PostPreviewCard";
+
+import styles from "../styles/Home.module.css";
+import { getAllPosts } from "../utils";
 
 interface Props {
   posts: Post[];
@@ -22,25 +23,25 @@ const Home = ({ posts }: Props) => (
     <main className="flex flex-col flex-1 justify-start items-center py-2 md:py-4 lg:py-6">
       <h1 className="text-5xl md:text-7xl items-center font-bold">
         <span className="text-blue-600">Welcome</span>
-        {' '}
+        {" "}
         to my blog!
       </h1>
 
       <p className="text-gray-600 my-4 md:my-8 text-xl">
         Where I
-        {' '}
+        {" "}
         <span className="text-blue-600 font-semibold">
           talk
-          {' '}
+          {" "}
         </span>
         about
-        {' '}
+        {" "}
         <span className="text-blue-600 font-semibold">
           tech
-          {' '}
+          {" "}
         </span>
         and rant about
-        {' '}
+        {" "}
         <span className="text-blue-600 font-semibold">
           things
         </span>
@@ -62,11 +63,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   posts.sort((a, b) => moment(b.info.date).diff(moment(a.info.date)));
 
-  return {
-    props: {
-      posts,
-    },
-  };
+  return { props: { posts } };
 };
 
 export default Home;

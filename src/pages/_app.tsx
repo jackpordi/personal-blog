@@ -1,10 +1,10 @@
-import '../styles/globals.css';
-import type { AppProps } from 'next/app';
+import "../styles/globals.css";
+import type { AppProps } from "next/app";
+import Head from "next/head";
 
-import { Nav } from 'components/Nav';
-import { Footer } from 'components/Footer';
-import Head from 'next/head';
-import { useTrackpageView } from 'hooks/useTrackPageView';
+import { Nav } from "components/Nav";
+import { Footer } from "components/Footer";
+import { useTrackpageView } from "hooks/useTrackPageView";
 
 function MyApp({ Component, pageProps }: AppProps) {
 

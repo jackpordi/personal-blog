@@ -1,16 +1,21 @@
-import { MDXRemote } from 'next-mdx-remote';
+import { ParsedUrlQuery } from "querystring";
+
+import { MDXRemote } from "next-mdx-remote";
 import Script from "next/script";
 import Image from "next/image";
 import {
-  GetStaticPaths, GetStaticProps, GetStaticPropsContext, NextPage,
-} from 'next';
-import { Post } from 'types';
-import { ParsedUrlQuery } from 'querystring';
-import { MDXComponents } from 'mdx-components';
-import Head from 'next/head';
+  GetStaticPaths,
+  GetStaticProps,
+  GetStaticPropsContext,
+  NextPage,
+} from "next";
+import Head from "next/head";
 
-import { getAllPostPaths, getPost } from '../../utils';
-import { useDisplayDate } from 'hooks/useDisplayDate';
+import { Post } from "types";
+import { MDXComponents } from "mdx-components";
+import { useDisplayDate } from "hooks/useDisplayDate";
+
+import { getAllPostPaths, getPost } from "../../utils";
 
 interface PostPath extends ParsedUrlQuery {
   postId: string;
@@ -20,17 +25,13 @@ export const getStaticProps: GetStaticProps<Post, PostPath> = async (ctx: GetSta
   const { postId } = ctx.params!;
 
   const post: Post = await getPost(postId);
-  return {
-    props: post,
-  };
+  return { props: post };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const files = await getAllPostPaths();
 
-  const posts = files.map((postId) => ({
-    params: { postId, },
-  }));
+  const posts = files.map((postId) => ({ params: { postId } }));
 
   return {
     paths: posts,
@@ -55,13 +56,15 @@ const PostPage: NextPage<Post> = ({ info, mdx }) => {
           <p className="text-gray-500 text-left">{displayDate}</p>
           <h1 className="font-semibold text-4xl mb-2">{info.title}</h1>
           <h2 className="font-semibold text-xl text-gray-700 mb-4">{info.abstract}</h2>
-          <Image
-            className="rounded-lg mb-2"
-            src={info.image}
-            alt={info.image}
-            height={350}
-            width={800}
-            objectFit="cover" />
+          {info.image && (
+            <Image
+              className="rounded-lg mb-2"
+              src={info.image}
+              alt={info.image}
+              height={350}
+              width={800}
+              objectFit="cover" />
+          )}
         </div>
         <MDXRemote {...mdx} components={MDXComponents} />
         <Script src="https://utteranc.es/client.js"
@@ -76,5 +79,5 @@ const PostPage: NextPage<Post> = ({ info, mdx }) => {
       </div>
     </div>
   );
-}
+};
 export default PostPage;

@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import { FaEnvelope, FaGithub } from 'react-icons/fa';
-import { FunctionComponent } from 'react';
+import Link from "next/link";
+import { FaEnvelope, FaGithub } from "react-icons/fa";
+import { FunctionComponent } from "react";
 
 export const Nav: FunctionComponent = () => (
   <nav className="inset-x-0 flex flex-1 items-center justify-between flex-wrap p-6 py-22 text-gray-500">
@@ -10,7 +10,7 @@ export const Nav: FunctionComponent = () => (
     >
       <span className="text-gray-700 text-3xl md:text-3xl tracking-tight">
         Jack
-        {' '}
+        {" "}
         <span className="text-blue-600 font-bold">Pordi</span>
       </span>
     </a>

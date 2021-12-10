@@ -1,8 +1,7 @@
-import { useDisplayDate } from 'hooks/useDisplayDate';
-import moment from 'moment';
-import Link from 'next/link';
-import { useMemo } from 'react';
-import { FrontMatter } from 'types';
+import Link from "next/link";
+
+import { useDisplayDate } from "hooks/useDisplayDate";
+import { FrontMatter } from "types";
 
 interface Props {
   id: string;

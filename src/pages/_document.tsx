@@ -1,8 +1,13 @@
 import Document, {
-  Html, Head, Main, NextScript, DocumentContext,
-} from 'next/document';
+  Html,
+  Head,
+  Main,
+  NextScript,
+  DocumentContext,
+} from "next/document";
 
 class MyDocument extends Document {
+
   static async getInitialProps(ctx: DocumentContext) {
     const initialProps = await Document.getInitialProps(ctx);
     return { ...initialProps };
@@ -10,10 +15,10 @@ class MyDocument extends Document {
 
   render() {
     const meta = {
-      title: 'Next.js Blog Starter Kit',
-      description: 'Clone and deploy your own Next.js portfolio in minutes.',
+      title: "Next.js Blog Starter Kit",
+      description: "Clone and deploy your own Next.js portfolio in minutes.",
       image:
-        'https://assets.vercel.com/image/upload/q_auto/front/vercel/dps.png',
+        "https://assets.vercel.com/image/upload/q_auto/front/vercel/dps.png",
     };
 
     return (
@@ -59,6 +64,7 @@ class MyDocument extends Document {
       </Html>
     );
   }
+
 }
 
 export default MyDocument;

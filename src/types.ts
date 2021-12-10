@@ -4,7 +4,7 @@ export interface FrontMatter {
   title: string;
   date: string;
   abstract: string;
-  image: string;
+  image?: string;
 }
 
 export interface Post {
