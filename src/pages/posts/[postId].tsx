@@ -1,5 +1,6 @@
 import { MDXRemote } from 'next-mdx-remote';
 import Script from "next/script";
+import Image from "next/image";
 import {
   GetStaticPaths, GetStaticProps, GetStaticPropsContext, NextPage,
 } from 'next';
@@ -49,11 +50,18 @@ const PostPage: NextPage<Post> = ({ info, mdx }) => {
         <meta name="description" content={info.abstract} />
         <meta name="author" content="Jack Pordi" />
       </Head>
-      <div className="ml-2 md:mx-0 my-0 md:my-8 items-center block max-w-3xl flex-1">
-        <div className="mb-6">
-          <p className="text-gray-500 self-end text-left md:text-right">{displayDate}</p>
+      <div className="ml-2 md:mx-0 my-0 md:my-2 items-center block max-w-3xl flex-1">
+        <div className="mb-6" >
+          <p className="text-gray-500 text-left">{displayDate}</p>
           <h1 className="font-semibold text-4xl mb-2">{info.title}</h1>
-          <h2 className="font-semibold text-xl text-gray-700">{info.abstract}</h2>
+          <h2 className="font-semibold text-xl text-gray-700 mb-4">{info.abstract}</h2>
+          <Image
+            className="rounded-lg mb-2"
+            src={info.image}
+            alt={info.image}
+            height={350}
+            width={800}
+            objectFit="cover" />
         </div>
         <MDXRemote {...mdx} components={MDXComponents} />
         <Script src="https://utteranc.es/client.js"

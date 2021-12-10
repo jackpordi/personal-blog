@@ -2,6 +2,7 @@
 title: Coding interview questions suck. But could they be better?
 abstract: Leetcodes aren't reflective of the software engineering job, yet they're the leading method used when hiring to test technical ability. What better questions might we be able to ask in coding interviews?
 date: 2021-12-08T21:55:00-0000
+image: /images/laptop-coding.jpg
 ---
 
 __Algorithmic-style questions__ (also known by the genericized name of LeetCode and HackerRank) have become an industry standard of technical tests for software engineering roles, thanks to FAANG (well, MANGA) companies popularizing them for the past decade. However, go to any online community of software engineers and you won't have any difficulty in finding complaints about them. _They're too hard_, _they're unrealistic_, _they're irrelevant to the actual job_ are all common complaints, and one might be tempted to think this is a standard case of rejects collectively whining the loudest. But I don't think it's just that (and presumably neither do you, if you're reading this) - not only are the criticisms logically valid, but it's also not too difficult to find stories of hiring managers who end up hiring candidates who perform well in coding tests but are in the end ultimately not very good at their job.
@@ -31,6 +32,8 @@ The problems are clear, but what would a better solution look like? Well, for st
 
 Notably, AQs only assess the first point, maybe the second one, and arguably neither to their fullest extent. The third point is often assessed pretty easily with a couple of questions (_"What's the difference between client side rendering and server side rendering?", "What's the advantage of docker/kubernetes compared to VMs?", etc_) either at the end of or in a separate interview, so our coding question won't need to concern itself with that. The fourth point is usually covered best, in my experience, via a conversational pair programming method. Note that when I say pair programming, I absolutely _do_ mean pair programming. Not the interviewer staring at you awkwardly as you struggle on, occasionally giving one or two hints in disappointment. _Actual_ pair programming, where they treat you as a coworker working towards the same goal. I find it pretty obvious that the best way of seeing what it's like to work with someone, is to work with them on a problem. I think the main reason this isn't done more with AQs is that they are so one-dimensional that the answer would be given away.
 
+Something else I constantly have to remind myself (and my peers) is that interview processes are not necessarily designed to maximize _true positives_, but instead to minize _false positives_. What that means, is that __companies aren't directly looking to hire the _best_ person for the role, but rather to reduce their chances of hiring someone who's _bad_ for the role__. After all, it makes sense that a _bad_ hire is probably worse than missing out on the _absolute best_ candidate. That's why there's so many damn interview stages that act as straight-upo _filters_ rather than differentiators of varying levels of excellence.
+
 ## Interviews are a two-way street
 
 Another important factor too often ignored is that interviews are a two-way street (or at least, they really should be). When interviewing for a company, in my head I'm also asking the following questions:
@@ -43,7 +46,7 @@ The best interviews I've had have ticked all three and left me with a feeling of
 
 ## Scalable questions
 
-In software engineering, "scalability" is often talked about a lot, in the sense that code should be able to be easily adapted and modified as requirements change. I think we can apply the same concept here, in trying to find a question that can be used in a variety of settings and seniority levels. Here's one such premise that I thought of at my last job (and would have used it in interviews had I stayed longer):
+With all the above in mind, perhaps we can get cracking now. In software engineering, "scalability" is often talked about a lot, in the sense that code should be able to be easily adapted and modified as requirements change. I think we can apply the same concept here, in trying to find a question that can be used in a variety of settings and seniority levels. Here's one such premise that I thought of at my last job (and would have used it in interviews had I stayed longer):
 
 > You're building a platform that allows users to have (multiple) pictures in their profile. How would you design/write code that allows users to add, remove and change their pictures?
 
@@ -90,6 +93,6 @@ I'm not saying that it doesn't come without negatives, though. For one, this rel
 
 ## So what?
 
-Whilst the example I've given above is pretty clear, I appreciate it's not for everyone. Fundamentally, not _all_ software development roles require being able to tackle open-ended challenges and having to make big design choices. This approach isn't aimed at software houses that churn our CRUD applications or do web development consultancy, and that's okay. 
+Whilst the example I've given above is pretty clear, I appreciate it's not for everyone. Fundamentally, not _all_ software development roles require being able to tackle open-ended challenges and having to make big design choices. This approach isn't aimed at software houses that churn our CRUD applications or do web development consultancy, and that's okay. If you don't think what I've outlined above is appropriate for your needs, then again that's okay - it would be foolish to think there is a one size fits all approach anyways.
 
 I'm not an expert on hiring and am certainly not arrogant enough to think I've solved the industry's problems in one blog post - just merely posting my thoughts on what I think a good process is in the hopes that it'll have a good impact somewhere someday. __Whatever your thoughts are, I'd love to hear them either in the comments or via contacting me directly [here](mailto:contact@jackpordi.com)__.
