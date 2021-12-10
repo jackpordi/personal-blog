@@ -15,10 +15,10 @@ export function PostPreviewCard({ post, id }: Props) {
 
   return (
     <Link href={`posts/${id}`}>
-      <div className="flex-row flex w-full flex-1 transform transitionmargin-2 text-left group my-4 max-w-2xl cursor-pointer">
+      <div className="px-1 py-2 flex-row flex w-full flex-1 transform transitionmargin-2 text-left group my-4 max-w-2xl cursor-pointer hover:bg-blue-50 rounded-lg">
         {post.image && (
           <div
-            className="mr-4"
+            className="mr-4 justify-center hidden md:flex"
           >
             <Image
               className="rounded-lg"
@@ -30,7 +30,7 @@ export function PostPreviewCard({ post, id }: Props) {
           </div>
         )}
 
-        <div className="flex-1 flex flex-col" style={{ maxHeight: 150 }}>
+        <div className="flex-1 flex flex-col md:max-h-40">
 
           <h2 className="text-xl group-hover:text-blue-600 font-semibold">{post.title}</h2>
           <p className="text-gray-700 text-md group-hover:text-black ">
@@ -38,7 +38,7 @@ export function PostPreviewCard({ post, id }: Props) {
           </p>
           <div className="flex flex-row text-black mt-1 justify-between w-full">
             <div className="group-hover:text-blue-600">Read More &rarr;</div>
-            <div className="text-gray-600">{displayDate}</div>
+            <div className="text-gray-400">{displayDate}</div>
           </div>
         </div>
       </div>
