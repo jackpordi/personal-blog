@@ -1,5 +1,3 @@
-Post previews in home page
-Add an introductory post
+Fix meta tags and image previews
 Handle post tags
-Make responsive
-Add utterances
+Add dark mode

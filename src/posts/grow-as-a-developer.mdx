@@ -1,0 +1,43 @@
+---
+title: Are you a better developer than you were yesterday?
+abstract: Software engineering is a rapidly growing and ever-changing landscape. If you don't "level up" continuously, you won't advance continuously.
+date: 2021-12-28T18:00:00-0000
+image: /images/laptop-coding.jpg
+---
+
+Software engineering is at it's core, a difficult field to be in. Despite rapidly rising salaries, it's a highly technical and ever-changing landscape that always has more high-skilled shoes to fill than people. Developers are plenty yet _really good_ engineers are damningly difficult to find, and it does pay well to be one of them. Yet, as with any other job in our capitalist society workforce, it baffles me to see so many people be content at just being painfully _mediocre_. Not that I think everyone has to be a "rock star engineer" (note: I hate this term, but you get the idea), but that people should strive to constantly improve their own skills and knowledge, even if slowly. If you disagree with this, then sure, no problem. Not everyone has to _love_ their job and/or want to spend time and effort to get better at it. But chances are, if you're here reading this, then you're probably like me in a couple of ways:
+
+- Genuinely loves programming/software engineering and problem solving.
+- Ambitious in terms of career advancement.
+- Thirsty for knowledge, skills and self-improvement.
+
+So, today I'm going to pose a question - how do you become better than you were yesterday?
+
+# Learn ideas and concepts, not just languages and frameworks
+It seems to be quite common for many developers to self-identify as a _something_ developer/engineer. _Python_ engineer, _JavaScript_ engineer, _Java_ engineer, and so on. Or, even worse, _specific-library_ engineers (Django and Spring seems to be particularly common with this...). Anecdotally, I've found this tends to happen if first few years of their professional career is spent just working only in that specific language/framework. Now, don't get me wrong I'm not saying you shouldn't learn to use those languages and frameworks well - but that you should also aim to understand the underlying ideas, philosophies and processes that drive them as well. I'll give two _anti_-examples here.
+
+During my short (but enlightening) stint at Big Bank, [Spring](https://spring.io/) was (and probably still is) the king of web frameworks used internally. For those of you unfamiliar, Spring is the most popular framework in Java, and comes fully battery-included with a bunch of very powerful features. One of those features is called [_dependency injection_](https://stackify.com/dependency-injection/), which is something the Java (and other strictly-OOP-only languages) community has come to agree on as a good solution against tight class coupling within the codebase. In Spring, DI is more or less required to use the framework, and the amount of confusing boilerplate code and setup required for it can often be confusing to newcomers. Many of my peers at Big Bank were quite adept at dotting the i's and crossing the t's when it came to writing Spring code with dependency injection, however when I asked them to explain the actual concept and why it was good (as I was there as a young, inexperienced intern), most of them struggled to say anything beyong incoherently stringing together a couple of buzzwords.
+
+Eventually understanding that concept (and its advantages/disadvantages) was not only a satisfying eureka moment for myself, but has also come in handy multiple times years later when I used other libraries/frameworks (in other languages) that utilized DI or similar principles - not to mention the general appreciation it gave me for loosely coupled code.
+
+Another classic example is just object-oriented programming, in general. Many people come into Software Engineering jobs from non-computer science backgrounds, and often they come into roles that are very Java or Python (in OOP style) heavy. It's easy to be thrust into an environment where you're just told to write code that "looks that way", and get by with just a vague understanding that you can use the `this` or `self` keyword inside a class to call its other methods or fields. After all, many projects that use OOP are only using them for the file structure they provide (or just have to, like in Java) and not _actually_ instantiating objects to be used as entities. I've personally seen _far_ too many people who say they're comfortable with OOP just because they've used Java or Python, then completely fail to demonstrate any understanding of the main concept.
+
+In both of the above examples, neither were detrimental nor harmful to anyone's career. In fact, it's likely the engineering environment that enables this "code fast, no understanding required" mentality. But, I do think that the very best software engineers are versatile enough to not just learn things quickly, but also apply their previous knowledge to new problems and situations. Moreover, many of these ideas and concepts were created to solve problems, and having another tool in your problem-solving toolbox is always going to be helpful.
+
+# Fix processes, not just mistakes
+
+Mistakes happen, sooner or later. Whether it's a silly bug, a critical production issue or a poorly designed architecture that's come back to roost, problems often arise that need to be fixed. And good engineers will fix these problems as they happen, but _great_ engineers will also ask "how did this happen?" and "can we prevent this from happening again?". Many times, mistakes are just genuine, honest and simple blunders that happen because we're human. But many other times, mistakes also present the opportunity to be learnt from in order to prevent future ones.
+
+A while ago, I was working in a team working on a TypeScript backend when we encountered a strange bug a request was seemingly executed correctly but nothing happened. The code was simple, only a few dozen lines and the business logic was checked over multiple times by many pairs of eyes. After an hour of what felt like staring at the wall, we realized that towards the end of our request handler function, an asynchronous function call was not being `await`ed! Though it seems like a stupid mistake - this was a call to an external library for a function that hadn't been used elsewhere before, and whose online documentation was a bit lackluster and did not imply that it was an async call. As a team, we decided to add [extra linting rules](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/docs/rules/no-floating-promises.md) that enforced the checking and handling of async calls a bit more strictly to prevent any similar mistakes from ever happening. And we were successful - no similar issues ever arose again!
+
+# Know what you don't know
+
+You've probably heard of the [Dunning-Kruger effect](https://en.wikipedia.org/wiki/Dunning%E2%80%93Kruger_effect) before. I find the concept is becoming increasingly more visible in today's world generally, and in software engineering it's no exception.
+
+## Build teams and people, not just code
+
+In my opinion, the 
+
+## Keep up with the times and don't be a one trick pony
+
+## Aim higher and better
