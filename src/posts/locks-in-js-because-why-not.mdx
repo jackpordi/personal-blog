@@ -1,0 +1,211 @@
+---
+title: Locks in JavaScript, because why not?
+abstract: A completely useless but interesting brainteaser to test one's understanding of JavaScript Promises.
+date: 2022-01-28T23:30:00-0000
+image: /images/locks.jpeg
+---
+
+I had a random shower thought the other day - __why are there no locks/mutexes/semaphores in JavaScript?__ Unfortunately, I quickly remembered why and was face with the realization that I have dumb shower thoughts. Anyone who's remotely familiar with JavaScript knows that although it's asynchronous, it still only runs on a single thread, and its' use cases rarely necessitate synchronization primitives like locks and semaphores which are so commonly found in other languages. Whilst it's certainly possible (as I will demonstrate soon) to have situations which do require synchronization, most of the time these issues are prevented entirely by some framework or library that we're using, or just not being so greedy with async optimizations.
+
+Anyways, onto the problem!
+
+### Our data race
+
+Here's a classic (and artificial, but nonetheless valid) example of a data race. Note that if you want to try running the code yourself, just replace the comments with an (awaited) random sleep like [here](https://stackoverflow.com/questions/951021/what-is-the-javascript-version-of-sleep).
+
+```javascript
+let value = 0; // Our shared mutable state
+
+async function task() {
+  // Execute some code, maybe asynchronously
+  // .....
+  const readValue = value; // Read our value here
+  // Execute more async code here
+  // .....
+  value = readValue + 1;
+}
+
+async function main() {
+  const lock = new Lock();
+  await Promise.all([
+    task(),
+    task(),
+    task(),
+    task(),
+    task(),
+  ]);
+  console.log(value);
+}
+```
+
+Our 'task' performs some work, reads a value, performs some more work, then writes back that value plus one. Performing multiple of these tasks benefit from being executed concurrently, but they share sections that read and mutate the state value, which means there's a race condition - therefore the final value logged out won't always be 5 like we want it to.
+
+We could obviously just execute them synchronously by `await`'ing them one by one, but we'd lose some performance benefits to be gained by executing the non-critical sections of each task. Therefore, we need a semaphore!
+
+### Our lock's interface
+
+A pretty reasonable way to use our lock would be to initialize it in the main thread, then pass it into each task so they can try `await`'ing acquiring and releasing the locks.
+
+```javascript
+async function task(lock: Lock) {
+  // Execute some code, maybe asynchronously
+  // .....
+  await lock.acquire();
+  const readValue = value; // Read our value here
+  // Execute more async code here
+  // .....
+  value = readValue + 1;
+  await lock.release();
+}
+
+async function main() {
+  const lock = new Lock();
+  await Promise.all([
+    task(lock),
+    task(lock),
+    task(lock),
+    task(lock),
+    task(lock),
+  ]);
+  console.log(value);
+}
+```
+
+Therefore, our lock has this interface:
+
+```typescript
+class Lock {
+  public async acquire(): Promise<void> { /* ... */ }
+  public async release(): Promise<void> { /* ... */ }
+}
+```
+
+### Keeping track of continutations
+
+Now, the first thing to realize is that when we try to acquire a lock that is already taken, we essentially get put into a _queue_. And subsequently, when we release a lock that we've already acquired, we are letting the next task in the queue carry on its execution. Therefore, we're going to need _some_ sort of list to keep track of this. This is essentially a list of _continuations_, which can be represented as a list of void, argument-less functions.
+
+```typescript
+type Cont = () => void;
+class Lock {
+  private readonly queue: Cont[] = [];
+}
+```
+But bearing in mind that the _first_ acquirer of the lock doesn't need to store its own continuation (as it successfully acquires the lock right away, and therefore does not need to pause its own execution), we can't rely on just checking the length of the queue to see if the lock is acquired - so we'll need to add another field to keep track of this.
+
+```typescript
+class Lock {
+  private readonly acquired: boolean = false;
+}
+```
+
+### Acquiring the lock
+
+Now, when we try to acquire a lock, we check if it's already been acquired. If not, all we do is set `acquired` to be true. If yes, then we add the rest of our task into `queue` so it can be continued later. And of course, we also need to return a __Promise__.
+
+```typescript
+class Lock {
+  public async acquire(): Promise<void> {
+    if (!this.acquired) {
+      this.acquired = true;
+    } else {
+      return new Promise<void>((resolve, _) => {
+        this.queue.push(resolve);
+      });
+    }
+  }
+}
+```
+
+Note that in our newly constructed __Promise__, we don't actually _call_ `resolve`. This is because `acquire` isn't responsible for calling the continutation - our `release` method will be.
+
+### Releasing the lock
+
+Releasing the lock is a just the opposite of acquiring. If no one else wants the lock, we completely free it by setting `acquired` to false, and there's no continutations to execute anyways. If there are other tasks in the queue, then we just hand over execution to them (by wrapping it in a promise);
+
+```typescript
+class Lock {
+  public async release(): Promise<void> {
+    if (this.queue.length === 0 && this.acquired) {
+      this.acquired = false;
+      return;
+    }
+
+    const continuation = this.queue.shift();
+    return new Promise((res: Cont) => {
+      continuation!();
+      res();
+    });
+  }
+}
+```
+
+### Putting it together
+
+Now we have the full implementation of a lock:
+```typescript
+export class Lock {
+
+  private readonly queue: Cont[] = [];
+  private acquired = false;
+
+  public async acquire(): Promise<void> {
+    if (!this.acquired) {
+      this.acquired = true;
+    } else {
+      return new Promise<void>((resolve, _) => {
+        this.queue.push(resolve);
+      });
+    }
+  }
+
+  public async release(): Promise<void> {
+    if (this.queue.length === 0 && this.acquired) {
+      this.acquired = false;
+      return;
+    }
+
+    const continuation = this.queue.shift();
+    return new Promise((res: Cont) => {
+      continuation!();
+      res();
+    });
+  }
+}
+```
+
+And executing our script...
+
+  
+```typescript
+let value = 0;
+async function thread(lock: Lock) {
+  // Execute some code, maybe asynchronously
+  // .....
+  await sleep(Math.random() * 1000);
+  await lock.acquire();
+  const readValue = value; // Read our value here
+  // Execute more code
+  // .....
+  value = readValue + 1;
+  await lock.release();
+}
+
+async function main() {
+  const lock = new Lock();
+  await Promise.all([
+    thread(lock),
+    thread(lock),
+    thread(lock),
+    thread(lock),
+    thread(lock),
+  ]);
+  console.log(value);
+}
+
+main();
+```
+...should now correctly print out `5`!
+
+### But...why?
+
+Again, I should point out there isn't really a point to this. For one, the returned promise in `release` makes it quite clear that the continuation of the next acquirer and the current task still gets executed _somewhat_ synchronously - asynchrony in JavaScript is but an illusion anyways, as there is no true multithreading. I'm sure someone out there has probably done something like this to squeeze out a few ounces of performance in their program, but honestly I think anyone needing or wanting this level of control/optimization would be better off just using another language. I've written this purely because I thought it's a fun thought experiment/brainteaser for anyone really interested in JavaScript promises - nothing more.
