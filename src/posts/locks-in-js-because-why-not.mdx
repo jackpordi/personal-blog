@@ -5,7 +5,7 @@ date: 2022-01-28T23:30:00-0000
 image: /images/locks.jpeg
 ---
 
-I had a random shower thought the other day - __why are there no locks/mutexes/semaphores in JavaScript?__ Unfortunately, I quickly remembered why and was face with the realization that I have dumb shower thoughts. Anyone who's remotely familiar with JavaScript knows that although it's asynchronous, it still only runs on a single thread, and its' use cases rarely necessitate synchronization primitives like locks and semaphores which are so commonly found in other languages. Whilst it's certainly possible (as I will demonstrate soon) to have situations which do require synchronization, most of the time these issues are prevented entirely by some framework or library that we're using, or just not being so greedy with async optimizations.
+I had a random shower thought the other day - __why are there no locks/mutexes/semaphores in JavaScript?__ Unfortunately, I quickly remembered why and was faced with the realization that I have dumb shower thoughts. Anyone who's remotely familiar with JavaScript knows that although it's asynchronous, it still only runs on a single thread, and its' use cases rarely necessitate synchronization primitives like locks and semaphores which are so commonly found in other languages. Whilst it's certainly possible (as I will demonstrate soon) to have situations which do require synchronization, most of the time these issues are prevented entirely by some framework or library that we're using, or just not being so greedy with async optimizations.
 
 Anyways, onto the problem!
 
