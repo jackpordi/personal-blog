@@ -16,6 +16,7 @@ import { MDXComponents } from "mdx-components";
 import { useDisplayDate } from "hooks/useDisplayDate";
 
 import { getAllPostPaths, getPost } from "../../utils";
+import { Comments } from "components/Comments";
 
 interface PostPath extends ParsedUrlQuery {
   postId: string;
@@ -67,15 +68,7 @@ const PostPage: NextPage<Post> = ({ info, mdx }) => {
           )}
         </div>
         <MDXRemote {...mdx} components={MDXComponents} />
-        <Script src="https://utteranc.es/client.js"
-          // @ts-ignore
-          repo="jackel119/personal-blog"
-          issue-term="pathname"
-          theme="github-light"
-          crossOrigin="anonymous"
-          async
-        >
-        </Script>
+        <Comments />
       </div>
     </div>
   );
