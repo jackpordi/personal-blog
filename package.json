@@ -5,7 +5,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "unimported": "unimported"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
@@ -38,6 +39,7 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "postcss": "^8.3.11",
     "tailwindcss": "^2.2.19",
-    "typescript": "4.4.4"
+    "typescript": "4.4.4",
+    "unimported": "^1.19.1"
   }
 }

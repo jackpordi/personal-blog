@@ -1,3 +1,0 @@
-Fix meta tags and image previews
-Handle post tags
-Add dark mode

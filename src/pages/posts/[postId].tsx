@@ -1,7 +1,6 @@
 import { ParsedUrlQuery } from "querystring";
 
 import { MDXRemote } from "next-mdx-remote";
-import Script from "next/script";
 import Image from "next/image";
 import {
   GetStaticPaths,
@@ -14,8 +13,7 @@ import Head from "next/head";
 import { Post } from "types";
 import { MDXComponents } from "mdx-components";
 import { useDisplayDate } from "hooks/useDisplayDate";
-
-import { getAllPostPaths, getPost } from "../../utils";
+import { getAllPostPaths, getPost } from "utils";
 import { Comments } from "components/Comments";
 
 interface PostPath extends ParsedUrlQuery {
