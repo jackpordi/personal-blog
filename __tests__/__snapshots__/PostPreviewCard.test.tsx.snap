@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PostPreviewCard Matches the snapshot 1`] = `
+<div>
+  <div
+    class="px-1 py-2 flex-row flex w-full flex-1 transform transitionmargin-2 text-left group my-4 max-w-2xl cursor-pointer hover:bg-blue-50 rounded-lg"
+  >
+    <div
+      class="mr-4 justify-center hidden md:flex"
+    >
+      <span
+        style="box-sizing: border-box; display: inline-block; overflow: hidden; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; position: relative; max-width: 100%;"
+      >
+        <span
+          style="box-sizing: border-box; display: block; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px; max-width: 100%;"
+        >
+          <img
+            alt=""
+            aria-hidden="true"
+            src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%27180%27%20height=%27150%27/%3e"
+            style="display: block; max-width: 100%; background: none; opacity: 1; border: 0px; margin: 0px; padding: 0px;"
+          />
+        </span>
+        <img
+          alt="https://image-url.com"
+          class="rounded-lg"
+          data-nimg="intrinsic"
+          decoding="async"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; box-sizing: border-box; padding: 0px; margin: auto; display: block; width: 0px; height: 0px; min-width: 100%; max-width: 100%; min-height: 100%; max-height: 100%; object-fit: cover;"
+        />
+        <noscript />
+      </span>
+    </div>
+    <div
+      class="flex-1 flex flex-col md:max-h-40"
+    >
+      <h2
+        class="text-xl group-hover:text-blue-600 font-semibold"
+      >
+        Example Post Title
+      </h2>
+      <p
+        class="text-gray-700 text-md group-hover:text-black "
+      >
+        This is a sample article abstract
+      </p>
+      <div
+        class="flex flex-row text-black mt-1 justify-between w-full"
+      >
+        <div
+          class="group-hover:text-blue-600"
+        >
+          Read More →
+        </div>
+        <div
+          class="text-gray-400"
+        >
+          Saturday 5th February 2022, 14:48PM
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

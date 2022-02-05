@@ -6,12 +6,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "unimported": "unimported"
+    "unimported": "unimported",
+    "test": "jest --watch"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
     "moment": "^2.29.1",
-    "next": "12.0.3",
+    "next": "^12.0.3",
     "next-mdx-remote": "^3.0.8",
     "react": "17.0.2",
     "react-dom": "17.0.2",
@@ -21,6 +22,8 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^12.0.4",
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.2",
     "@types/gtag.js": "^0.0.8",
     "@types/node": "16.11.7",
     "@types/react": "17.0.34",
@@ -37,6 +40,7 @@
     "eslint-plugin-react": "^7.27.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-unused-imports": "^2.0.0",
+    "jest": "^27.5.0",
     "postcss": "^8.3.11",
     "tailwindcss": "^2.2.19",
     "typescript": "4.4.4",
