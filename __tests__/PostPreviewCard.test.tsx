@@ -9,7 +9,7 @@ describe('PostPreviewCard', () => {
   const POST_ID = "test-post-id";
   const POST: FrontMatter = {
     title: "Example Post Title",
-    date: moment().format(),
+    date: moment(0).format(),
     abstract: "This is a sample article abstract",
     image:  "https://image-url.com",
   };
