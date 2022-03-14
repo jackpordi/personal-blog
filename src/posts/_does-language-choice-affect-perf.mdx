@@ -1,0 +1,53 @@
+---
+title: Does language choice really impact performance that much?
+abstract: X is slow, Y is fast, yadda yadda yadda. But quantitatively, how do the most popular languages and frameworks actually compare to each other in terms of speed?
+date: 2022-03-09T23:30:00-0000
+image: /images/locks.jpeg
+---
+
+One of the invariable constants of the programming community is that no matter where you go, sooner or later you'll run into some discussion with the words "X is too slow, we need to use Y". And generally, the overall consensus on speed and performance is pretty well established - low-level languages that compile to machine code will always run faster than interpreted dynamic languages, blah blah blah. C is faster than Python, JavaScript is slower than Rust, water is wet.
+
+But really, how _big_ is the performance gap between all these tools and languages? Especially for common real-world cases, like running an HTTP server. Is Y so much faster than X that it's worth switching to, even though you'll write code faster? In my curiosity, I've decided to do a few simple benchmarks for some of the most popular languages (and frameworks) out there for building web servers. Why web servers, you ask? Well, 1. because the majority of software engineering environments will involve building some sort of HTTP server (even if not publically accessible), and 2. it's the largest common use case that these languages all have in common (albeit some more than others).
+
+## Our contenders
+
+I've picked some of the most popular languages and frameworks to test out. Bear in mind I'm not actively trying to compare between multiple frameworks within the same language, but moreso not to fall into the trap of having my readers go "but this other framework for Python is so much faster!". Anyways, here's the list of our contenders:
+
+- __NodeJS__. JavaScript is usually not considered "fast", and with Node being single threaded one wouldn't expect it to scale to large numbers too well. That said, the V8 engine that powers Node also has some amazing JIT compilation black magic and non-blocking IO, so you might just be surprised.
+    - The standard Node __HTTP__ API.
+    - __Express__. By far and large the most popular library in NodeJS, but also one of the oldest.
+    - __Fastify__. Often known as one of the fastest (if not _the_ fastest) HTTP server libraries in Node.
+- __Python__. Very popular because of how easy it is to get started in, but outside of its numerical and machine learning ecosystem (which are written in C, C++) it's generally considered quite a slow language.
+  - __Flask__. A staple of the Python web dev community, it's been around since 2010 and is a household name amongst Python API developers.
+  - __FastAPI__. A relative newcomer (est. 2018) known as a faster, friendlier alternative to the previous top dogs like Flask and Django.
+- __Java__. The language that has been around for so long, yet has had such incredible resilience (particularly thanks to enterprise dev teams) and still remains king to this day in most financial institutions. In particular, Spring, which is 95% of the time what someone really works on when they say they're a Java developer that doesn't make Android apps.
+- __Go__. One of the newer languages on this list, which was initially designed to be a C/C++ replacement but with features like garbage collection whilst still having the blazing speed. Known for being _extremely_ performant with concurrency via Go channels and routines, whilst also having a quite nice API to use (so nice, many Go devs will just use the standard library to write HTTP servers).
+- __Rust__. Another relatively new language, with a new, uber-cool memory model that guarantees both memory safety _and_ native level, fully compiled bytecode performance. Anyone who's heard of Rust should reasonably expect it to top this list. In particular, I'm using Actix, but any other library will probably yield similar enough results.
+
+## The benchmark tool
+
+I'm going to use the excellent [wrk](https://github.com/wg/wrk) tool to run these benchmarks. In particular, with this command:
+
+```shell
+wrk -t4 -c8 -d 30 http://localhost:8080
+```
+
+This tells `wrk` to hit the server running on port 8080 as many tims as possible using 4 threads, 8 channels and for a duration of 30 seconds. In terms of hardware, I'm running this on my 14 inch Macbook Pro with the 10-core M1 Pro processor and 16gb of RAM.
+
+## The first test: a simple "Hello World" server
+
+For our first test, I'm going to write super simple web servers for each of them that just return a "hello world" message for the `/` route. Note that:
+
+- The returned result is a string, and not a JSON body. This is because I want to keep things simple for now and not introduce any overhead from serializing a JSON body.
+- I'm turning off all logging to reduce console output overhead.
+
+## "Hello World" server results
+
+TODO Graph here
+
+## The second test: serialization and more computation
+
+For the second test, I'm going to add a __GET /fib__ route that does something _slightly_ more complex. First, it's going to calculate the 50th fibonacci (per request, not cached!). Secondly, it's going to return the result as a serialized JSON. 
+
+I'm hoping that this should let the server(s) stretch their legs a little - the 50th fibonacci number is not terribly computationaly expensive, but should make a noticable impact across large amounts of requests. Similarly, JSON serialization isn't terribly hard either, but it adds an extra little bit of overhead that we might see an impact.
+

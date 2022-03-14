@@ -57,7 +57,7 @@ const PostPage: NextPage<Post> = ({ info, mdx }) => {
           <h2 className="font-semibold text-xl text-gray-700 mb-4">{info.abstract}</h2>
           {info.image && (
             <Image
-              className="rounded-lg mb-2"
+              className="rounded-sm mb-2"
               src={info.image}
               alt={info.image}
               height={350}
