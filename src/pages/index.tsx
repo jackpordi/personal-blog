@@ -22,7 +22,7 @@ const Home = ({ posts }: Props) => (
 
     <main className="flex flex-col flex-1 justify-start items-center py-2 md:py-4 lg:py-6">
       <h1 className="text-5xl md:text-7xl items-center font-bold">
-        <span className="text-blue-600">Welcome</span>
+        <span className="text-transparent bg-clip-text bg-gradient-to-br from-blue-600 to-teal-500">Welcome</span>
         {" "}
         to my blog
       </h1>
