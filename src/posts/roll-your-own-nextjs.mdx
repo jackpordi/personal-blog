@@ -1,0 +1,18 @@
+---
+title: How to build your own NextJS clone - Part 1
+abstract: 99.99% of React devs will flock to an established metaframework like NextJS when they want to do server side rendering. But, you could be part of the elitist 0.01% who can claim to build their own (rather mediocre) React SSR framework!
+date: 2022-04-18T21:30:00-0000
+image: /images/locks.jpeg
+---
+
+When it comes to web frameworks, React is undoubtedly king at the moment. And when it comes to high performance, SEO-optimized React, NextJS sits on top of the React throne at the moment with its incredible flexibility, dev experience and tooling. But, have you ever been curious how one would build their own React server framework like NextJS? Or perhaps, would you like to be an elitist jerk who can claim Next is unnecessary and not that complicated because you can build your own? __Well, you're in luck!__
+
+### What we're going to build today
+
+NextJS is a fantastic framework, packed full of great features like hybrid rendering, static serving, a hot-reload server, and support for the latest and greatest React APIs. If you've never used it before, seriously, go check it out.
+
+Also, note that I've suffixed this article's title with a _Part 1_, because there's no way in hell I'd be able to replicate more than a few of its features in one article, so I've got to start somewhere. So specifically today, I'm going to start with:
+
+- Rendering some basic HTML on the server side and serving it per-request with an Express app. 
+- Basic routing with `react-router`.
+- Hydrating the static HTML with React to make it actually interactive.
