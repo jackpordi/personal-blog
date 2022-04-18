@@ -1,0 +1,224 @@
+---
+title: Server render React without a framework
+abstract: 99.99% of React devs will flock to an established metaframework like NextJS when they want to do server side rendering. But, you could be part of the elitist 0.01% who can claim to build their own (rather mediocre) React SSR framework!
+date: 2022-04-18T21:30:00-0000
+image: /images/ssr-react.webp
+---
+
+When it comes to web frameworks, React is undoubtedly king at the moment. And when it comes to high performance, SEO-optimized React, NextJS sits on top of the React throne at the moment with its incredible flexibility, dev experience and tooling. But, have you ever been curious how one would build their own React server framework like NextJS? Or perhaps, would you like to be an elitist jerk who can claim Next is unnecessary and not that complicated because you can build your own? __Well, you're in luck!__
+
+### What we're going to build today
+
+NextJS is a fantastic framework, packed full of great features like hybrid rendering, static serving, a hot-reload server, and support for the latest and greatest React APIs. If you've never used it before, seriously, go check it out.
+
+Also, because there's no way in hell I'd be able to replicate more than a few of its features in one article, I'll only start with the basics today:
+
+- Rendering some basic HTML on the server side and serving it per-request with an Express app. 
+- Basic routing with `react-router`.
+- Hydrating the static HTML with React to make it actually interactive.
+
+What we _won't_ do today (but perhaps in a later post, if it gets enough interest):
+- File-based routing
+- Static site generation and/or export
+- Server-side data fetching per request
+
+### Basic React architecture
+
+When you go to a page in a web browser, the first thing that happens is the `html` file is requested from the server. If you've used `create-react-app` or similar fully client-side rendered setups before, you'll know that those projects have only one, singular `index.html` file that's shared across all the pages of your site, which then loads the React scripts that does the UI rendering and DOM manipulation within the browser. That `index.html` is usually pretty empty, which is why SPAs are known to have bad SEO - search engines see nothing but an empty HTML file with a bunch of script tags.
+
+Server side rendering changes this process by pre-rendering that HTML per request, so that the markup content is already there (making it SEO friendly), and the client doesn't have to compute what to render itself. The pre-rendered HTML will still contain all the React scripts needed to _hydrate_ your page afterwards, so it can still be a fully interactive site. The only difference how those React scripts _hydrate_ a client-rendered app and a server-rendered page, is that in the former case it'll also render the HTML, whilst in the latter it'll use what the server's already rendered and just "fill in the gaps" and attach the JavaScript required to the existing HTML.
+
+So, really, all we gotta do is:
+
+1. Render React into HTML on the server, then send it over.
+2. Bundle the rest of our client-side JavaScript to be loaded client side so it can hydrate our page.
+
+Which is pretty simple, right?
+
+### React Server APIs
+
+It turns out most of the work for point 1 is already done for us, because React _already_ comes with its [own server API](https://reactjs.org/docs/react-dom-server.html). Combining this with a basic Express web server, 
+
+```typescript
+import React from "react";
+import express, { Application, Request, Response } from "express";
+import ReactDOMServer from "react-dom/server";
+
+const app: Application = express();
+const port = 3000;
+
+async function main() {
+
+  app.get("*", async (_: Request, res: Response) => {
+    const html = ReactDOMServer.renderToString(
+      <html>
+        <head>
+          <title>My server side app!</title>
+        </head>
+        <body>
+          <div>
+            Hello world!
+          </div>
+        </body>
+      </html>,
+    );
+    res.setHeader("Content-Type", "text/html");
+    res.send(html);
+  });
+
+  app.listen(port, () => {
+    console.log(`App is listening on port ${port}!`);
+  });
+
+}
+
+void main();
+```
+
+This should result in a pretty basic working web server that returns an HTML file that says "Hello world!". Really, `ReactDOMServer` does most of the work here for us by rendering that React. Before we try to do the client-side bundle and hydration, let's add support for actual routing first.
+<!--
+Because we like to be on the cutting edge of technology, let's use React 18's new `renderToPipeableStream` API. If you don't know what this is, it's what server-side suspense and streaming components. And if those words are foreign to you, [read here](https://reactjs.org/blog/2020/12/21/data-fetching-with-react-server-components.html)!
+-->
+
+### Routing
+
+The obvious way to add routing would be to simply add more routes to the express app. This is fine, and probably works well enough for most sites. However, here we want the "best of both worlds" - that is, the initial page load being fully server rendered, but subsequent navigations having the speed and smoothness of a client-side SPA without having to make a request to the server (unless absolutely necessary).
+
+Fortunately again, most of our work is already done as [React Router](https://reactrouter.com/), the ubiquitous routing library, [already supports server-side routes](https://reactrouter.com/docs/en/v6/guides/ssr)!
+
+So, all we gotta do, is create a component containing all the routes for your site:
+
+```typescript
+import React from "react";
+import { Route, Routes } from "react-router";
+
+import HomePage from "./pages";
+import AnotherTestPage from "./pages/another-test";
+import TestPage from "./pages/test";
+
+const routes = [
+  { path: "/", Component: HomePage },
+  { path: "/another-test", Component: AnotherTestPage },
+  { path: "/test", Component: TestPage },
+];
+
+export function AppRoutes() {
+  return (
+    <Routes>
+      { routes.map((page) => (
+        <Route key={page.path} path={page.path} element={(
+          <page.Component/>
+        )}/>
+      ))}
+    </Routes>
+  );
+}
+```
+
+Then modify our express route to use `StaticRouter` and pass in the request's path:
+
+```typescript
+app.get("*", async (req: Request, res: Response) => {
+  const html = ReactDOMServer.renderToString(
+    <StaticRouter location={req.url}>
+      <Element />
+    </StaticRouter>
+  );
+  res.setHeader("Content-Type", "text/html");
+  res.send(html);
+});
+```
+
+The one disadvantage here, is that this route _has_ to be a catch-all, so even pages that don't exist will end up getting a 200 response because React Router doesn't seem to have any way to propagate the 404 error upwards. There's probably ways around this, but it's outside the scope of this article.
+
+### The Client Bundle
+
+Because we've already nicely written our `AppRoutes` component, all we need to do for our client-side JavaScript is to tell React to hydrate the root component:
+
+```typescript
+import React from "react"
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+
+import { AppRoutes } from "./routes";
+
+// Note: hydrateRoot is a new API introduced in React v18
+// Older versions just use "hydrate"
+ReactDOM.hydrateRoot(
+  window.document.documentElement,
+  <BrowserRouter>
+    <AppRoutes />
+  </BrowserRouter>,
+);
+```
+
+...but wait! Although technically, that's the code the client needs to run, there's still a number of caveats:
+
+1. We need _transform_ all the JSX, then _bundle_ all that client side code files together into one javascript file, known a _bundle_.
+2. Our initial HTML needs to include a script tag that will fetch this bundle off our server.
+3. We need to add a route to serve this bundle.
+
+Step 1 is usually where the headache starts, and is commonly done using Babel and Webpack. However, we can use [ESBuild](https://esbuild.github.io/) instead, which can do both transpiling _and_ bundling, and is also incredibly fast as it's written in Rust and very easy to use.
+
+```typescript
+import fs from "fs/promises";
+
+import * as ESBuild from "esbuild";
+
+// ESBuild.build writes the file but doesn't return the result
+// as a string, so unfortunately we do have to use fs.readFile here...
+export async function bundleWithESBuild() {
+
+  await ESBuild.build({
+    entryPoints: [ "src/client.tsx" ],
+    bundle: true,
+    treeShaking: true,
+    platform: "browser",
+    outfile: "./bundle.js",
+    loader: {
+      ".tsx": "tsx",
+      ".ts": "tsx",
+      ".jsx": "jsx",
+      ".js": "jsx",
+    },
+  });
+
+  const bundle = await fs.readFile("./bundle.js");
+
+  return bundle.toString();
+}
+```
+
+We then add a route to serve our bundle:
+
+```typescript
+app.get("/bundle.js", async (_req: Request, res: Response) => {
+  const bundle = await bundleWithESBuild();
+  res.type(".js");
+  res.setHeader("Content-Type", "application/javascript");
+  res.send(bundle);
+});
+```
+And also add the `script` to our React code somewhere it gets rendered in the initial HTML - I've done it in `AppRoutes`.
+```typescript
+export function AppRoutes() {
+  return (
+    <Routes>
+      { routes.map((page) => (
+        <Route key={page.path} path={page.path} element={(
+          <page.Component/>
+        )}/>
+      ))}
+    <script src="/bundle.js" /> // <-- This line added!
+    </Routes>
+  );
+}
+```
+
+### Test it!
+
+Try adding some basic JS-only functionality or interactivity, like a button that increments a counter or even just a `console.log` inside a `useEffect` - you should have a basic React app that's server rendered then hydrated properly now! And more importantly, you should now have a greater understanding and appreciation of how React on the server works - after all, something something about the friends we made along the way...
+
+
+### Should you actually use this?
+If you're _really_ keen on it, then sure why not. However, if you actually want a fully featured, well-supported server-side React infrastructure, you should _probably_ use NextJS (or its many contemporaries, like Remix).
