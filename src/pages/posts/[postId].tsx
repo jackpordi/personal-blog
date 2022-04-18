@@ -15,6 +15,7 @@ import { MDXComponents } from "mdx-components";
 import { useDisplayDate } from "hooks/useDisplayDate";
 import { getAllPostPaths, getPost } from "utils";
 import { Comments } from "components/Comments";
+import { Sponsorship } from "components/Sponsorship";
 
 interface PostPath extends ParsedUrlQuery {
   postId: string;
@@ -66,6 +67,7 @@ const PostPage: NextPage<Post> = ({ info, mdx }) => {
           )}
         </div>
         <MDXRemote {...mdx} components={MDXComponents} />
+        { !info.disableCoffee && <Sponsorship /> }
         <Comments />
       </div>
     </div>

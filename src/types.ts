@@ -5,6 +5,7 @@ export interface FrontMatter {
   date: string;
   abstract: string;
   image?: string;
+  disableCoffee?: boolean;
 }
 
 export interface Post {
