@@ -39,7 +39,7 @@ export const Nav: FunctionComponent = () => (
         </a>
         <a
           className="mr-6 transition transform hover:scale-115 hover:text-blue-600"
-          href="https://github.com/jackel119"
+          href="https://github.com/jackpordi"
         >
           <FaGithub
             size={28}
