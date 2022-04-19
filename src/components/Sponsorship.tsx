@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-const linkStyle = "text-blue-500 hover:underline"
+const linkStyle = "text-blue-500 hover:underline";
 
 export const Sponsorship: FC = () => (
   <div className="mt-6">
