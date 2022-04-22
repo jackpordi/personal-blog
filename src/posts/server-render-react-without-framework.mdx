@@ -158,7 +158,7 @@ ReactDOM.hydrateRoot(
 2. Our initial HTML needs to include a script tag that will fetch this bundle off our server.
 3. We need to add a route to serve this bundle.
 
-Step 1 is usually where the headache starts, and is commonly done using Babel and Webpack. However, we can use [ESBuild](https://esbuild.github.io/) instead, which can do both transpiling _and_ bundling, and is also incredibly fast as it's written in Rust and very easy to use.
+Step 1 is usually where the headache starts, and is commonly done using Babel and Webpack. However, today there's a plethora of more modern tools out there which can do both transpiling and bundling _and_ are easier to use. I looked around a little bit, and decuded to do with [ESBuild](https://esbuild.github.io/)as it can both transpiling _and_ bundling in one step, and is also incredibly fast as it's written in Rust (which I am a fanboy of).
 
 ```typescript
 import fs from "fs/promises";
