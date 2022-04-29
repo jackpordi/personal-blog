@@ -53,18 +53,18 @@ const PostPage: NextPage<Post> = ({ info, mdx }) => {
       </Head>
       <div className="ml-2 md:mx-0 my-0 md:my-2 items-center block max-w-3xl flex-1">
         <div className="mb-6" >
-          <p className="text-gray-500 text-left">{displayDate}</p>
-          <h1 className="font-semibold text-4xl mb-2">{info.title}</h1>
-          <h2 className="font-semibold text-xl text-gray-700 mb-4">{info.abstract}</h2>
           {info.image && (
             <Image
               className="rounded-sm mb-2"
               src={info.image}
               alt={info.image}
-              height={350}
+              height={320}
               width={800}
               objectFit="cover" />
           )}
+          <p className="text-gray-500 text-left dark:text-gray-300">{displayDate}</p>
+          <h1 className="font-semibold text-4xl mb-2 dark:text-gray-200">{info.title}</h1>
+          <h2 className="font-semibold text-xl text-gray-700 mb-4 dark:text-gray-200">{info.abstract}</h2>
         </div>
         <MDXRemote {...mdx} components={MDXComponents} />
         { !info.disableCoffee && <Sponsorship /> }
