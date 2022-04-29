@@ -5,13 +5,14 @@ import Head from "next/head";
 import { Nav } from "components/Nav";
 import { Footer } from "components/Footer";
 import { useTrackpageView } from "hooks/useTrackPageView";
+import { DarkModeProvider } from "contexts/dark-mode";
 
 function MyApp({ Component, pageProps }: AppProps) {
 
   useTrackpageView();
 
   return (
-    <>
+    <DarkModeProvider>
       <Head>
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -20,16 +21,18 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
 
-      <div className="min-h-screen pb-4">
-        <Nav />
-        <div className="container max-w-6xl mx-auto px-4">
-          <Component
-            {...pageProps}
-          />
+      <div className="dark:bg-slate-900 fade-colors pb-4">
+        <div className="min-h-screen pb-4 ">
+          <Nav />
+          <div className="container max-w-6xl mx-auto px-4">
+            <Component
+              {...pageProps}
+            />
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
-    </>
+    </DarkModeProvider>
   );
 }
 

@@ -1,6 +1,8 @@
 import Link from "next/link";
-import { FaEnvelope, FaGithub } from "react-icons/fa";
+import { FaEnvelope, FaGithub, FaHome } from "react-icons/fa";
 import { FunctionComponent } from "react";
+
+import { DarkModeToggle } from "./DarkModeToggle";
 
 export const Nav: FunctionComponent = () => (
   <nav className="inset-x-0 flex flex-1 items-center justify-between flex-wrap p-6 py-22 text-gray-500">
@@ -8,10 +10,10 @@ export const Nav: FunctionComponent = () => (
       href="/"
       className="flex items-center flex-shrink-0 mr-6"
     >
-      <span className="text-gray-700 text-3xl md:text-3xl tracking-tight">
+      <span className="text-gray-700 dark:text-white text-3xl md:text-3xl tracking-tight">
         Jack
         {" "}
-        <span className="text-blue-600 font-bold">Pordi</span>
+        <span className="text-blue-600 dark:text-cyan-500 font-bold">Pordi</span>
       </span>
     </a>
     <div className="block lg:hidden">
@@ -24,13 +26,9 @@ export const Nav: FunctionComponent = () => (
     </div>
     <div className="w-full lg:flex-grow hidden lg:flex lg:items-center lg:w-auto">
       <div className="text-xl lg:flex-grow lg:items-center lg:flex justify-end">
-        <Link href="/" passHref>
-          <div className="block mt-4 lg:inline-block lg:mt-0 cursor-pointer hover:text-blue-600 hover:font-semibold mr-6 transition transform hover:scale-115">
-            Home
-          </div>
-        </Link>
+        <DarkModeToggle />
         <a
-          className="mr-6 transition transform hover:scale-115 hover:text-blue-600"
+          className="dark:text-white mr-6 transition transform hover:scale-115 hover:text-blue-600"
           href="mailto: contact@jackpordi.com"
         >
           <FaEnvelope
@@ -38,13 +36,22 @@ export const Nav: FunctionComponent = () => (
           />
         </a>
         <a
-          className="mr-6 transition transform hover:scale-115 hover:text-blue-600"
+          className="dark:text-white mr-6 transition transform hover:scale-115 hover:text-blue-600"
           href="https://github.com/jackpordi"
         >
           <FaGithub
             size={28}
           />
         </a>
+        <Link href="/">
+          <a
+            className="dark:text-white mr-6 transition transform hover:scale-115 hover:text-blue-600"
+          >
+            <FaHome
+              size={28}
+            />
+          </a>
+        </Link>
       </div>
     </div>
   </nav>

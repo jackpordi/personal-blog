@@ -18,3 +18,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.fade-colors {
+  @apply transition-colors duration-300;
+}
