@@ -1,2 +1,0 @@
-Add pictures to articles
-Add support for picture previews
