@@ -21,28 +21,28 @@ const Home = ({ posts }: Props) => (
     </Head>
 
     <main className="flex flex-col flex-1 justify-start items-center py-2 md:py-4 lg:py-6">
-      <h1 className="text-5xl md:text-7xl items-center font-bold">
-        <span className="text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-blue-600">Welcome</span>
+      <h1 className="text-5xl md:text-7xl items-center font-bold dark:text-white">
+        <span className="fade-colors text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-blue-600 dark:from-cyan-200 dark:to-blue-400">Welcome</span>
         {" "}
         to my blog
       </h1>
 
-      <p className="text-gray-600 my-4 md:my-8 text-xl">
+      <p className="text-gray-600 dark:text-white my-4 md:my-8 text-xl">
         Where I
         {" "}
-        <span className="text-blue-600 font-semibold">
+        <span className="text-blue-600 dark:text-cyan-400 font-semibold">
           talk
           {" "}
         </span>
         about
         {" "}
-        <span className="text-blue-600 font-semibold">
+        <span className="text-blue-600 dark:text-cyan-400 font-semibold">
           tech
           {" "}
         </span>
         and rant about
         {" "}
-        <span className="text-blue-600 font-semibold">
+        <span className="text-blue-600 dark:text-cyan-400 font-semibold">
           things
         </span>
         .
