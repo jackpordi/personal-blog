@@ -28,7 +28,7 @@ export const Nav: FunctionComponent = () => (
       <div className="text-xl lg:flex-grow lg:items-center lg:flex justify-end">
         <DarkModeToggle />
         <a
-          className="dark:text-white mr-6 transition transform hover:scale-115 hover:text-blue-600"
+          className="dark:text-white dark:hover:text-cyan-400 mr-6 transition transform hover:scale-115 hover:text-blue-600"
           href="mailto: contact@jackpordi.com"
         >
           <FaEnvelope
@@ -36,7 +36,7 @@ export const Nav: FunctionComponent = () => (
           />
         </a>
         <a
-          className="dark:text-white mr-6 transition transform hover:scale-115 hover:text-blue-600"
+          className="dark:text-white dark:hover:text-cyan-400 mr-6 transition transform hover:scale-115 hover:text-blue-600"
           href="https://github.com/jackpordi"
         >
           <FaGithub
@@ -45,7 +45,7 @@ export const Nav: FunctionComponent = () => (
         </a>
         <Link href="/">
           <a
-            className="dark:text-white mr-6 transition transform hover:scale-115 hover:text-blue-600"
+            className="dark:text-white dark:hover:text-cyan-400 mr-6 transition transform hover:scale-115 hover:text-blue-600"
           >
             <FaHome
               size={28}
