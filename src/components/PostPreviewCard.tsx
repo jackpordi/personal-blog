@@ -33,12 +33,12 @@ export function PostPreviewCard({ post, id }: Props) {
 
           <div className="flex-1 flex flex-col md:max-h-40">
 
-            <h2 className="text-xl text-black dark:text-gray-200 dark:group-hover:text-cyan-400 group-hover:text-blue-600 font-semibold">{post.title}</h2>
+            <h2 className="fade-colors text-xl text-black dark:text-gray-200 dark:group-hover:text-cyan-400 group-hover:text-cyan-500 font-semibold">{post.title}</h2>
             <p className="text-gray-700 text-md group-hover:text-black dark:text-gray-300 dark:group-hover:text-white ">
               {post.abstract}
             </p>
             <div className="flex flex-row text-black mt-1 justify-between w-full">
-              <div className="group-hover:text-blue-600 dark:text-gray-200 dark:group-hover:text-cyan-400">Read More &rarr;</div>
+              <div className="fade-colors group-hover:text-cyan-500 dark:text-gray-200 dark:group-hover:text-cyan-400">Read More &rarr;</div>
               <div className="text-gray-400 dark:text-gray-200 ">{displayDate}</div>
             </div>
           </div>
