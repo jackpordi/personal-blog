@@ -5,15 +5,15 @@ interface Components {
 }
 
 export const MDXComponents: Components = {
-  p: ({ children }) => <p className="text-gray-800 my-2">{children}</p>,
-  h1: ({ children }) => <h1 className="text-gray-800 text-3xl font-semibold my-2">{children}</h1>,
-  h2: ({ children }) => <h2 className="text-gray-800 text-2xl font-semibold my-2">{children}</h2>,
-  h3: ({ children }) => <h3 className="text-gray-800 text-xl font-semibold my-2">{children}</h3>,
-  h4: ({ children }) => <h4 className="text-gray-800 text-lg font-semibold my-2">{children}</h4>,
-  h5: ({ children }) => <h5 className="text-gray-800 text-md font-semibold">{children}</h5>,
-  code: ({ children }) => <pre className="whitespace-pre-wrap"><code className="text-sm bg-gray-100 block p-2 my-4 rounded-md">{children}</code></pre>,
-  ul: ({ children }) => <ul className="list-disc list-inside text-gray-800 mb-4">{children}</ul>,
-  ol: ({ children }) => <ol className="list-decimal list-inside text-gray-800 mb-4">{children}</ol>,
+  p: ({ children }) => <p className="fg-text my-2">{children}</p>,
+  h1: ({ children }) => <h1 className="fg-text text-3xl font-semibold my-2">{children}</h1>,
+  h2: ({ children }) => <h2 className="fg-text text-2xl font-semibold my-2">{children}</h2>,
+  h3: ({ children }) => <h3 className="fg-text text-xl font-semibold my-2">{children}</h3>,
+  h4: ({ children }) => <h4 className="fg-text text-lg font-semibold my-2">{children}</h4>,
+  h5: ({ children }) => <h5 className="fg-text text-md font-semibold">{children}</h5>,
+  code: ({ children }) => <pre className="whitespace-pre-wrap"><code className="text-sm bg-gray-100 dark:bg-grey-600  dark:text-gray-200 block p-2 my-4 rounded-md">{children}</code></pre>,
+  ul: ({ children }) => <ul className="list-disc list-inside fg-text mb-4">{children}</ul>,
+  ol: ({ children }) => <ol className="list-decimal list-inside fg-text mb-4">{children}</ol>,
   li: ({ children }) => (
     <li
       style={{

@@ -26,12 +26,22 @@ export const DarkModeProvider: FC = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    const darkCSS = document.getElementById("hljs-dark");
+    const lightCSS = document.getElementById("hljs-light");
     if (dark) {
       document.body.classList.add("dark");
       window.localStorage.darkmode = true;
+      // @ts-ignore
+      darkCSS.disabled = false;
+      // @ts-ignore
+      lightCSS.disabled = true;
     } else {
       document.body.classList.remove("dark");
       delete window.localStorage.darkmode;
+      // @ts-ignore
+      darkCSS.disabled = true;
+      // @ts-ignore
+      lightCSS.disabled = false;
     }
   }, [ dark ]);
 

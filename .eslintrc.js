@@ -41,6 +41,7 @@ module.exports = {
     "padded-blocks": ["error", { "classes": "always" }],
     "max-classes-per-file": "off",
     "class-methods-use-this": "off",
+    "indent": "off",
     "@typescript-eslint/indent": ["error", 2],
     "eqeqeq": "error",
     "linebreak-style": ["error", "unix"],
