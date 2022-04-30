@@ -26,5 +26,5 @@ export const MDXComponents: Components = {
     </li>),
   blockquote: ({ children }) => <blockquote className="bg-gray-100 my-2 px-4 py-1 rounded-md italic items-center">{children}</blockquote>,
   // @ts-ignore href not part of FunctionComponent props
-  a: ({ children, href }) => <a href={href} className="hover:underline text-blue-600">{children}</a>,
+  a: ({ children, href }) => <a href={href} className="hover:underline dark:text-cyan-400 text-blue-600">{children}</a>,
 };
