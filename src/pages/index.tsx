@@ -22,7 +22,7 @@ const Home = ({ posts }: Props) => (
 
     <main className="flex flex-col flex-1 justify-start items-center py-2 md:py-4 lg:py-6">
 
-      <p className="text-center text-gray-600 dark:text-white my-4 md:my-8 text-4xl md:text-7xl font-bold">
+      <p className="text-center text-grey-800 dark:text-white my-4 md:mb-8 md: mt-0 text-4xl md:text-7xl font-bold">
         Where I
         {" "}
         {" "}
