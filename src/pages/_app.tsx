@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
 
-      <div className="dark:bg-slate-900 fade-colors pb-4">
+      <div className="dark:bg-grey-800 fade-colors pb-4">
         <div className="min-h-screen pb-4 ">
           <Nav />
           <div className="container max-w-6xl mx-auto px-4">

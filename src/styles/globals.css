@@ -22,3 +22,11 @@ a {
 .fade-colors {
   @apply transition-colors duration-300;
 }
+
+.fg-text {
+  @apply text-gray-800 dark:text-gray-200;
+}
+
+.gradient-text {
+@apply fade-colors text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-blue-600 dark:from-cyan-400 dark:to-blue-200;
+}
