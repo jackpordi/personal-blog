@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FaEnvelope, FaGithub, FaHome } from "react-icons/fa";
+import { GiCoffeeCup } from "react-icons/gi";
 import { FunctionComponent } from "react";
 
 import { DarkModeToggle } from "./DarkModeToggle";
@@ -36,6 +37,15 @@ export const Nav: FunctionComponent = () => (
         >
           <FaEnvelope
             size={28}
+          />
+        </a>
+        <a
+          className="dark:text-white dark:hover:text-cyan-400 mr-6 transition transform hover:scale-115 hover:text-cyan-400"
+          href="https://www.buymeacoffee.com/jackpordi"
+        >
+          <GiCoffeeCup
+            className="mb-1"
+            size={32}
           />
         </a>
         <a
