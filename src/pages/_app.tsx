@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { useEffect, useState } from "react";
 
 import { Nav } from "components/Nav";
 import { Footer } from "components/Footer";
@@ -9,7 +10,14 @@ import { DarkModeProvider } from "contexts/dark-mode";
 
 function MyApp({ Component, pageProps }: AppProps) {
 
+  const [ fadeColors, setFadeColors ] = useState("");
   useTrackpageView();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setFadeColors("fade-colors");
+    }, 200);
+  }, []);
 
   return (
     <DarkModeProvider>
@@ -21,7 +29,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
 
-      <div className="dark:bg-grey-800 fade-colors pb-4">
+      <div className={`dark:bg-grey-800 ${fadeColors} pb-4`}>
         <div className="min-h-screen pb-4 ">
           <Nav />
           <div className="container max-w-6xl mx-auto px-4">
