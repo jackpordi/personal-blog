@@ -16,7 +16,7 @@ export function PostPreviewCard({ post, id }: Props) {
   return (
     <Link href={`posts/${id}`}>
       <a>
-        <div className="px-4 py-4 flex-row flex w-full flex-1 transform transitionmargin-2 text-left group my-2 max-w-2xl cursor-pointer rounded-sm">
+        <div className="px-4 py-4 flex-row flex w-full flex-1 transform transition margin-2 text-left group my-2 max-w-2xl cursor-pointer rounded-sm">
           {post.image && (
             <div
               className="mr-4 justify-center hidden md:flex"
