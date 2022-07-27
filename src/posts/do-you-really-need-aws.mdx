@@ -1,0 +1,51 @@
+---
+title: Do you really need to use AWS?
+abstract: AWS has more or less become the default go-to cloud provider for most developers and companies. Here's why I think that shouldn't be the case.
+date: 2022-07-27T20:30:00-0000
+image: /images/locks.jpeg
+---
+
+I did a quick browse of developer jobs on LinkedIn the other day, and out of the roles and companies that mentioned cloud providers, the overwhelming majority of them were referring to AWS specifically. Sure, GCP and Azure have both made pretty decent gains in the market these last few years, but AWS still very much holds a tight grip on the industry that it _itself_ more or less pioneered. Now, don't get me wrong, I think AWS is an _excellent_ cloud provider, and for those of you out there who know what you're really doing with it, it's a great choice. But my gripe isn't with that. 
+
+It's not uncommon to hear justifications of picking AWS go among the lines of "we're all familiar with it, so let's just use it", "it's easier to hire people with AWS experience", or a plethora of any other "just cause" logic. In my opinion, far too many companies and engineering teams out there are using AWS "just cause", and:
+
+- aren't able to use AWS to it's full potential.
+- don't need the full potential of AWS.
+- are slowed down by the heavyness and complexity of AWS
+- are paying far too much for cloud hosting
+
+Full disclaimer: I use AWS, my company uses AWS, and I very much do think it's the right choice for many teams, but I also recognize that we _almost_ fell into these traps ourselves very early on, which is what inspired me to write this.
+
+
+## Your infrastructural needs are simple
+
+If your infrastructure looks like any combination of the following:
+
+- A handful of VMs/EC2 instances administered manually
+- A managed database like RDS
+- A statically generated frontend hosted on CloudFront/S3
+- Applications/services running inside containers either using ECS or Kubernetes
+- A small number of serverless functions (lambdas)
+- Some file storage service
+
+Then there's pretty much nothing that you couldn't do on any other cloud provider (particularly a more lightweight one like DigitalOcean). I once overheard someone trying to setup an entire AWS organization from scratch _just to deploy a static website_. That person would've been _far_ better off going with something like Netlify, Vercel, Firebase or anyof the plethora of static site hosting options out there (all of whom are much much cheaper than AWS).
+
+## You can switch into AWS, but not from it
+
+There are a number of _fantastic_ AWS services like SQS, SNS, DynamoDB, etc that many successful companies' tech blogs often mention and swear by. Yet, the pessimist in me sees two problems with latching on to using these services prematurely:
+
+- If your core platform is tightly coupled with these services, you can't realistically ever move off them without a ridiculous amount of effort. AWS knows this, and whilst I'm not saying this would happen, most medium sized companies would be completely helpless if Amazon decided to triple the prices of these services overnight.
+- They don't really do anything an open source alternative (like RabbitMQ, Mongo, Redis, etc etc) couldn't do. AWS also probably supports running a managed version of these open source alternatives as well (Amazon MQ, Elastic).
+- You never know when/if these services would be sunset or deprecated in the future. The decision lies solely on Amazon, which is a business driven by profits.
+- To interact with these services, you'd need to use Amazon's privately maintained SDKs and APIs, which are often poorly documented and subpar.
+- Often, you can't run these services locally for local development, or the local emulators are not particularly reliable.
+
+My personal approach is to always try to avoid vendor lock in as much as possible, _even if_ we as a team have already commited to that vendor.
+
+## AWS is really hard to use
+
+AWS is fundamentally a _hugely_ complicated beast of a product. There's like a bajillion services, and an intricate web of details regarding how they work (or don't work) with each other. Such complexity is always going to suffer from the fact that no UI in the world could capture all the use cases intuitively, and the AWS console itself is not exactly going to be winning awards for UI design anytime soon.
+
+
+
+### The products are designed to make you pay more and more
