@@ -47,6 +47,8 @@ My personal approach is to always try to avoid vendor lock in as much as possibl
 
 AWS is fundamentally a _hugely_ complicated beast of a product. There's like a bajillion services, and an intricate web of details regarding how they work (or don't work) with each other. Such complexity is always going to suffer from the fact that no UI in the world could capture all the use cases intuitively, and the AWS console itself is not going to be winning awards for UI design anytime soon.
 
+![AWS Console](/images/aws-console.webp)
+
 There's also often multiple ways to accomplish something. Want to expose your Lambdas as RESTful HTTP APIs? You'll need to use one of two flavours of APIGateway: HTTP APIGateway, or REST APIGateway. But first, you'll need to do some [reading](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html) on which one to use. And though in many cases it's not particularly challenging nor too effortful to find and read the documentation to figure this out, the time taken does add up, and wrong decisions can be catastrophic.
 
 Furthermore, its becoming considered best practice to use infrastructure-as-code tools like CloudFormation or Terraform in order to create reproducible and versiond environments. These tools themselves, whilst not being particularly too difficult on the surface, can easily become a full-time job to maintain and develop.
@@ -55,7 +57,9 @@ If you're team with more than 2-3 people, then it's also likely that there's var
 
 AWS at its core has become a product intentionally designed for usage by full-time AWS experts. And there's nothing wrong with that (well, personally I think it's a bit sneaky of them to intentionally be trying so hard to push the perceived value of AWS certs and courses in order to also promote AWS itself, but I disgress...), you just need to be aware of the fact in order to really get out the most value.
 
-## It's easy to overpay
+## It's real easy to overpay
+
+![AWS Console](/images/aws-pricing.webp)
 
 AWS pricing is hard to manage. Sure, there are tools like setting pricing usage caps and such, but the _default_ options in most AWS infrastructure setup often _somehow_ have hidden pricing caveats in them in the first place. It's astonishingly easy (read: I've done this many times) to set up something with options that _look_ sensible, then come back a few days later and see that it's burned through hundreds of dollars/pounds. This is significantly less likely to happen if you are 1.) using lighter cloud services or 2.) have a dedicated AWS engineer on your team to oversee these things.
 
@@ -64,6 +68,8 @@ AWS pricing is hard to manage. Sure, there are tools like setting pricing usage 
 Whilst being an A in FAANG, it's important to remember that Amazon itself is still a _huge_ organization that carries a large amount of bureacracy and mishaps. With that comes the fact that many of its services (and in particular, the internal teams that build those services) are badly mismanaged, poorly organized, or don't communicate well with other teams. Many of its products seem like they start out as a "hey, wouldn't it be cool if we offered this" thought from some middle manager that never gains traction and becomes all-but-abandoned. If you're a dev reading this, then you've probably got one or more friends  working at AWS who can (even if they work on a good product that they like) attest to this.
 
 I once picked an AWS product over building a custom solution, as its promises seemed amazing and the pricing (both at small and large scale) was incredible. Turns out, it was a horrendous product, and we spent weeks more time than we should have trying to figure out its quirks and hunt for its documentation (it was Cognito, by the way).
+
+If you want some AWS-related (insightful entertainment), there's no better place than the AWS subreddit. As with most things, it's always the [most loyal fans that are the most critical](https://www.reddit.com/r/aws/comments/dgsq9q/the_worst_aws_services/).
 
 # You've made it to the end of this post
 

@@ -1,10 +1,19 @@
-import { FunctionComponent } from "react";
+import { ComponentType, DetailedHTMLProps, ImgHTMLAttributes } from "react";
 
+type ImgComponent = ComponentType<DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>>;
 interface Components {
-  [index: string]: FunctionComponent;
+  img: ImgComponent;
+  [index: string]: ComponentType;
 }
 
 export const MDXComponents: Components = {
+  img: ({ src, alt }) => (
+    <img
+      className="my-2 lg:my-8 mx-auto"
+      src={src!}
+      alt={alt!}
+    />
+  ),
   p: ({ children }) => <p className="fg-text my-2">{children}</p>,
   h1: ({ children }) => <h1 className="fg-text text-3xl font-semibold my-2">{children}</h1>,
   h2: ({ children }) => <h2 className="fg-text text-2xl font-semibold my-2">{children}</h2>,
