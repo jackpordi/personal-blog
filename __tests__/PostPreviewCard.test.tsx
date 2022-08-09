@@ -1,17 +1,17 @@
-import { render, screen } from '@testing-library/react'
-import moment from 'moment';
+import { render, screen } from "@testing-library/react";
+import moment from "moment";
 
-import { FrontMatter } from 'types';
+import { FrontMatter } from "types";
 import { PostPreviewCard } from "components/PostPreviewCard";
 
-describe('PostPreviewCard', () => {
+describe("PostPreviewCard", () => {
 
   const POST_ID = "test-post-id";
   const POST: FrontMatter = {
     title: "Example Post Title",
     date: moment(0).format(),
     abstract: "This is a sample article abstract",
-    image:  "https://image-url.com",
+    image: "https://image-url.com",
   };
 
   it("Renders the post title", () => {
@@ -20,11 +20,9 @@ describe('PostPreviewCard', () => {
       post={POST}
     />);
 
-    const title = screen.getByRole('heading', {
-      name: POST.title,
-    })
+    const title = screen.getByRole("heading", { name: POST.title });
 
-    expect(title).toBeInTheDocument()
+    expect(title).toBeInTheDocument();
   });
 
   it("Renders the post abstract", () => {
@@ -34,7 +32,7 @@ describe('PostPreviewCard', () => {
     />);
 
     const abstract = screen.getByText(POST.abstract);
-    expect(abstract).toBeInTheDocument()
+    expect(abstract).toBeInTheDocument();
   });
 
   it("Renders the post image", () => {
@@ -44,7 +42,7 @@ describe('PostPreviewCard', () => {
     />);
 
     const img = screen.getByAltText(POST.image!);
-    expect(img).toBeInTheDocument()
+    expect(img).toBeInTheDocument();
   });
 
   it("Matches the snapshot", () => {
@@ -52,7 +50,7 @@ describe('PostPreviewCard', () => {
       id={POST_ID}
       post={POST}
     />);
-    expect(container).toMatchSnapshot()
-  })
+    expect(container).toMatchSnapshot();
+  });
 
-})
+});
