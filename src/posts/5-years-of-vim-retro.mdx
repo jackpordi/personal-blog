@@ -1,20 +1,121 @@
 ---
 title: 5 years of (Neo)Vim - A personal retrospective
 abstract: It's been just over 5 years since I've switched to Vim/Neovim and started living inside the terminal full-time. Here's a look back on that journey and how my usage of it has changed over time.
-date: 2022-08-04T19:30:00-0000
+date: 2022-08-10T19:30:00+0700
 image: /images/neovim-retro.webp
 ---
 
-In mid 2017, during the tail end of my first year of studies, I decided to take a plunge and dive into using Vim as my full-time text editor. The switch had been a long time coming, and given that in November the previous year I installed Arch Linux on my laptop one could say it was pretty much _destined_. I'd _known_ about Vim since starting my programming education (in first year of my degree), but as a fresh introductee to all things coding, I was already overwhelmed by too many other things (mainly, how to code) to be trying anything too ambitious other than Atom or IntelliJ. Yet, I was eventually lured over by the promises of blazing, extreme customization options and most importantly, how _cool_ I would look being a h4Ck3r boy that did everything inside a terminal. And boy, has the last 5 years been a ride...
+In mid 2017, during the tail end of my first year of studies, I decided to take a plunge and dive into using Vim as my full-time text editor. The switch had been a long time coming, and given that in November the previous year I installed Arch Linux on my laptop one could say it was pretty much _destined_. I'd _known_ about Vim since starting my programming education (in first year of my degree), but as a fresh introductee to all things coding, I was already overwhelmed by too many other things (mainly, how to code) to be trying anything too ambitious other than Atom or IntelliJ. Yet, I was eventually lured over by the promises of blazing, extreme customization options and most importantly, how _cool_ I would look being a h4Ck3r boy that did everything inside a terminal. And boy, have the last 5 years been a ride...
 
-## The beginnings: Vim and Tmux, and a few plugins
+## Before Vim: Atom and IntelliJ
+
+_Skip this bit if you're only interested in the Vim bits._
+
+In late 2016, VSCode wasn't the behemoth that it is today. At Imperial College, we were taught programming in Haskell then Java, so the tools of choice for many (including myself) were [ Atom ](https://atom.io/) (remember Atom?) and [IntelliJ](https://www.jetbrains.com/idea/). I honestly can't really remember how good Atom was or if it had any autocompletion at all (I suspect not, as otherwise I would have wanted it a lot more in Vim early on), but IntelliJ was and still is a beast. I've occassionally used IntelliJ here and there over the years, most notably when I spent a few months doing Java inside a Big Bank. 
+
+Honestly, IntelliJ is just _so_ damn good and can do things that the LSPs don't yet support, so I would wholeheartedly recommend it to anyone knee deep in the JVM ecosystem. Note that I did, however, customize the _hell_ out of my IntelliJ with Vim bindings and distraction-free UI that brought it's feel quite close to Vim. Atom on the other hand, is pretty much dead, but it's spiritual successor VSCode has also become so damn good it's hard for me to justify trying to convince anyone to use (Neo)Vim instead unless I know they're _that_ type of person. Anyways, onto the parts actually about (Neo)Vim...
+
+## The beginnings: Just Vim and Tmux, and some barebones plugins
+
+The first thing I wanted to accomplish was to replicate a pretty basic, barebones setup with Vim and Tmux that I saw from one my university lecturers. I looked up a basic Tmux tutorial from somewhere, another basic Vim tutorial from somewhere else (I really should have just used Vim tutor, to be honest), then setup a few lines of configuration in my `.vimrc` and `.tmux.conf` to accomplish the following:
+
+- Rebinded my Tmux prefix key to `<C-a>`.
+- Enabled Tmux pane navigation with alt + arrow keys.
+- Enabled syntax highlighting, line numbers and relative line numbers in Vim.
+- Completely disabled arrow keys in Vim so I was forced to learn `hjkl` navigation.
+- Remapped `J` to `8j` and `K` to `8k` because I thought I was being smart and efficient. (Don't do this, use `C-u` and `C-d` instead!)
+
+This got me going well enough for me to _start_ using Vim as a text editor, and use multiple tmux panes to have multiple instances of Vim for different files. Was this _optimal_? No, far from it, though 1.) I was happy to take a hit in productivity short term in order to learn and 2.) as a first year student, it's not like I was already a wiz in other editing tools (or coding, really) anyways. I also went full cold turkey, barring myself from using any other editing tools apart from Vim.
+
+The first project I had since making the switch was a group project in C. Since this was a group project, I was able to see my peers' editing tools and quickly identified the two things that they had that I did not, but wanted:
+
+1. _Some_ autocomplete.
+2. Error diagnostics/linting.
+
+For autocomplete, I looked around and saw two options at the time: [Supertab](https://github.com/ervandew/supertab), and [YouCompleteMe](https://github.com/ycm-core/YouCompleteMe). After spending a few hours trying to install YouCompleteMe (and failing), I ended up with a realization. Compiling it from scratch and getting it to work across multiple machines would be far too much work to do and maintain, so I quickly moved to Supertab. Supertab's autocomplete was far more basic, just looking at text in the same buffer (so no auto imports, and you would only get useful results if you called the same variable or function somewhere else in the same file already), but honestly it worked and I was happy with it.
+
+For error diagnostics, I went with [Syntastic](https://github.com/vim-syntastic/syntastic). Fortunately, this was a pretty easy setup and I was able to get it to work with C (specifically, `gcc` errors and warnings) quite easily. In hindsight, it was quite good that I first used Vim with C, as it was probably _the_ most supported language in the Vim ecosystem at the time.
 
 ## Switching to Neovim (for no reason)
 
-## Adding real autocomplete with Deoplete
+[In July](https://github.com/jackpordi/dotFiles/commit/e0a824a4a98644463c506ae22106384a1a950fc2) a few weeks after completing the C project During the summer holidays, I heard through the grapevine about [Neovim](https://neovim.io/), a complete rewrite of Vim that was supposed to be better. Better how? Well, I certainly didn't know nor did I care about actually looking into it. I was young and stupid, and I thought newer is better, so why not make the switch? So, I made the switch to Neovim, which made no difference at all apart from the fact that my config file was in a different location and had a different name - but it _felt_ cool to be using something newer.
+
+Also around the same time, [Plug](https://github.com/junegunn/vim-plug) got released. In this instance, I _did_ do some reading and realized the automatic plugin installation and updates it provided was far superior to having to manually clone plugins like with Pathogen that I was previously using, so I switched over. The ease of adding plugins with `Plug` quickly lead to an exponential boom in the number of plugins I was using...
+
+## Deoplete and ALE
+
+Over the next year or so, my `init.vim` became quite big, quite quickly. I had around [40 plugins](https://github.com/jackpordi/dotFiles/blob/b2b6ddfbd64c5b214382fe961f72df4aba41fbb9/.nvimrc) (which to be honest, I didn't _really_ need), but my Vim experience had become quite IDE-like.
+
+In summer of 2018 I was working on a JavaScript group project for uni, then went into Python for an internship, and my config very much reflected that. [ALE](https://github.com/dense-analysis/ale) had become a thing a few months earlier, and I had set up [ESLint](https://eslint.org/), [Prettier](https://prettier.io/) and [PEP8](https://pypi.org/project/autopep8/) along with diagnostics with it. `ALE` really felt like a turning point in my Vim experience, giving me autoformat on save and near-instant linting and diagnostics. It's errors window popping up annoying whenever there was even a single warning also really instilled in me the discipline of fixing errors as soon as they showed up, which is something I'm grateful for to this day.
+
+[Deoplete](https://github.com/Shougo/deoplete.nvim) was also one of the first contenders in the emerging contest between various autocomplete plugins, and soon I had [jedi](https://jedi.readthedocs.io/en/latest/) up and running for my Python needs. I think I also setup snippets around the same time, but if I'm being honest I don't think I used them very much.
+
+## Learning action-motions
+
+More than any plugin or configuration, the biggest game changer and productivity boost to my Vim experience has been understanding Vim's language of actions and motions. Quite frankly, I'm personally _ashamed_ that it took me so damn long to learn these things. I won't go into too much depth, but here's quick gist.
+
+Lots of things you want to do with editing text can be summarised as an __action__ that you want to perform over a certain __range__, or motion. For example, you want to __d__elete __a__ __w__ord? Then you can use `daw` in normal mode to do that! Or you want to __y__ank __i__nside __b__rackets? You guessed it, you can do `yib`! There's like a couple dozen _textobjects_ you can do this with, as well as the standard vim motions like `f` and `t`.
+
+For a much better explanation, see [this infamous StackOverflow post](https://stackoverflow.com/questions/1218390/what-is-your-most-productive-shortcut-with-vim).
 
 ## The renaissance with CoC
 
-## Neovim LSP and Lua 
+Another big game changer was [CoC](https://github.com/neoclide/coc.nvim), which was a single plugin to do all things autocomplete and linting related. At the time, VSCode had smashed onto the code editors scene and showed that IDE-like features such as really smart autocomplete, refactoring, and code-actions weren't just IDE-exclusive. CoC's aim was to do the same, but for Vim. It was also really fast compared to previous engines like YCM and Deoplete, and you could install engines via `:CocInstall` commands really easily and things would _just_ work out of the box.
+
+CoC has probably been the autocomplete/linting solution I used for the longest while, and though it's not perfect (configuration via a proprietary JSON file was a bit annoying, and in really big projects it can get quite slow), it was _the_ plugin that brought VSCode-like features to Vim and propelled Vim into being a "modern", truly featureful text editor. As of August 2022, I would still recommend CoC to anyone looking to achieve VSCode-like functionality inside Vim/Neovim without spending an exorbitant amount of time on what I'm about to discuss next...
+
+## Neovim LSP, Treesitter, Lua and Lua plugins
+
+In late 2021, I read about built-in support for LSPs arriving in Neovim version 0.5. For those of you that don't know, LSP stands for Language Server Protocol and is basically a standard interface for _servers_ that can perform language-related tasks such as linting, autocomplete, code actions, i.e. the usual IDE things to communicate with _clients_ AKA text editors. LSPs are essentially an effort to bring IDE features of many languages into the open where any text editor can utilize them, and is fundamentally _the_ reason why you can get very similar IDE functionality out of VSCode and any other LSP-supporting text editor.
+
+Initially I wasn't particularly interested as I was more than happy with my setup with CoC, __BUT__ at the same time as LSP support arriving in Neovim, there was also another huge update: [Lua integration](https://lwn.net/Articles/864712/). I've never liked VimScript - despite having tinkered with Vim and Neovim configurations for millions of times, the syntax always seemed completely alien to me. Whilst I'd never really looked into Lua, I knew it was a very popular mainstream general-purpose scripting language and that it was probably far more sane in design and idiomatic than VimScript. A quick bit of research also showed that it was much faster than VimScript as well, which was an important point considering my Neovim startup times were becoming rather noticable.
+
+So during my brief period of unemployment between jobs in December, I decided to jump in and redo my entire Neovim configuration in Lua. And since I was redoing my config in Lua, I might as well see what Neovim Lua plugins out there could replace my existing VimScript plugins. _And_ since I was already putting in so much effort to do those things, surely a quick dip into the native LSP world. This was by far the most amount of work I've put into one batch of config updates, and I initially had some trouble replicating some of my previous functionality from CoC, but I got it working in the end.
+
+Another important addition during these past few months is also [Treesitter](https://github.com/nvim-treesitter/nvim-treesitter), which is basically a language parser on steroids. It's made my syntax highlighting much prettier, and enabled a number of powerful plugins (that are really fast!).
+
+After sticking with this "version" of configs for a few months and ironing out the kinks, this is by far the best and fastest my Neovim has ever felt.
+
+- My config files are broken down into multiple Lua files which can import each other
+- I now have _almost_ 0 VimScript, and certainly 0 VimScript that I don't understand.
+- All my functionality from CoC has been replaced with the native built-in LSP, enhanced with some helper plugins like [Cmp](https://github.com/hrsh7th/nvim-cmp) [LSP Saga](https://github.com/glepnir/lspsaga.nvim), [Mason](https://github.com/williamboman/mason.nvim) and [LSP Config](https://github.com/neovim/nvim-lspconfig). Though it's not as much of an "out of the box" experience as CoC, I've found it easy enough to setup and the configuration being simple but explicit feels nice.
+- Most of the plugins I use have been switched to their new Lua counterparts/replacements barring a few classics. These Lua replacements are often not only faster, but being newer, have a more features (like [Nvim-surround](https://github.com/kylechui/nvim-surround) supporting dot-repeat). They're also configured in Lua, which is a hell of a lot easier than VimScript.
+- My Neovim feels really fast. (Granted, I've also got one of the new speedy Macbook Pros, but still...)
+- My syntax highlighting is very pretty.
+- It's very easy to add a new LSP.
 
 ## What the future awaits
+
+Neovim isn't just a text editor, it's a _way of life_. And as usual with life, there are things to look forward to! Personally for me:
+
+- I'm currently getting rid of my worse havit: using Tmux panes for splits and terminals instead of Neovim's builtin splits. I'll probably still use Tmux windows for managing different projects or when I'm not actually _editing_ text, but the fact that I've gone as long as I have running multiple instances of Neovim in the same project is not one I'm proud of...
+- Neovim 0.7 introduced another batch of Lua integrations that can replace VimScript, such as keybind callbacks, so I'll probably switch those out at some point.
+- I still don't really use [Vim Fugitive](https://github.com/tpope/vim-fugitive). Everyone says it's awesome, I know it's awesome, Tim Pope is a Vim god, yet I've never managed to really get into it. At this point though, I may just setup [ToggleTerm](https://github.com/akinsho/toggleterm.nvim) with a custom [LazyGit](https://github.com/jesseduffield/lazygit) instance instead, but we shall see. Or who knows, maybe someone will write a Lua version of Fugitive soon.
+- I kind of want to try writing my own plugin, jhough it's a bit scary. I really want a Treesitter-based version of [SplitJoin](https://github.com/AndrewRadev/splitjoin.vim) that's not so buggy and unreliable, but that feels like a huge task...
+
+As for Neovim and the community in general, there's a couple of things as well:
+
+- The Lua vs VimScript9 divergence is unfortunately going to fracture the Vim and Neovim community, but [Primeagen captures my thoughts here perfectly](https://www.youtube.com/watch?v=p0Q3oDY9A5s).
+- I think people are realizing that writing plugins in Lua is not only far easier, but allows you to do things that previously weren't possible or were really difficult in VimScript. This means we're going to get more plugins that not only more powerful but also likely to be maintained well long-term.
+- Treesitter also opens up another big host of opportunities. Syntax highlighting and contextualized comment strings are really only scratching the surface - LSP-like refactor functionality is already appearing, and I'm hoping more can be gotten out of Treesitter in the future.
+- I'm really hoping debugging with [ DAP ](https://microsoft.github.io/debug-adapter-protocol/) really takes off, to a similar level of LSPs and LSP support. Currently, it works in a few languages, but hasn't particularly gained mainstream traction yet. Disappointingly, the [NodeJS DAP server](https://github.com/microsoft/vscode-node-debug2) was deprecated in favour of another debug server that doesn't seem to be DAP-compatible.
+- This is perhaps more long-term wishful thinking, but I'm hoping that the LSP spec becomes more powerful in the future. As great as LSP is, anyone who's used any JetBrains IDEs knows how much more powerful their features are. I'm not expecting LSPs to get to that point anywhere anytime soon, but one sure can hope for a few nice improvements here and there.
+- The [ Helix ](https://helix-editor.com/) editor being released should hopefully lead to some good ideas and competition for Neovim in the future as well. Helix has a lot of catching up to do, but I do feel like its creators are on the right path.
+
+## Other honourable mentions and notes
+
+Though this post wasn't originally meant to be an article about what plugins I'm using, I realize I might as well cover some of the most important ones now. After all, with the great Lua-fication of my setup, there are now a manageable number of them to discuss...
+
+- [Packer](https://github.com/wbthomason/packer.nvim) for plugin management.
+- [Bufferline](https://github.com/akinsho/bufferline.nvim) for visual "tabs" of my buffers.
+- [Nvim Tree](https://github.com/kyazdani42/nvim-tree.lua) for my file browser. I don't use this very often, but I'm trying to use it more.
+- [Lualine](https://github.com/nvim-lualine/lualine.nvim) for status line. Note that I'm using it in global mode, as opposed to per-window mode, which is a recent feature of Neovim.
+- [Telescope](https://github.com/nvim-telescope/telescope.nvim) as my fuzzy finder/list selection picker. I've been mostly using it just to open files with `C-p`, but I'm trying to use it more for fuzzy word search and switching between buffers as well. Note: you need [ripgrep](https://github.com/BurntSushi/ripgrep) and [fd](https://github.com/sharkdp/fd) to really make the most of this..
+- [Lightspeed](https://github.com/ggandor/lightspeed.nvim) for sneaky and fast navigation. I might switch it out for [Leap](https://github.com/ggandor/leap.nvim) or [Hop](https://github.com/phaazon/hop.nvim) at some point, but honestly these plugins all feel the same to me anyways.
+- [Neoscroll](https://github.com/karb94/neoscroll.nvim) for smooth scrolling with `C-u` and `C-d`.
+- [Indent Blankline](https://github.com/lukas-reineke/indent-blankline.nvim) helps visually with indentation.
+- [Nvim Autopairs](https://github.com/windwp/nvim-autopairs) for autopairing brackets and tags.
+- [Nvim surround](https://github.com/tpope/vim-surround) and [Comment.nvim](https://github.com/numToStr/Comment.nvim), which are the Lua and improved versions of Tim Pope's plugins.
+- [ToggleTerm](https://github.com/akinsho/toggleterm.nvim) as a quick toggle-able terminal. Though convenient, I'm also not sure if I should just be using native Neovim terminal buffers instead for this or not.
+
+There are a _few_ other plugins I'm using, but they're either language-specific (mainly TypeScript) or are far more personal preference rather than something I'd blanket recommend. For anyone interested, my personal dotfiles are [here](https://github.com/jackpordi/dotFiles) and they're usually pretty up to date, so feel free to check them out as a point of reference.
