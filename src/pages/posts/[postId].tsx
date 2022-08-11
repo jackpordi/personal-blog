@@ -40,7 +40,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-const PostPage: NextPage<Post> = ({ info, mdx }) => {
+const PostPage: NextPage<Post> = ({
+  info, mdx, id,
+}) => {
 
   const displayDate = useDisplayDate(info.date);
 
@@ -53,7 +55,6 @@ const PostPage: NextPage<Post> = ({ info, mdx }) => {
         <meta name="author" content="Jack Pordi" />
       </Head>
       <div className="flex flex-row">
-        <StickyButtons />
         <div className="ml-2 md:mx-0 my-0 md:my-2 items-center block max-w-3xl flex-1">
           <div className="mb-6" >
             {info.image && (
@@ -77,6 +78,12 @@ const PostPage: NextPage<Post> = ({ info, mdx }) => {
           { !info.disableCoffee && <Sponsorship /> }
           <Comments />
         </div>
+        <StickyButtons
+          shareData={{
+            title: info.title,
+            url: `https://jackpordi.com/posts/${id}`,
+          }}
+        />
       </div>
     </div>
   );
