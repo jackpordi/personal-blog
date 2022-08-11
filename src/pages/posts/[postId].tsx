@@ -66,7 +66,11 @@ const PostPage: NextPage<Post> = ({ info, mdx }) => {
           <h1 className="font-semibold text-4xl mb-2 dark:text-gray-200">{info.title}</h1>
           <h2 className="font-semibold text-xl text-gray-700 mb-4 dark:text-gray-200">{info.abstract}</h2>
         </div>
-        <MDXRemote {...mdx} components={MDXComponents} />
+        <MDXRemote
+          {...mdx}
+          // @ts-ignore
+          components={MDXComponents}
+        />
         { !info.disableCoffee && <Sponsorship /> }
         <Comments />
       </div>
