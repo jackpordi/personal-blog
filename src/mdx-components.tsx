@@ -6,6 +6,8 @@ interface Components {
   [index: string]: ComponentType;
 }
 
+const codeColors = "bg-gray-100 dark:bg-grey-600";
+
 export const MDXComponents: Components = {
   img: ({ src, alt }) => (
     <img
@@ -20,7 +22,12 @@ export const MDXComponents: Components = {
   h3: ({ children }) => <h3 className="fg-text text-xl font-semibold my-2">{children}</h3>,
   h4: ({ children }) => <h4 className="fg-text text-lg font-semibold my-2">{children}</h4>,
   h5: ({ children }) => <h5 className="fg-text text-md font-semibold">{children}</h5>,
-  code: ({ children }) => <pre className="whitespace-pre-wrap"><code className="text-sm bg-gray-100 dark:bg-grey-600  dark:text-gray-200 block p-2 my-4 rounded-md">{children}</code></pre>,
+  pre: ({ children }) => <pre className={`whitespace-pre-wrap p-2 my-4 rounded-md ${codeColors}`}>
+    {children}
+  </pre>,
+  code: ({ children }) => <code className={`text-xs dark:text-gray-200 ${codeColors} rounded-sm`}>
+    {children}
+  </code>,
   ul: ({ children }) => <ul className="list-disc list-inside fg-text mb-4">{children}</ul>,
   ol: ({ children }) => <ol className="list-decimal list-inside fg-text mb-4">{children}</ol>,
   li: ({ children }) => (
