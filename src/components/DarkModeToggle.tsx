@@ -7,7 +7,7 @@ export const DarkModeToggle = () => {
   const { dark, toggle } = useDarkMode();
 
   return (
-    <div
+    <button
       className="cursor-pointer mr-6"
       onClick={(e) => {
         e.preventDefault();
@@ -22,6 +22,6 @@ export const DarkModeToggle = () => {
           color="orange"
           size={24}/>
       }
-    </div>
+    </button>
   );
 };
