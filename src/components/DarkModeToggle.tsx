@@ -20,7 +20,7 @@ export const DarkModeToggle = () => {
           size={24}/>
         : <FaSun
           color="orange"
-          size={28}/>
+          size={24}/>
       }
     </div>
   );

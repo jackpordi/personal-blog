@@ -16,6 +16,7 @@ import { useDisplayDate } from "hooks/useDisplayDate";
 import { getAllPostPaths, getPost } from "utils";
 import { Comments } from "components/Comments";
 import { Sponsorship } from "components/Sponsorship";
+import { StickyButtons } from "components/StickyButtons";
 
 interface PostPath extends ParsedUrlQuery {
   postId: string;
@@ -51,28 +52,31 @@ const PostPage: NextPage<Post> = ({ info, mdx }) => {
         <meta name="description" content={info.abstract} />
         <meta name="author" content="Jack Pordi" />
       </Head>
-      <div className="ml-2 md:mx-0 my-0 md:my-2 items-center block max-w-3xl flex-1">
-        <div className="mb-6" >
-          {info.image && (
-            <Image
-              className="rounded-sm mb-2"
-              src={info.image}
-              alt={info.image}
-              height={320}
-              width={800}
-              objectFit="cover" />
-          )}
-          <p className="text-gray-500 text-left dark:text-gray-300">{displayDate}</p>
-          <h1 className="font-semibold text-4xl mb-2 dark:text-gray-200">{info.title}</h1>
-          <h2 className="font-semibold text-xl text-gray-700 mb-4 dark:text-gray-200">{info.abstract}</h2>
+      <div className="flex flex-row">
+        <StickyButtons />
+        <div className="ml-2 md:mx-0 my-0 md:my-2 items-center block max-w-3xl flex-1">
+          <div className="mb-6" >
+            {info.image && (
+              <Image
+                className="rounded-sm mb-2"
+                src={info.image}
+                alt={info.image}
+                height={320}
+                width={800}
+                objectFit="cover" />
+            )}
+            <p className="text-gray-500 text-left dark:text-gray-300">{displayDate}</p>
+            <h1 className="font-semibold text-4xl mb-2 dark:text-gray-200">{info.title}</h1>
+            <h2 className="font-semibold text-xl text-gray-700 mb-4 dark:text-gray-200">{info.abstract}</h2>
+          </div>
+          <MDXRemote
+            {...mdx}
+            // @ts-ignore
+            components={MDXComponents}
+          />
+          { !info.disableCoffee && <Sponsorship /> }
+          <Comments />
         </div>
-        <MDXRemote
-          {...mdx}
-          // @ts-ignore
-          components={MDXComponents}
-        />
-        { !info.disableCoffee && <Sponsorship /> }
-        <Comments />
       </div>
     </div>
   );
