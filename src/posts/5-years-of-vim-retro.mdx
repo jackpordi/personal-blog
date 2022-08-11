@@ -54,7 +54,7 @@ In summer of 2018 I was working on a JavaScript group project for uni, then went
 
 More than any plugin or configuration, the biggest game changer and productivity boost to my Vim experience has been understanding Vim's language of actions and motions. Quite frankly, I'm personally _ashamed_ that it took me so damn long to learn these things. I won't go into too much depth, but here's quick gist.
 
-Lots of things you want to do with editing text can be summarised as an __action__ that you want to perform over a certain __range__, or motion. For example, you want to __d__elete __a__ __w__ord? Then you can use `daw` in normal mode to do that! Or you want to __y__ank __i__nside __b__rackets? You guessed it, you can do `yib`! There's like a couple dozen _textobjects_ you can do this with, as well as the standard vim motions like `f` and `t`.
+Lots of things you want to do with editing text can be summarised as an __action__ that you want to perform over a certain __range__, or motion. For example, you want to **d**elete _*a** **w**ord? Then you can use `daw` in normal mode to do that! Or you want to **y**ank **i**nside **b**rackets? You guessed it, you can do `yib`! There's like a couple dozen _textobjects_ you can do this with, as well as the standard vim motions like `f` and `t`.
 
 For a much better explanation, see [this infamous StackOverflow post](https://stackoverflow.com/questions/1218390/what-is-your-most-productive-shortcut-with-vim).
 
@@ -88,10 +88,10 @@ After sticking with this "version" of configs for a few months and ironing out t
 
 Neovim isn't just a text editor, it's a _way of life_. And as usual with life, there are things to look forward to! Personally for me:
 
-- I'm currently getting rid of my worse havit: using Tmux panes for splits and terminals instead of Neovim's builtin splits. I'll probably still use Tmux windows for managing different projects or when I'm not actually _editing_ text, but the fact that I've gone as long as I have running multiple instances of Neovim in the same project is not one I'm proud of...
+- I'm currently getting rid of my worse habit: using Tmux panes for splits and terminals instead of Neovim's builtin splits. I'll probably still use Tmux windows for managing different projects or when I'm not actually _editing_ text, but the fact that I've gone as long as I have running multiple instances of Neovim in the same project is not one I'm proud of...
 - Neovim 0.7 introduced another batch of Lua integrations that can replace VimScript, such as keybind callbacks, so I'll probably switch those out at some point.
 - I still don't really use [Vim Fugitive](https://github.com/tpope/vim-fugitive). Everyone says it's awesome, I know it's awesome, Tim Pope is a Vim god, yet I've never managed to really get into it. At this point though, I may just setup [ToggleTerm](https://github.com/akinsho/toggleterm.nvim) with a custom [LazyGit](https://github.com/jesseduffield/lazygit) instance instead, but we shall see. Or who knows, maybe someone will write a Lua version of Fugitive soon.
-- I kind of want to try writing my own plugin, jhough it's a bit scary. I really want a Treesitter-based version of [SplitJoin](https://github.com/AndrewRadev/splitjoin.vim) that's not so buggy and unreliable, but that feels like a huge task...
+- I kind of want to try writing my own plugin, though it's a bit scary. I really want a Treesitter-based version of [SplitJoin](https://github.com/AndrewRadev/splitjoin.vim) that's not so buggy and unreliable, but that feels like a huge task...
 
 As for Neovim and the community in general, there's a couple of things as well:
 
