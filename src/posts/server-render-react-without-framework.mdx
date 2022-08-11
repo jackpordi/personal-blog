@@ -76,9 +76,6 @@ void main();
 ```
 
 This should result in a pretty basic working web server that returns an HTML file that says "Hello world!". Really, `ReactDOMServer` does most of the work here for us by rendering that React. Before we try to do the client-side bundle and hydration, let's add support for actual routing first.
-<!--
-Because we like to be on the cutting edge of technology, let's use React 18's new `renderToPipeableStream` API. If you don't know what this is, it's what server-side suspense and streaming components. And if those words are foreign to you, [read here](https://reactjs.org/blog/2020/12/21/data-fetching-with-react-server-components.html)!
--->
 
 ### Routing
 
