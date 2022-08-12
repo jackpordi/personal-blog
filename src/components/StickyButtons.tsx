@@ -38,7 +38,7 @@ export const StickyButtons: FC<Props> = ({ shareData }) => {
 
   return (
     <div className="hidden md:flex flex-col ml-8">
-      <div className={`transition-opacity duration-300 flex flex-col sticky top-0 h-[80vh] justify-center ${visible ? "opacity-1" : "opacity-0"}`}>
+      <div className={`transition-opacity duration-500 flex flex-col sticky top-0 h-[80vh] justify-center ${visible ? "opacity-1" : "opacity-0 pointer-events-none"}`}>
         <div className={buttonSpacing}>
           <Link href="/">
             <a>
