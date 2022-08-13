@@ -118,4 +118,33 @@ Language X's compilers should hopefully also have direct support for plugins tha
 - Plugins for removing debug messages from production builds.
 
 ## Type Safe Metaprogramming and Code Generation
+
+Annotations, or decorators are a common way of doing metaprogramming - TODO DEFINITION. Controversially, I _like_ annotations and decorators (or macros in the Rust world). In my regular day to day work, I make use of them heavily with TypeScript packages like NestJS and class-validator. That said, I absolutely do understand their criticisms:
+
+1. They're "magic" and hard to understand.
+2. They're not type safe, and a source of errors i.e. multiple decorators in the wrong order, or decorators that transform the type of values/fields/functions.
+
+The first point usually comes from those in the Java ecosystem, where annotations/decorators heavily utilize on reflection to do magical things. This is fundamentally caused by the fact that Java annotations are handled _at runtime_, not at compilation time. In Python and TypeScript, decorators are _just functions_, which definitely aren't a "magic" black box by any means. And by moving the handling of decorators to compile time, I _think_ we can also achieve type safety. I may be wrong about the theory here, but a common pattern in Dart is to use annotations to pre-generate code, so I do think something similar could be achieved here that is type-safe and integrated into the compiler.
+
 ## Backed by a large entity
+
+Lastly, a more pragmatic point. Developing a new programming language is really hard, and maintaining it long-term is even harder - to the point where I'd say it's near impossible. This is where it helps to be backed be a large organization with deep pockets. After all, look at history:
+
+- Java and Oracle
+- C# and Microsoft
+- Go and Google
+- TypeScript and Microsoft
+- Rust and Mozilla
+
+Unfortunately, I simply think the days of the next big hit programming language being developed by a small group of people in a basement is now over - there are so many well-established existing choices out there and the ecosystems and resources of each choice is _huge_.
+
+Not to despair though - Go, Rust and TypeScript have also been open source since day 1 of their inception, and have had really great community-driven development and direction, and corporate sponsorship of open source is becoming more commonplace and widely accepted.
+
+## Honourable mentions
+
+There's a bunch of other features I would really like to see, but are a little smaller and don't need an entire section's worth of explaining:
+
+- **Named function arguments**. 
+- Sane module system and package manager.
+- Highly configurable linter (with sane defaults).
+- Helpful error messages.
