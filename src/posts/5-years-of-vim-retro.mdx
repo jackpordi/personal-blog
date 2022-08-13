@@ -38,7 +38,7 @@ For error diagnostics, I went with [Syntastic](https://github.com/vim-syntastic/
 
 ## Switching to Neovim (for no reason)
 
-[In July](https://github.com/jackpordi/dotFiles/commit/e0a824a4a98644463c506ae22106384a1a950fc2) a few weeks after completing the C project During the summer holidays, I heard through the grapevine about [Neovim](https://neovim.io/), a complete rewrite of Vim that was supposed to be better. Better how? Well, I certainly didn't know nor did I care about actually looking into it. I was young and stupid, and I thought newer is better, so why not make the switch? So, I made the switch to Neovim, which made no difference at all apart from the fact that my config file was in a different location and had a different name - but it _felt_ cool to be using something newer.
+[In July](https://github.com/jackpordi/dotFiles/commit/e0a824a4a98644463c506ae22106384a1a950fc2) a few weeks after completing the C project During the summer holidays, I heard through the grapevine about [Neovim](https://neovim.io/), a ~~complete rewrite~~ large refactor/near-rewrite of Vim that was supposed to be better. Better how? Well, I certainly didn't know nor did I care about actually looking into it. I was young and stupid, and I thought newer is better, so why not make the switch? So, I made the switch to Neovim, which made no difference at all apart from the fact that my config file was in a different location and had a different name - but it _felt_ cool to be using something newer.
 
 Also around the same time, [Plug](https://github.com/junegunn/vim-plug) got released. In this instance, I _did_ do some reading and realized the automatic plugin installation and updates it provided was far superior to having to manually clone plugins like with Pathogen that I was previously using, so I switched over. The ease of adding plugins with `Plug` quickly lead to an exponential boom in the number of plugins I was using...
 
@@ -91,7 +91,7 @@ Neovim isn't just a text editor, it's a _way of life_. And as usual with life, t
 - I'm currently getting rid of my worse habit: using Tmux panes for splits and terminals instead of Neovim's builtin splits. I'll probably still use Tmux windows for managing different projects or when I'm not actually _editing_ text, but the fact that I've gone as long as I have running multiple instances of Neovim in the same project is not one I'm proud of.
 - Neovim 0.7 introduced another batch of Lua integrations that can replace VimScript, such as keybind callbacks, so I'll probably switch those out at some point.
 - I still don't really use [Vim Fugitive](https://github.com/tpope/vim-fugitive). Everyone says it's awesome, I know it's awesome, Tim Pope is a Vim god, yet I've never managed to really get into it. At this point though, I may just setup [ToggleTerm](https://github.com/akinsho/toggleterm.nvim) with a custom [LazyGit](https://github.com/jesseduffield/lazygit) instance instead, but we shall see. Or who knows, maybe someone will write a Lua version of Fugitive soon.
-- I kind of want to try writing my own plugin, though it's a bit scary. I really want a Treesitter-based version of [SplitJoin](https://github.com/AndrewRadev/splitjoin.vim) that's not so buggy and unreliable, but that feels like a huge task...
+- I kind of want to try writing my own plugin, though it's a bit scary. I really want a Treesitter-based version of [SplitJoin](https://github.com/AndrewRadev/splitjoin.vim) that's not so buggy and unreliable, but that feels like a huge task... (EDIT: @kylechui himself has informed me of [trevJ](https://github.com/AckslD/nvim-trevJ.lua/) which seems to be what I'm looking for here).
 
 As for Neovim and the community in general, there's a couple of things as well:
 
@@ -115,7 +115,7 @@ Though this post wasn't originally meant to be an article about what plugins I'm
 - [Neoscroll](https://github.com/karb94/neoscroll.nvim) for smooth scrolling with `C-u` and `C-d`.
 - [Indent Blankline](https://github.com/lukas-reineke/indent-blankline.nvim) helps visually with indentation.
 - [Nvim Autopairs](https://github.com/windwp/nvim-autopairs) for autopairing brackets and tags.
-- [Nvim surround](https://github.com/tpope/vim-surround) and [Comment.nvim](https://github.com/numToStr/Comment.nvim), which are the Lua and improved versions of Tim Pope's plugins.
+- [Nvim surround](https://github.com/kylechui/nvim-surround) and [Comment.nvim](https://github.com/numToStr/Comment.nvim), which are the Lua and improved versions of Tim Pope's plugins.
 - [ToggleTerm](https://github.com/akinsho/toggleterm.nvim) as a quick toggle-able terminal. Though convenient, I'm also not sure if I should just be using native Neovim terminal buffers instead for this or not.
 
 There are a _few_ other plugins I'm using, but they're either language-specific (mainly TypeScript) or are far more personal preference rather than something I'd blanket recommend. For anyone interested, my personal dotfiles are [here](https://github.com/jackpordi/dotFiles) and they're usually pretty up to date, so feel free to check them out as a point of reference.
