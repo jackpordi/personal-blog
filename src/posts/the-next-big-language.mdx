@@ -1,0 +1,121 @@
+---
+title: What I'm hoping for in the next big language
+abstract: We're in dire need of the next big programming language, and here's what I'm looking for
+date: 2022-08-15T19:30:00+0700
+image: /images/neovim-retro.webp
+---
+
+## What's wrong with the current ones?
+
+Short answer: _nothing_. End of article!
+
+Long answer: they're _fine_, they do the job well, their ecosystems and communities are well established and could pretty much build anything and everything we'd want for a really long time. But they are also generally pretty old, and even if they've evolved relatively well over the years, there's always going to be a good number of design decisions and implementation details that hold them back. Whatever languages you work in, you can probably think of a few examples; off the top of my head there's a few that come to mind easily:
+
+- Null pointer exceptions in Java, often hailed as the ["billion dollar mistake"]().
+- _"We don't need generics (until we did, but by then everyone's using `interface {}` already)"_ in Go.
+- `C++`'s....well, everything.
+
+Also, I'm going to be talking about the next big _high-level_, general purpose programming language here. I don't know enough about super niche domain specific languages, and I already think Rust __is__ that next big language for low-level, performant code. __Spoiler alert__: I'm going to be pretty critical of various languages and design decisions here, and not everyone is going to agree with me. That's normal for any meaningful discussion, and I know I'm _far_ from being the most knowledgable programming languages expert in the world - that's what the comments section is for! I'm also going to be _really_ ambitious here, many features won't necessarily be compatible with each other, but a wishlist is a wishlist.
+
+So, here's my hopes and dreams of "Language X".
+
+## Null Safety
+
+TypeScript, Dart, Kotlin and various other languages have proven how useful it is to have null-safety built into the language. It doesn't even have to be "null" safety in the sense of explicit `null`-ables, but it could be by default there's no nulls in the language at all and there's dedicated `Optional` or `Maybe` types.
+
+## Modern, performant garbage collection
+
+Being a high level language, we wouldn't have manual memory management. Though I absolutely _love_ the idea of Rust's borrow checker, a garbage collector enables the programmer to just focus more on the business purpose of the code rather than the computer science. Modern garbage collection (and techniques that eliminate the need for garbage collection in the first place) can also be pretty damn good and have great performance. There's great article that discusses the differences in garbage collection in the JVM and in the Go runtime, which I'd highly recommend to anyone who wants to learn more.
+
+I also think there's opportunities to implement more research that revolve around optimizing memory management processes more. TODO.
+
+## Powerful, static type system with smart inference
+
+There was a time when dynamically typed languages were all the rage. _"I don't need to write type annotations anymore"_, _"it's so cumbersome to have to be so explicit"_, etc. Yet here we are a few years later, when TypeScript is one of the most popular languages in the world and _mother-ducking Python_ is getting increasing support for optional static typing. Though dynamic typing's convenience is very much still around, I'd say the following has been sufficiently proven:
+
+- Type annotations can act as a form of documentation, making it easier to maintain code long-term and also read others' code.
+- Many developers prefer to spend a little more time ensuring their programs are statically typed and as error prone as possible, as opposed to having to debug runtime type errors.
+- Type inference and editor tooling has massively reduced the headache and boilerplate of explicit type annotations.
+
+### Generics
+
+Thanks to Go, I have to be explicit about this. Generics _should_ be a feature of the language. Okay, _maybe_ it's a little more annoying to implement in compilers and compilation times might take a little longer, but if you have to rely on some sort of `any` type for common data structures like lists, then the language is not type-safe. If Rust can do generics, then a high level, garbage collected language certainly can as well.
+
+### Turing complete type checker
+
+Haskell and TypeScript's type checkers are so powerful, that you can write programs entirely on the type level. That means that instead of writing code that gets executed at runtime, the type checker computes the result of your program for you. For example, you could define natural numbers as types, with each number being a different type, then write a type alias/family (like a function that operates on types) that runs operations like addition and subtraction on those numbers.
+
+To be honest, this _probably_ isn't necessary, but it's certainly a nice-to-have feature that guarantees that the type system of the language will not be limiting in any way whatsoever or require any type escape hatches. A powerful type system also means that tools like metaprogramming (which I'll talk about later) and generics/function overloads can be resolved more accurately and intelligently.
+
+## Multi-Paradigm Support
+
+Whilst I think object-oriented programming is great and can work well in many scenarios, shoving it down people's throats like Java does makes no sense. _Not everything should be a class or object_. Forcing someone to create a stateless class with a static method when all they want is to write a pure, simple function is about as backwards as can be. On the other hand, whilst I dearly love Haskell, pure functional programming requiring a good understanding of monads and transformers means that's probably _not_ the way to go for the vast majority of developers (at least, not yet!).
+
+Instead, I think following the path that Python and JavaScript have gone makes the most sense. They support both OOP with classes, as well as treating functions as a first class citizen like in FP. Or you could just ignore all of that and write your code as one long script.
+
+## Preferred Immutability
+
+Referential mutability is far too often a source of errors in programs. Maybe something's been changed when they shouldn't be, or there's a race condition in your multi-threaded application. The traditional arguments for mutability generally are:
+
+- Reusing the same data in memory is more performant than cloning/allocating new data.
+- Code-wise, it's more convenient to mutate existing data/variables than have to do a deepclone with partial changes.
+
+The first point is undoubtedly true, and is a major reason why well-written manually memory-managed programs in C are so damn fast. However, I think the correctness and safety that immutability provides is indeed worth the performance hit - after all, this is a _high-level_ language that's meant to compete with the likes of Java, Node, and Python, not C, C++, Rust, etc. Secondly there are modern optimizations around creating mutated copies that mean the performance hit isn't neearly as big as it used to be. For example, if your static analysis can see that the original object/data is no longer used/referenced afterwards, the compiler could just keep using that under the hood whilst the actual code looks immutable.
+
+The second point is a bit more finnicky, but here's my thoughts:
+
+- Mutating primitive variables like strings or numbers _very_ rarely need to be done. I've witnessed a countless number of times where someone's claims of _requiring_ mutation of a variable broke down once the code gets refactored into something more concise or functional (sidenote: if you're writing a for-loop and mutating some accumulator, use a reduce or fold instead!).
+- Code generation and metaprogramming tools can be used to generate deep clone functions, like Dart's `copyWith` that drastically reduces the manual work required.
+
+I quite like Rust's approach where by default, every `val` is referentially immutable by default, and mutability is only allowed when you declare a variable with `mut` in the first place.
+
+## ADTs, extensions and derivations
+
+A really nice feature of Rust and Haskell is that they support algebraic data types. Algebraic data types are like a love-child born from classes and enums. Most importantly, they are an easy way to be explicit about the many _forms_ a type of data can have and allow exhaustive pattern matching. For example:
+
+```
+
+```
+
+Another feature that is often ADT's companion is traits, or extensions. They allow you to define additional methods on already-existing data structures, just as classes or even primitives.
+
+It's usually rare for a language to support ADTs, classes/OOPs _and_ extensions/traits, but I do think it should be possible.
+
+
+## Familiar, simple and easy to learn syntax
+
+The next big language isn't going to be one full of bells and whistles so flashy that it's unrecognizable - instead I think it's going to use relatively familiar syntax that other languages do. Sure, there might be a small amount of contention on whether it should be the `fn`, `function`, `func`, `def`, or whatever keyword used for defining functions, and minor nitpicks such as that. But on the whole, the syntax will be familiar to anyone who's worked with mainstream modern languages. There will be variables, functions, classes, and code will execute top to bottom - we're not trying to drastically reinvent the wheel here, and familiarity will ease adoption. Whilst the idea of a boatload of syntactic sugar and shorthand may seem alluring at first, having worked in Kotlin I personally think it _can_ get a little too much.
+
+## Async and multi-threading support
+
+A big caveat of NodeJS and Python is that they are fundamentally single-threaded (yeah, there are some caveats and workarounds like worker threads, but let's be honest here). Yet, they're still _hugely_ successfull and popular for writing web applications because they're able to execute tasks asynchronously with an event loop in a non-blocking manner. NodeJS applications running on a single thread can often perform on par with or even beat Java applications running on multiple threads (in IO-bound scenarios) because multiple threads that block frequently aren't as efficient as one well-managed thread. A lot of work has already been done around `async` event loops in other languages, so I think it'd be a no brainer to expect this, particularly when there's going to be people who want to run IO-bound applications on low thread-count machines.
+
+On the other hand, there's only so much you can really do with one thread. No one ever recommends a single-threaded language for parallelizable CPU-heavy tasks, so multi-threading support is very much still a must-have at the end of the day. In my opinion, one language that has very much _mastered_ the design of multi-threading is Go. Gochannels and Goroutines are intuitive to the programmer, and the language as a whole has proven that multithreaded scheduling managed by the runtime instead of the OS (essentially a multithreaded event loop) is really fast.
+
+## Multiple runtimes and compile targets
+
+Whilst I think the _primary_ target for Language X should be to compile to native machine code, it would be a big bonus to be able to support other compilation targets and runtimes as well, namely:
+
+- A JIT REPL for convenience/debugging.
+- JavaScript, so frontend applications can be written, similar to Elm.
+- WASM, because it's going to be the future of web, and a hugely portable hardware-agnostic format.
+- _Maybe_ JVM. On one hand, why not - but on the other, I think it'd be useless to compile to JVM bytecode without Java ecosystem interop/FFI.
+
+There's going to be a _lot_ of complexity in this, such as:
+
+- Ensuring that code written in language X can either _always_ be compiled to _all_ the targets, or appropriately labelling/tagging packages in the package repository which targets they support.
+- Which versions of language X will support which versions of each target 
+- How does multi-threaded code work when ported over to JS (which is single threaded?)
+
+
+I'm not expecting anything except native compilation (and maybe JIT REPL) to work flawlessly in the early years of Language X, but I do think it's good to aim high and be ambitious with multi-target support.
+
+## Extensible compiler
+
+Language X's compilers should hopefully also have direct support for plugins that can hook into and participate in the code transformation stages. This would enable various features:
+
+- Embedded DSLs are a common way of extending or improving various use cases within a language's ecosystem, by embedding another language syntax inside. The best example of this is probably JSX and TSX for React. Whilst JSX/TSX support within the TypeScript compiler itself has proven to be massively successful, it's also arguably created a burden of maintenance for the compiler itself. Therefore, it'd be more sensible to expect JSX/TSX-like compiler plugins maintained by a third party that can be plugged in to the compiler's configuration. 
+- Plugins for removing debug messages from production builds.
+
+## Type Safe Metaprogramming and Code Generation
+## Backed by a large entity
