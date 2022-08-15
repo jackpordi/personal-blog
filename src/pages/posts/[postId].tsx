@@ -55,7 +55,7 @@ const PostPage: NextPage<Post> = ({
         <meta name="author" content="Jack Pordi" />
       </Head>
       <div className="flex flex-row">
-        <div className="ml-2 md:mx-0 my-0 md:my-2 items-center block max-w-3xl flex-1">
+        <div className="mx-4 md:mx-0 my-0 md:my-2 items-center block max-w-3xl flex-1">
           <div className="mb-6" >
             {info.image && (
               <Image
