@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
 
 import { Nav } from "components/Nav";
 import { Footer } from "components/Footer";
@@ -37,7 +38,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <div className={`dark:bg-grey-800 ${fadeColors} pb-4`}>
         <div className="min-h-screen pb-4 ">
           <Nav />
-          <div className="container max-w-6xl mx-auto px-4">
+          <div className="container max-w-6xl mx-auto md:px-4">
             {/* @ts-ignore */}
             <Component
               {...pageProps}
@@ -46,6 +47,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         </div>
         <Footer />
       </div>
+      <Toaster />
     </DarkModeProvider>
   );
 }
