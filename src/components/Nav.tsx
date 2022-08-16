@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { DarkModeToggle } from "./DarkModeToggle";
 
 const iconStylesDesktop = "dark:text-white dark:hover:text-cyan-400 mr-6 transition transform hover:scale-115 hover:text-cyan-400";
-const iconStylesMobile = "dark:text-white dark:hover:text-cyan-400 mr-2";
+const iconStylesMobile = "dark:text-white mr-2 dark:group-hover:text-cyan-400";
 
 type INavItem = {
   name: string;
@@ -110,7 +110,7 @@ export const Nav: FunctionComponent = () => {
       </div>
 
       <div
-        className={`h-screen w-[180px] fixed shadow-lg pl-3 pt-6 dark:bg-grey-800 bg-white z-20 left-0 top-0 bottom-0 flex flex-col transition-all duration-300 ${open ? "" : "-translate-x-[180px]"} lg:hidden`}
+        className={`h-screen w-[180px] fixed shadow-lg pl-3 pt-6 dark:bg-black bg-white z-20 left-0 top-0 bottom-0 flex flex-col transition-all duration-300 ${open ? "" : "-translate-x-[180px]"} lg:hidden`}
       >
         <div className="pl-3">
           <JackPordiLogo />
@@ -120,9 +120,11 @@ export const Nav: FunctionComponent = () => {
           { reversed.map(({
             href, name, icon: Icon,
           }) => (
-            <Link href={href}>
+            <Link
+              key={name}
+              href={href}>
               <a
-                className="flex flex-row items-center dark:text-white justify-start text-2xl my-2"
+                className="flex flex-row items-center dark:text-white justify-start text-2xl my-2 group dark:hover:text-cyan-400"
               >
                 <div
                   className={iconStylesMobile}
