@@ -95,7 +95,7 @@ export const Nav: FunctionComponent = () => {
       <div className="block lg:hidden">
         <button
           onClick={() => setOpen((old) => !old)}
-          className="flex items-center px-3 py-2 border rounded text-black hover:border-white">
+          className="flex items-center px-3 py-2 border rounded text-black dark:text-white hover:border-white">
           <svg className="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <title>Menu</title>
             <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
@@ -108,9 +108,9 @@ export const Nav: FunctionComponent = () => {
           { items.map((item) => <NavItem {...item}/>) }
         </div>
       </div>
-      <div
-        className={`h-screen w-[180px] fixed shadow-lg pl-3 pt-6 bg-white z-10 left-0 top-0 bottom-0 flex flex-col transition-all duration-300 ${open ? "" : "-translate-x-[180px]"} md:hidden`}
 
+      <div
+        className={`h-screen w-[180px] fixed shadow-lg pl-3 pt-6 dark:bg-grey-800 bg-white z-20 left-0 top-0 bottom-0 flex flex-col transition-all duration-300 ${open ? "" : "-translate-x-[180px]"} lg:hidden`}
       >
         <div className="pl-3">
           <JackPordiLogo />
@@ -122,7 +122,7 @@ export const Nav: FunctionComponent = () => {
           }) => (
             <Link href={href}>
               <a
-                className="flex flex-row items-center justify-start text-2xl my-2"
+                className="flex flex-row items-center dark:text-white justify-start text-2xl my-2"
               >
                 <div
                   className={iconStylesMobile}
@@ -136,6 +136,12 @@ export const Nav: FunctionComponent = () => {
             </Link>
           )) }
         </div>
+      </div>
+
+      <div
+        onClick={() => setOpen(false)}
+        className={`${open ? "" : "lg:hidden pointer-events-none"} fixed top-0 bottom-0 right-0 left-0 z-10`}>
+
       </div>
     </nav>
   );
