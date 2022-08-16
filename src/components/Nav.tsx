@@ -105,7 +105,7 @@ export const Nav: FunctionComponent = () => {
       <div className="w-full lg:flex-grow hidden lg:flex lg:items-center lg:w-auto">
         <div className="text-xl lg:flex-grow lg:items-center lg:flex justify-end">
           <DarkModeToggle />
-          { items.map((item) => <NavItem {...item}/>) }
+          { items.map((item) => <NavItem key={item.name} {...item}/>) }
         </div>
       </div>
 
