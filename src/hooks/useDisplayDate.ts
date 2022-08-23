@@ -12,7 +12,7 @@ export function useDisplayDate(dateString: string) {
       if (isMobile) {
         return dayjs(dateString).format("D/MM/YY H:mmA");
       }
-      return dayjs(dateString).format("dddd Do MMMM YYYY, H:mmA");
+      return dayjs(dateString).format("dddd D MMMM YYYY, H:mmA");
     },
     [ dateString, isMobile ],
   );
