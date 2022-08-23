@@ -18,6 +18,7 @@ describe("PostPreviewCard", () => {
     render(<PostPreviewCard
       id={POST_ID}
       post={POST}
+      readingTime={3}
     />);
 
     const title = screen.getByRole("heading", { name: POST.title });
@@ -29,6 +30,7 @@ describe("PostPreviewCard", () => {
     render(<PostPreviewCard
       id={POST_ID}
       post={POST}
+      readingTime={3}
     />);
 
     const abstract = screen.getByText(POST.abstract);
@@ -39,16 +41,20 @@ describe("PostPreviewCard", () => {
     render(<PostPreviewCard
       id={POST_ID}
       post={POST}
+      readingTime={3}
     />);
 
-    const img = screen.getByAltText(POST.image!);
-    expect(img).toBeInTheDocument();
+    const imgs = screen.getAllByAltText(POST.image!);
+    for (const img of imgs) {
+      expect(img).toBeInTheDocument();
+    }
   });
 
   it("Matches the snapshot", () => {
     const { container } = render(<PostPreviewCard
       id={POST_ID}
       post={POST}
+      readingTime={3}
     />);
     expect(container).toMatchSnapshot();
   });

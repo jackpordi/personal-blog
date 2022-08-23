@@ -41,7 +41,12 @@ const Home = ({ posts }: Props) => (
 
       <div className={styles.grid}>
         {posts.map((p) => (
-          <PostPreviewCard key={p.id} id={p.id} post={p.info} />
+          <PostPreviewCard
+            key={p.id}
+            id={p.id}
+            post={p.info}
+            readingTime={p.readingTime}
+          />
         ))}
       </div>
     </main>

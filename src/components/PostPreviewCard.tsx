@@ -7,11 +7,16 @@ import { FrontMatter } from "types";
 interface Props {
   id: string;
   post: FrontMatter;
+  readingTime: number;
 }
 
-export function PostPreviewCard({ post, id }: Props) {
+export function PostPreviewCard({
+  post,
+  id,
+  readingTime,
+}: Props) {
 
-  const displayDate = useDisplayDate(post.date);
+  const { age } = useDisplayDate(post.date);
 
   return (
     <Link href={`posts/${id}`}>
@@ -50,10 +55,9 @@ export function PostPreviewCard({ post, id }: Props) {
             <h2 className="fade-colors text-xl text-black dark:text-gray-200 dark:group-hover:text-cyan-400 group-hover:text-cyan-500 font-semibold flex-1 md:flex-none">{post.title}</h2>
             <p className="text-gray-700 text-md group-hover:text-black dark:text-gray-300 dark:group-hover:text-white hidden md:flex">
               {post.abstract}
-            </p>
-            <div className="flex flex-row text-black mt-1 justify-between w-full">
+            </p> <div className="flex flex-col-reverse md:flex-row text-black md:mt-1 justify-between w-full">
               <div className="fade-colors group-hover:text-cyan-500 dark:text-gray-200 dark:group-hover:text-cyan-400">Read More &rarr;</div>
-              <div className="text-gray-400 dark:text-gray-200 ">{displayDate}</div>
+              <div className="text-gray-400 dark:text-gray-200 flex flex-row">{readingTime.toFixed(0)} min read | {age}</div>
             </div>
           </div>
         </div>

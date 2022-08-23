@@ -4,8 +4,9 @@ import path from "path";
 import matter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
 import rehypeHighlight from "rehype-highlight";
+import readingTime from "reading-time";
 
-import { Post } from "types";
+import { FrontMatter, Post } from "types";
 
 export async function getPost(postId: string): Promise<Post> {
 
@@ -21,9 +22,10 @@ export async function getPost(postId: string): Promise<Post> {
 
   const post: Post = {
     id: postId,
-    info,
+    info: info as FrontMatter,
+    readingTime: readingTime(content).minutes,
     mdx,
-  } as Post;
+  };
   return post;
 }
 

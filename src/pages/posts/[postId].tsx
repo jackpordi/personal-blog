@@ -44,7 +44,7 @@ const PostPage: NextPage<Post> = ({
   info, mdx, id,
 }) => {
 
-  const displayDate = useDisplayDate(info.date);
+  const { displayDate } = useDisplayDate(info.date);
 
   return (
     <div className="items-center flex flex-col">
