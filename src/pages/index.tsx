@@ -1,6 +1,6 @@
 import type { GetStaticProps } from "next";
 import Head from "next/head";
-import moment from "moment";
+import dayjs from "dayjs";
 
 import { Post } from "types";
 import { PostPreviewCard } from "components/PostPreviewCard";
@@ -57,7 +57,7 @@ const Home = ({ posts }: Props) => (
 export const getStaticProps: GetStaticProps = async () => {
   const posts = await getAllPosts();
 
-  posts.sort((a, b) => moment(b.info.date).diff(moment(a.info.date)));
+  posts.sort((a, b) => dayjs(b.info.date).diff(dayjs(a.info.date)));
 
   return { props: { posts } };
 };

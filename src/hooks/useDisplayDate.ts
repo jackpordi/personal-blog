@@ -1,4 +1,4 @@
-import moment, { Moment } from "moment";
+import dayjs, { Dayjs } from "dayjs";
 import { useMemo } from "react";
 
 import { useIsMobile } from "./useIsMobile";
@@ -10,17 +10,17 @@ export function useDisplayDate(dateString: string) {
   const displayDate = useMemo(
     () => {
       if (isMobile) {
-        return moment(dateString).format("D/MM/YY H:mmA");
+        return dayjs(dateString).format("D/MM/YY H:mmA");
       }
-      return moment(dateString).format("dddd Do MMMM YYYY, H:mmA");
+      return dayjs(dateString).format("dddd Do MMMM YYYY, H:mmA");
     },
     [ dateString, isMobile ],
   );
 
   const age = useMemo(() => {
-    const date = moment(dateString);
+    const date = dayjs(dateString);
 
-    const now = moment();
+    const now = dayjs();
     const twoWeeksAgo = now.clone().subtract(2, "week");
     const oneMonthAgo = now.clone().subtract(1, "month");
     const oneYearAgo = now.clone().subtract(1, "year");
@@ -41,8 +41,8 @@ export function useDisplayDate(dateString: string) {
   };
 }
 
-function formatTimeAgo(date: Moment, unit: "day" | "week" | "month" | "year") {
-  const diff = moment().diff(date, unit);
+function formatTimeAgo(date: Dayjs, unit: "day" | "week" | "month" | "year") {
+  const diff = dayjs().diff(date, unit);
 
   const unitString = diff === 1 ? unit : `${unit}s`;
   return `${diff} ${unitString} ago`;

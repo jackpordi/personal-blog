@@ -12,9 +12,9 @@
   },
   "dependencies": {
     "@sentry/nextjs": "^6.19.6",
+    "dayjs": "^1.11.5",
     "gray-matter": "^4.0.3",
     "lodash.throttle": "^4.1.1",
-    "moment": "^2.29.1",
     "next": "^12.2.4",
     "next-mdx-remote": "^4.1.0",
     "react": "17.0.2",
