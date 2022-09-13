@@ -1,5 +1,10 @@
-import { FC, useEffect, useState } from "react";
-import { FaHome, FaShareAlt } from "react-icons/fa";
+import {
+  FC,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
+import { FaChevronUp, FaHome, FaShareAlt } from "react-icons/fa";
 import { GiCoffeeCup } from "react-icons/gi";
 import throttle from "lodash.throttle";
 import Link from "next/link";
@@ -18,6 +23,12 @@ interface Props {
 export const StickyButtons: FC<Props> = ({ shareData }) => {
 
   const share = useShareLink(shareData);
+  const scrollToTop = useCallback(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
 
   const [ visible, setVisible ] = useState(false);
 
@@ -39,6 +50,16 @@ export const StickyButtons: FC<Props> = ({ shareData }) => {
   return (
     <div className="hidden md:flex flex-col ml-8">
       <div className={`transition-opacity duration-500 flex flex-col sticky top-0 h-[80vh] justify-center ${visible ? "opacity-1" : "opacity-0 pointer-events-none"}`}>
+        <button
+          type="button"
+          className={buttonSpacing}
+          onClick={scrollToTop}
+        >
+          <FaChevronUp
+            className={iconStyle}
+            size={22}
+          />
+        </button>
         <div className={buttonSpacing}>
           <Link href="/">
             <a>
@@ -50,6 +71,7 @@ export const StickyButtons: FC<Props> = ({ shareData }) => {
           </Link>
         </div>
         <button
+          type="button"
           className={buttonSpacing}
           onClick={share}
         >
