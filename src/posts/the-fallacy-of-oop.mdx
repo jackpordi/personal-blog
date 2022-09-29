@@ -1,0 +1,63 @@
+---
+title: The fallacy of Object Orientation
+abstract: OOP is the default approach for most programmers, but I think it's a bit of a fallacy.
+date: 2022-08-10T19:30:00+0700
+image: /images/neovim-retro.webp
+---
+
+To be honest, Object Oriented programming gets plenty enough hate on it's own that I really didn't need to write this. But, spoiler: I don't hate OOP, nor am I trying to preach to you the gospel of pure functional programming (though, don't tempt me). There's plenty of other good material out there that points out why OOP is bad using very specific evidence or code samples - some of which I agree with, and some that I don't. What I'm going to be writing about here isn't going to be nearly as deeply conceptual or theoretical as some of that content, instead I'll largely be talking about how the historical evolution of OOP has TODO
+
+## At it's core, a perfectly good idea
+
+Contrary to the title, I do think that at its very core, classes and objects _are_ a good idea. Being able to consolidate _state_ and _logic_ together into one template is a nice, convenient feature a lot of the time. For example, I think this is a perfectly fine piece of code.
+
+```typescript
+class Person {
+
+  public readonly name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+
+  public introduce(other: Person) {
+    console.log(`Hey ${other.name}, my name is ${this.name}`);
+  }
+}
+
+
+const me = new Person("Jack");
+const bill = new Person("Bill");
+me.introduce(bill);
+```
+
+`me.introduce(bill)` is just a tad nicer to read than a pure function `introduce(me, bill)`, and you can see how the `Person` class can be extended, or its instances passed around and re-used across different places in the code.
+
+## Objects....everywhere!
+
+Unfortunately, in many of the traditional OOP languages (looking at you, Java) object orientation isn't just something you _can_ do to write better code, but instead it is something you _must_ always do at all times because there is no alternative. If we could take a time machine and go back to 1996, we could perhaps see why it was a good idea to enforce that at the time:
+
+- OOP was the (overhyped) prince that was promised, it was going to solve every and all problems in programming. If its so great, then surely it wouldn't hurt to just make everything an object?
+- Writing compilers is a hard task, and any simplifications you can make to the model of your language (e.g, forcing everything to be an object...) means large amounts of time and money saved.
+
+But then, you get this chunk of code that often terrorizes undergrads and first-time Java learners:
+
+```java
+class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!"); 
+    }
+}
+```
+
+What the hell is that? 
+- Why can't I just write a simple `print("Hello world")` and get on with my day? 
+- Why are we being forced to write a class (which by default, _does_ have constructable instances) when I have neither per-instance nor per-class/static state? 
+- Why is my function taking in an `args` argument, when I don't want to use it?
+
+If this was just limited to the `main` execution of your code, then I _could_ argue that even though it's not ideal, it's not that hard to understand what's going on - just an extra 2 or 3 lines of boilerplate that once you learn what it means, becomes a visual pattern you gloss over or muscle memory for your twitchy fingers.  But it _isn't_ limited to just the `main` function - it's _impossible_ to write pure functions that don't use state without wrapping it in some sort of class. Again, not the end of the world but it does start to feel reductive.
+
+## Overengineer from the get-go
+
+## An entire generation of programmers who will create a class for any and every little thing
+
