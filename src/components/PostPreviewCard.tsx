@@ -35,7 +35,8 @@ export function PostPreviewCard({
                   alt={post.image}
                   height={150}
                   width={180}
-                  objectFit="cover" />
+                  className="object-cover"
+                />
               </div>
               <div
                 className="rounded-sm md:hidden flex"
@@ -45,7 +46,8 @@ export function PostPreviewCard({
                   alt={post.image}
                   height={100}
                   width={120}
-                  objectFit="cover" />
+                  className="object-cover"
+                />
               </div>
             </div>
           )}

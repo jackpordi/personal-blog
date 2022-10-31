@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { FaEnvelope, FaGithub, FaHome } from "react-icons/fa";
 import { GiCoffeeCup } from "react-icons/gi";
@@ -49,30 +51,26 @@ const NavItem: FC<INavItem> = ({
   href,
   icon: Icon,
 }) => (
-  <Link href={href}>
-    <a
-      className={iconStylesDesktop}
-    >
-      <Icon
-        size={28}
-      />
-    </a>
+  <Link
+    href={href}
+    className={iconStylesDesktop}
+  >
+    <Icon
+      size={28}
+    />
   </Link>
 );
 
 const JackPordiLogo = () => (
   <Link
     href="/"
+    className="flex items-center flex-shrink-0 mr-6"
   >
-    <a
-      className="flex items-center flex-shrink-0 mr-6"
-    >
-      <span className="text-gray-700 dark:text-white text-3xl md:text-3xl tracking-tight">
+    <span className="text-gray-700 dark:text-white text-3xl md:text-3xl tracking-tight">
         Jack
-        {" "}
-        <span className="gradient-text font-bold">Pordi</span>
-      </span>
-    </a>
+      {" "}
+      <span className="gradient-text font-bold">Pordi</span>
+    </span>
   </Link>
 );
 
@@ -122,19 +120,16 @@ export const Nav: FunctionComponent = () => {
           }) => (
             <Link
               key={name}
+              className="flex flex-row items-center dark:text-white justify-start text-2xl my-2 group dark:hover:text-cyan-400"
               href={href}>
-              <a
-                className="flex flex-row items-center dark:text-white justify-start text-2xl my-2 group dark:hover:text-cyan-400"
+              <div
+                className={iconStylesMobile}
               >
-                <div
-                  className={iconStylesMobile}
-                >
-                  <Icon
-                    size={22}
-                  />
-                </div>
-                <h3>{name}</h3>
-              </a>
+                <Icon
+                  size={22}
+                />
+              </div>
+              <h3>{name}</h3>
             </Link>
           )) }
         </div>
