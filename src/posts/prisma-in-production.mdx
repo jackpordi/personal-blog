@@ -1,0 +1,95 @@
+---
+title: "Prisma in Production: A review"
+abstract: I've started using Prisma in a production code professionally for a few months now, and wanted to share my experiences with it for anyone considering their next Node ORM.
+date: 2022-12-03T22:30:00+0000
+image: /images/prisma.webp
+---
+
+[Prisma](https://www.prisma.io/) is a self described _"Next-generation Node.js and TypeScript ORM"_, but if you clicked on this link then you _probably_ already knew that. It differentiates itself from other traditional ORMs like [TypeORM](https://typeorm.io/) or [Hibernate](https://hibernate.org/orm/) via a number of ways, most notably:
+
+- Models and relations are declared via a [schema](https://www.prisma.io/docs/concepts/components/prisma-schema) file that uses a domain-specific language. The typescript client you use to interact with your database is then generated from that schema, usually into your `node_modules` where you use it as if it was a regular third party library.
+- Queries are completely [type safe](https://www.prisma.io/docs/concepts/components/prisma-client/advanced-type-safety), using the generated types.
+
+I can't remember where I first heard about Prisma, but it was around 2 years ago. At the time, despite the fact that I was greatly impressed with what it could do and the approach it was taking, it seemed _too new_ and yet to be considered battle-hardened enough. Various features such as transactions were missing, and the small community/userbase meant naturally meant documentation and bugs were not yet battle-tested. But recently over the past 8 months or so, I've started trying it out in a real, professional and production environment for some new projects I've been working on. So, here goes my review - in the hopes that someone can use this to make their own informed decision in the future.
+
+## The Good
+
+### Type Safety and Codegen
+
+For starters, Prisma has been _by far_ the most type-safe experience in using databases I've ever had, without a doubt. Trying to access an object's relational field when I forgot to do a join in the query now gives me type errors, which is great. The usual gotchas of not having type safety is pretty much entirely gone, e.g.
+
+- Forgetting to insert a field that is non-nullable
+- Typos in your query builder's string arguments
+- Selecting only specific fields will infer that the return type should include and _only_ include those fields.
+- Ordering and filtering knows the types of the columns and what you can and can't do to each type.
+
+Code generation also means a few nice things, like e.g. postgres enums you declare in the schema are generated into actual TypeScript enums as well. There's really not much to say here, other than the fact that Prisma absolutely delivers its promise of maximum type safety for those who seek it. Another benefit I'm seeing personally, is that you can codegen into a custom location inside a monorepo so that multiple applications can take advantage of the same database schema/connection.
+
+### Clean, declarative schema with LSP/IDE integration
+
+ORMs traditionally rely on the database models being defined that ORM's language somewhere. For OOP languages it's often as classes that are _heavily_ annotated with decorators, like TypeORM or [MikroORM](https://mikro-orm.io/). I think this has been an _okay_ approach in the past, but there's plenty of pitfalls with this approach:
+
+- You quickly dive into having classes where 70% of the lines are just decorators.
+- Decorators aren't typesafe, it's possible to do a `@Column("varchar")` decorator on a `id: number` field.
+- Relations are messy, requiring having both `A` as a field in `B` _and_ `B` as a field in `A` but no one tells you if you've done them wrong.
+
+The other approach is something similar to [Mongoose](https://mongoosejs.com/docs/models.html), which is just declaring your model fields and constraints as an object literal instead. In theory, this should be similarly as type safe as the decorator approach, but in practice most libs which do this approach were largely during the days before type safety was considered as high a priority as it is now.
+
+The main pitfall here is that most general purpose langauages (including TypeScript) just aren't good at describing or enforcing data models and (bi directional) relations. So, the Prisma team said _screw it, we're gonna write a custom language for this then generate the TypeScript types and client instead_. And in my opinion, that was a _fantastic_ idea. Looking at the example (which can also be found on the main Prisma docs):
+
+```
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
+  posts Post[]
+}
+
+model Post {
+  id        Int     @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean @default(false)
+  author    User    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+````
+
+It doesn't look particularly different from classes and decorators at first, but there's some nuance here. This custom DSL can:
+
+- Define relations by referring to the fields of another model directly, no unchecked strings.
+- Declare the types in the database-specific data types. No need to duplicate `number` and `"int"`.
+- Declare nullable with a `?` instead of a `| null`. No need to deal with `undefined` vs `null`, because `undefined` doesn't exist at the database level.
+
+The real kicker here though, is that Prisma has an LSP integration with VSCode (or vim!). This means if you forget to declare relations bidirectionally, or have any ambiguous references then you'll know during development _and_ the codegen step.
+
+### Clean, simple API
+
+Prisma has a super simple `PrismaClient` API, which doesn't require much to setup. All that's needed is the Prisma client instance, which gives you access to everything you need. So, bonus points for not having to set up a million `Repository` classes and helpers.
+
+### Migrations
+
+This one's pretty simple - Prisma supports not only running your migrations for you, but also _generating_ them from changes in your Prisma schema. This isn't really a groundbreaking feature, but a nice one to have nonetheless. One thing I initially disliked is that it didn't have rollback migrations, which is something that many other database migration systems have. However, upon some thought I realized that this is probably the more correct design choice anyways. After all, once you deploy a migration in production, it's deployed and any "down" migrations aren't guaranteed to actually reverse the effects of the forward migration, e.g. if you've dropped a non-null column in a non-empty table, there's not really any going back. So despite it feeling awkward at first, the lack of down/revert/rollback migrations have made our team think more explicitly about what changes are going to happen.
+
+## The Bad
+
+### Prisma Schema can only be in a single file
+Far from a dealbreaker, but not ideal. There are a few third party solutions out there that will compile multiple prisma schema files together, but a first party solution doesn't feel like a lot to ask for - especially as the Prisma team is pushing the narrative that it's ready for production, and many databases out there have large numbers of tables which is going to result in a schema file that's thousands of lines long. Given that splitting code into different files/modules isn't exactly groundbreaking computer science these days, I would've really thought this would be done by now.
+
+### Still many the typical limitations of an ORM
+Nested select queries work like a dream _but_ like many other ORMs, more advanced queries like group-bys with nested relations or complex aggregates aren't really possible, at least not without falling back to raw SQL. Prisma also doesn't have a querybuilder API that can act as an intermediate step between the high level ORM API and raw SQL, which makes sense given their safety-first design philosophy, but also is sometimes missed for more complex queries.
+
+### No nested create-many  or delete API
+This one's pretty self explanatory. I don't really see any reason (apart from the complexity of the query generation) why we shouldn't be able to do a nested create-many like described [here](https://github.com/prisma/prisma/issues/5455). Similarly, I also think there should be nested programmatic deletes rather than just specifying the cascade behaviour - after all, nested deletes already _kind of_ exist when [updating objects](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries#disconnect-all-related-records) without deleting the parents. The API could just allow specifying (for one-to-one relations) which relations should be deleted along with the parent or not.
+
+### Migrations API requires lots of care and manual intervention
+
+Ok, so the migrations API is actually _not_ that perfect. Its features I mentioned earlier are still very much great, but I do have trouble with a few things:
+
+- Failed migrations, for some reason, require manually going into the database with write access to delete a failed migration entry. This is despite the fact that the migrations _do_ run inside a transaction, so a failed migration has no effect on the database anyways. However, the [docs](https://www.prisma.io/docs/guides/database/production-troubleshooting) honestly make it sound like migrations _don't_ run inside a transaction by talking about manually applying or rolling back individual steps in the migration. My best guess is that Prisma didn't have a transactions API until not-that-long-ago ([well, a year or so ago](https://github.com/prisma/prisma/discussions/3774)), and not a lot of effort has been made to update the migration API or docs to reflect this.
+- The `prisma migrate dev` command at first thought feels quite useful, but in my opinion is _extremely_ dangerous, because it can reset or wipe your database. The _only_ way to create a migration and not apply it immediately is to use `prisma migrate dev --create-only`, is exactly 1 command line argument away from disaster. Combining with the previous point that Prisma recommends running Prisma CLI commands manually against your prod database to resolve failed migrations, it seems incredibly risky to me that someone will eventually press their arrow keys too many times and end up wiping the prod database. Migration creation also happens by looking at your development database and comparing it to your Prisma schema, instead of your previous migrations. This is another design decision which I don't agree with, as local dev database schemas can vary branch to branch and the developer may have forgotten to reset their database when they last switched the branch.
+
+
+## The Future
+
+Whilst not without its flaws, Prisma has definitely been a big improvement compared to my past experiences in other ORMs. That said, it's not without it's flaws, and whilst I do agree that is is very much a "next generation" ORM, it still has a few of the traditional pitfalls of an ORM - many use cases that don't suit other ORMs will probably not suit Prisma either, at least not yet. However, I'm _very_ optimistic about what's coming in the future, not just with Prisma itself but also future competitors who will have been inspired by Prisma's design approach (particularly, codegen and the conditional generated types) that may come in and drive innovation in this space a bit more.
