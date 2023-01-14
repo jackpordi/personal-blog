@@ -64,7 +64,11 @@ const PostPage: NextPage<Post> = ({
                 alt={info.image}
                 height={320}
                 width={800}
-                objectFit="cover" />
+                style={{
+                  maxWidth: "100%",
+                  height: "auto",
+                  objectFit: "cover",
+                }} />
             )}
             <p className="text-gray-500 text-left dark:text-gray-300">{displayDate}</p>
             <h1 className="font-semibold text-4xl mb-2 dark:text-gray-200">{info.title}</h1>

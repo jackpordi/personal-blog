@@ -19,7 +19,7 @@ export function PostPreviewCard({
   const { age } = useDisplayDate(post.date);
 
   return (
-    (<Link href={`posts/${id}`}>
+    <Link href={`posts/${id}`}>
 
       <div className="md:px-4 px-3 py-1 md:py-4 flex-row flex w-full flex-1 transform transition margin-2 text-left group my-2 max-w-2xl cursor-pointer rounded-sm">
         {post.image && (
@@ -35,7 +35,10 @@ export function PostPreviewCard({
                 alt={post.image}
                 height={150}
                 width={180}
-                objectFit="cover" />
+                style={{
+                  height: 150,
+                  objectFit: "cover",
+                }} />
             </div>
             <div
               className="rounded-sm md:hidden flex"
@@ -45,7 +48,10 @@ export function PostPreviewCard({
                 alt={post.image}
                 height={100}
                 width={120}
-                objectFit="cover" />
+                style={{
+                  height: 100,
+                  objectFit: "cover",
+                }} />
             </div>
           </div>
         )}
@@ -62,6 +68,6 @@ export function PostPreviewCard({
         </div>
       </div>
 
-    </Link>)
+    </Link>
   );
 }
