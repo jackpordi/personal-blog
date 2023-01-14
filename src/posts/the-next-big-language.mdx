@@ -35,11 +35,11 @@ There was a time when dynamically typed languages were all the rage. _"I don't n
 - Many developers prefer to spend a little more time ensuring their programs are statically typed and as error prone as possible, as opposed to having to debug runtime type errors.
 - Type inference and editor tooling has massively reduced the headache and boilerplate of explicit type annotations. A lot of the times in TypeScript, you don't even have to write the types explicitly, the inference does everything for you.
 
-### Generics
+## Generics
 
 Thanks to Go, I have to be explicit about this. Generics _should_ be a feature of the language. Okay, _maybe_ it's a little more annoying to implement in compilers and compilation times might take a little longer, but if you have to rely on some sort of `any` or `interface {}` type for common data structures like lists, then the language is not type-safe. If Rust can do generics, then a high level, garbage collected language certainly can as well.
 
-### Turing complete type checker
+## Turing complete type checker
 
 Haskell and TypeScript's type checkers are so powerful, that you can write programs entirely on the type level (see [here](https://note89.github.io/typescript-typelevel-tic-tac-toe/) and [here](https://dl.acm.org/doi/10.1145/3331554.3342606)). That means that instead of writing code that gets executed at runtime, the type checker computes the result of your program for you. For example, you could define natural numbers as types, with each number being a different type, then write a type alias/family (like a function that operates on types) that runs operations like addition and subtraction on those numbers.
 
