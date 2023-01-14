@@ -62,12 +62,12 @@ export const StickyButtons: FC<Props> = ({ shareData }) => {
         </button>
         <div className={buttonSpacing}>
           <Link href="/">
-            <a>
-              <FaHome
-                className={iconStyle}
-                size={24}
-              />
-            </a>
+
+            <FaHome
+              className={iconStyle}
+              size={24}
+            />
+
           </Link>
         </div>
         <button

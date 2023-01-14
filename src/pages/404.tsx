@@ -12,10 +12,12 @@ export default function ErrorPage() {
       <div className="text-2xl mt-2 text-center">
         We couldn't find the page you're looking for.
         <br/>
-        <Link href="/">
-          <a className="text-2xl hover:underline dark:text-cyan-400 text-blue-600">
+        <Link
+          href="/"
+          className="text-2xl hover:underline dark:text-cyan-400 text-blue-600">
+
           Go back home.
-          </a>
+
         </Link>
       </div>
     </div>
