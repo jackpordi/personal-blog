@@ -9,15 +9,13 @@ export default function ErrorPage() {
       <h1 className="text-9xl font-bold animate-text bg-gradient-to-r from-cyan-400 via-red-400 to-blue-600 bg-clip-text text-transparent font-black">
         404!
       </h1>
-      <div className="text-2xl mt-2 text-center">
+      <div className="text-lg mt-2 text-center">
         We couldn't find the page you're looking for.
         <br/>
         <Link
           href="/"
-          className="text-2xl hover:underline dark:text-cyan-400 text-blue-600">
-
-          Go back home.
-
+          className="text-lg hover:underline dark:text-cyan-400 text-blue-600">
+          Take me back home
         </Link>
       </div>
     </div>
