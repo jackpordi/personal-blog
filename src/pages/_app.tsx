@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
+import { Analytics } from "@vercel/analytics/react";
 
 import { Nav } from "components/Nav";
 import { Footer } from "components/Footer";
@@ -23,6 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <DarkModeProvider>
+      <Analytics />
       <Head>
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link
