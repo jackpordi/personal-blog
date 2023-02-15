@@ -13,12 +13,10 @@ export async function getPost(postId: string): Promise<Post> {
   const markdownWithMeta = await fs.readFile(path.join("src/posts", `${postId}.mdx`), "utf-8");
 
   const { data: info, content } = matter(markdownWithMeta);
-  const mdx = await serialize(content, {
-    mdxOptions: {
-      // @ts-ignore
-      rehypePlugins: [ rehypeHighlight ],
-    },
-  });
+  const mdx = await serialize(
+    content,
+    { mdxOptions: { rehypePlugins: [ rehypeHighlight ] } },
+  );
 
   const post: Post = {
     id: postId,

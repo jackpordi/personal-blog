@@ -1,13 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { FaEnvelope, FaGithub, FaHome } from "react-icons/fa";
 import { GiCoffeeCup } from "react-icons/gi";
-import {
-  FunctionComponent,
-  useState,
-  FC,
-  useEffect,
-} from "react";
-import { useRouter } from "next/router";
+import { FunctionComponent, useState, FC } from "react";
 
 import { DarkModeToggle } from "./DarkModeToggle";
 
@@ -74,14 +70,14 @@ export const Nav: FunctionComponent = () => {
 
   const [ open, setOpen ] = useState(false);
 
-  const router = useRouter();
-
-  useEffect(() => {
-
-    const onPageChange = () => setOpen(false);
-    router.events.on("routeChangeComplete", onPageChange);
-    return () => router.events.off("routeChangeComplete", onPageChange);
-  }, [ router.events ]);
+  // const router = useRouter();
+  //
+  // useEffect(() => {
+  //
+  //   const onPageChange = () => setOpen(false);
+  //   router.events.on("routeChangeComplete", onPageChange);
+  //   return () => router.events.off("routeChangeComplete", onPageChange);
+  // }, [ router.events ]);
 
   return (
     <nav className="inset-x-0 flex flex-1 items-center justify-between flex-wrap p-6 py-22 text-gray-500">

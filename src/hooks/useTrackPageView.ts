@@ -1,17 +1,17 @@
-import { useRouter } from "next/dist/client/router";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 const GA_ID: string = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS!;
 
 function logPageView(url: string) {
-  window.gtag("config", GA_ID, { page_path: url });
+  if (window.gtag) window.gtag("config", GA_ID, { page_path: url });
 }
 
 export function useTrackpageView(): void {
-  const router = useRouter();
+  const pathName = usePathname();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    router.events.on("routeChangeComplete", logPageView);
-    return () => router.events.off("routeChangeComplete", logPageView);
-  }, [ router.events ]);
+    logPageView(pathName + searchParams.toString());
+  }, [ pathName ]);
 }
