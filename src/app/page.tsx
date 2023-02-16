@@ -5,6 +5,11 @@ import { PostPreviewCard } from "components/PostPreviewCard";
 import styles from "../styles/Home.module.css";
 import { getAllPosts } from "../utils";
 
+export const metadata = {
+  title: "Jack Pordi",
+  description: "Software Engineering Blog",
+};
+
 const Home = async () => {
   const posts = await getAllPosts();
 
