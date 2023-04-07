@@ -1,0 +1,34 @@
+---
+title: "To Kube or not to Kube"
+abstract: Kubernetes is simultaneously one of the most beloved and controversial bits of tooling in industry. A few months ago, I finally bit the bullet and started switching to Kubernetes. Here are the gains, pains and learnings I gathered from the process.
+date: 2023-04-08T22:30:00+0000
+image: /images/prisma.webp
+---
+
+Over 400 years ago, Shakespeare's _Hamlet_ pondered:
+
+> To use Kubernetes, or not to use Kubernetes, that is the question:
+> Whether 'tis nobler in the mind to suffer
+> The slings and arrows of outrageous fortune,
+> Or to take Arms against a Sea of troubles,
+> And by opposing end them: to die, to sleep
+
+Ok, maybe he didn't say that, but you get the point. Kubernetes has been rapidly and steadily gaining traction ever since its first release over 8 years ago, and by now every dev who hasn't been living under a rock has heard of it. It's the [second most beloved and wanted](https://survey.stackoverflow.co/2022/) of 2022, and is quickly becoming (if not already) The Next Big Thing. Yet, it's also _notorious_ for being one of those complicated and overkill tools that people jump onto just for bragging rights, [despite not needing them](https://matt-rickard.com/dont-use-kubernetes-yet).
+
+A couple of months ago, I finally started using Kubernetes myself at work - being the first one in the company try moving parts of our platform onto it. Here are the gains, pains and learnings I gathered from the process.
+
+## What we were using before, and why we started using K8s
+
+At the point of decision to start using Kube, we were a small engineering team (less than 10) with 1 dedicated SRE and about half a dozen microservices running on ECS (Fargate) in AWS. I won't debate the merits of going the microservices route for teams that small here, but the gist of it was that we knew that number was going to rise up pretty quickly over the next few months as we reworked parts of our internal architecture. We identified a couple of reasons why we didn't think we were going to be happy with ECS long-term:
+
+1. ECS felt like a much more complicated product than it needed to be. Deploying something, whether via IaaC or the console, felt _really_ daunting and more difficult than it needed to be. Having used other similar products before (such as Google Cloud Run, which was elegantly simple) it felt silly to use a "simple container deployment" service that was probably as complicated as full fat Kube anyways. Being a small team, it was also not ideal that our regular devs felt uncomfortable with ECS to the point that our SRE was the only person who could do any work on the infrastructure there - hearing tales of other teams and companies "empowering" their devs to be able to make changes in Kubernetes directly felt like something we wanted to work towards. Obviously Kubernetes would still be a learning curve, but standardized tooling with lots of documentation + higher transferability to future jobs would be one step closer to that.
+2. Many of our potential hires had _some_ level of Kubernetes experience, but few had worked with ECS. This might've been a bit of a red herring, as a simpler service would also be seen as less worthy of bragging, but nonetheless the additional confidence when hiring someone with previous experience would've been nice.
+3. This is more of a personal thing for me, but I _hate_ vendor lock-in. Whilst managed Kubernetes services (like EKS and GKS, etc) still have their differences across cloud providers, , its much less of a transition than vendor-specific services like Cloud Run and Fargate.
+
+In addition, our company was also about to start running a production site and warehouse, which needed some custom software. This meant running a local, physical server there for resillience purposes. Whilst we _could_ have easily gone the route of non-container-based solutions (like running applications directly on the bare metal, or packaging a VM image), we wanted a deployment process that was as isomorphic to our cloud one as possible. This left two choices - using bare Docker, or Kubernetes. Bare docker would have likely involved plenty of custom scripts, and with the industry moving away from bare docker to Kubernetes anyways (plus the possibility of running multiple physical machine nodes in the future) it was clear Kubernetes was going to be the choice for the on-prem server.
+
+In which case, every argument was pointing towards Kubernetes for both cloud and on-prem.
+
+## Cloud Native
+
+Cloud Native is one of those bullshit-sounding phrases that make it seem like a random SEO buzzword.
