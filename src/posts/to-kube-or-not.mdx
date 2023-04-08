@@ -1,8 +1,8 @@
 ---
 title: "To Kube or not to Kube"
 abstract: Kubernetes is simultaneously one of the most beloved and controversial bits of tooling in industry. A few months ago, I finally bit the bullet and started switching to Kubernetes. Here are the gains, pains and learnings I gathered from the process.
-date: 2023-04-08T22:30:00+0000
-image: /images/prisma.webp
+date: 2023-04-08T22:30:00+0700
+image: /images/kube.webp
 ---
 
 Over 400 years ago, Shakespeare's _Hamlet_ pondered:
@@ -15,20 +15,72 @@ Over 400 years ago, Shakespeare's _Hamlet_ pondered:
 
 Ok, maybe he didn't say that, but you get the point. Kubernetes has been rapidly and steadily gaining traction ever since its first release over 8 years ago, and by now every dev who hasn't been living under a rock has heard of it. It's the [second most beloved and wanted](https://survey.stackoverflow.co/2022/) of 2022, and is quickly becoming (if not already) The Next Big Thing. Yet, it's also _notorious_ for being one of those complicated and overkill tools that people jump onto just for bragging rights, [despite not needing them](https://matt-rickard.com/dont-use-kubernetes-yet).
 
-A couple of months ago, I finally started using Kubernetes myself at work - being the first one in the company try moving parts of our platform onto it. Here are the gains, pains and learnings I gathered from the process.
+A couple of months ago, I finally started using Kubernetes myself at work - being the first one in the company to try moving parts of our platform onto it. Here are the gains, pains, and learnings I gathered from the process.
 
 ## What we were using before, and why we started using K8s
 
-At the point of decision to start using Kube, we were a small engineering team (less than 10) with 1 dedicated SRE and about half a dozen microservices running on ECS (Fargate) in AWS. I won't debate the merits of going the microservices route for teams that small here, but the gist of it was that we knew that number was going to rise up pretty quickly over the next few months as we reworked parts of our internal architecture. We identified a couple of reasons why we didn't think we were going to be happy with ECS long-term:
+At the point of the decision to start using Kube, we were a small engineering team (less than 10) with 1 dedicated SRE and about half a dozen microservices running on ECS (Fargate) in AWS. I won't debate the merits of going the microservices route for teams that small here, but the gist of it was that we knew that number was going to rise pretty quickly over the next few months as we reworked parts of our internal architecture. We identified a couple of reasons why we didn't think we were going to be happy with ECS long-term:
 
-1. ECS felt like a much more complicated product than it needed to be. Deploying something, whether via IaaC or the console, felt _really_ daunting and more difficult than it needed to be. Having used other similar products before (such as Google Cloud Run, which was elegantly simple) it felt silly to use a "simple container deployment" service that was probably as complicated as full fat Kube anyways. Being a small team, it was also not ideal that our regular devs felt uncomfortable with ECS to the point that our SRE was the only person who could do any work on the infrastructure there - hearing tales of other teams and companies "empowering" their devs to be able to make changes in Kubernetes directly felt like something we wanted to work towards. Obviously Kubernetes would still be a learning curve, but standardized tooling with lots of documentation + higher transferability to future jobs would be one step closer to that.
-2. Many of our potential hires had _some_ level of Kubernetes experience, but few had worked with ECS. This might've been a bit of a red herring, as a simpler service would also be seen as less worthy of bragging, but nonetheless the additional confidence when hiring someone with previous experience would've been nice.
+1. ECS felt like a much more complicated product than it needed to be. Deploying something, whether via IaaC or the console, felt daunting and more difficult than it needed to be. Having used other similar products before (such as Google Cloud Run, which was elegantly simple) it felt silly to use a "simple container deployment" service that was probably as complicated as full-fat Kube anyways. Being a small team, it was also not ideal that our regular devs felt uncomfortable with ECS to the point that our SRE was the only person who could do any work on the infrastructure there - hearing tales of other teams and companies "empowering" their devs to be able to make changes in Kubernetes directly felt like something we wanted to work towards. Obviously, Kubernetes would still be a learning curve, but standardized tooling with lots of documentation + higher transferability to future jobs would be one step closer to that.
+2. Many of our potential hires had _some_ level of Kubernetes experience, but few had worked with ECS. This might've been a bit of a red herring, as a simpler service would also be seen as less worthy of bragging, but the additional confidence when hiring someone with previous experience would've been nice.
 3. This is more of a personal thing for me, but I _hate_ vendor lock-in. Whilst managed Kubernetes services (like EKS and GKS, etc) still have their differences across cloud providers, , its much less of a transition than vendor-specific services like Cloud Run and Fargate.
 
-In addition, our company was also about to start running a production site and warehouse, which needed some custom software. This meant running a local, physical server there for resillience purposes. Whilst we _could_ have easily gone the route of non-container-based solutions (like running applications directly on the bare metal, or packaging a VM image), we wanted a deployment process that was as isomorphic to our cloud one as possible. This left two choices - using bare Docker, or Kubernetes. Bare docker would have likely involved plenty of custom scripts, and with the industry moving away from bare docker to Kubernetes anyways (plus the possibility of running multiple physical machine nodes in the future) it was clear Kubernetes was going to be the choice for the on-prem server.
+In addition, our company was also about to start running a production site and warehouse, which needed some custom software. This meant running a local, physical server there for resilience purposes. Whilst we _could_ have easily gone the route of non-container-based solutions (like running applications directly on the bare metal, or packaging a VM image), we wanted a deployment process that was as isomorphic to our cloud one as possible. This left two choices - using bare Docker, or Kubernetes. Bare docker would have likely involved plenty of custom scripts, and with the industry moving away from bare docker to Kubernetes anyways (plus the possibility of running multiple physical machine nodes in the future) it was clear Kubernetes was going to be the choice for the on-prem server.
 
-In which case, every argument was pointing towards Kubernetes for both cloud and on-prem.
+In which case, every argument was pointing towards Kubernetes for both cloud and on-prem. Hence, our Kubernetes journey started...
+
+## Lots of documentation
+
+Most importantly, there's _loads_ of documentation out there for Kubernetes. If you've ever worked with a vendor-specific cloud service and thought _"these docs are terrible"_, then Kubernetes is, generally speaking, the opposite experience. The official documentation is thorough, and the millions of third party tutorials, explanations, and videos out there on the web are a big upgrade over the docs of an AWS Elastic Pick-a-Service (or any other cloud service, really). And whilst I was worried that Kube's rapidly growing nature would mean any source of info older than a year would be outdated or misleading, this wasn't actually the case - I found plenty of stuff from 2018 that was still useful, which is more than I can say about a lot of other tech that I work with.
+
+One thing I would say, was that the official tutorial (which uses minikube) didn't feel that useful. I'm not sure what could've been done better about it, but typing in provided commands to spin up a minimum viable cluster wasn't a particularly helpful learning experience. But again, it's probably impossible to have a good tutorial that captures the real experiences of deploying multiple deployments, stateful sets, services and load balancers in a real multi-node cloud - such a tutorial would scare off newbies.
+
+## Lots of great, standard tooling in the ecosystem
+
+One of my peeves about ECS (like with most AWS services) was that you only had two ways to use it (ignoring IaaC), which were either the AWS CLI or the web console. The web console in my opinion was pretty poorly designed, which was extra frustrating considering they could have copied one of the dozens of well-designed container deployment visualizers out there. With Kubernetes, you _get_ to use those tools. And your coworkers can also use those tools, or use other tools if they prefer. The large amount of choices are wonderful - I've personally settled on using [k9s](https://k9scli.io/), but have also tried using [Portainer](https://www.portainer.io/), [Lens](https://k8slens.dev/) as well as the Kubernetes dashboard itself.
+
+In addition to that, there are also great meta-tools like [Helm](https://helm.sh/) and [Kustomize](https://www.google.com/search?client=firefox-b-d&q=kuztomize), as well as integrations with other IaaC that we already use like [Terraform](https://www.terraform.io/) and [Terraform CDK](https://developer.hashicorp.com/terraform/cdktf). Various Infrastructure Access Platforms are also out there, like [Infra](https://infrahq.com/) or Teleport [Teleport](https://goteleport.com/) for making dev access and authentication easier. If you haven't already, I would check [here](https://github.com/tomhuang12/awesome-k8s-resources) for a really good list of Kube-related resources and tooling.
+
+## Actually, pretty easy
+
+As I stated before, Kubernetes has a reputation of being complex and difficult. After having used it, I don't think that's quite true. If your microservices stack largely consists of web applications and maybe a few stateful sets like message queues or a database, then I think it's actually pretty easy. For each service, all you need is usually:
+
+- A deployment or statefulset configuration that specifies which image(s) to use.
+- Any persistent volumes or volume claims.
+- A service to expose the application's port
+- An ingress for exposing the service externally
+
+Each of those things is a couple of lines of configuration in IaaC, which you can reduce even more by reusing boilerplate between applications. Generally speaking, it's pretty comparable to any other IaaC solution for non-Kubernetes deployments. There are also some other big notable advantages here:
+
+- You don't need sidecar patterns for logging and/or observability. On various proprietary container platforms, we'd need 1 container for the code, 1 container for Fluentbit for logging, etc. But in Kubernetes, you can use the daemonsets instead, or pre-configured operators or Helm charts to achieve logging/observability. It also helps that most third-party services like Datadog have super easy installation and support for Kubernetes as a first-class citizen.
+- It also becomes easier to start self-hosting various tools like Prometheus and Grafana, and have them work with cluster metrics straight out of the box.
+
+Where Kubernetes gets difficult, is also where any other tooling stack would get difficult. Need to run thousands of physical nodes together, with complex service mesh needs? Or GPU passthrough for intense machine learning tasks? There are plenty of things that are "difficult" with Kubernetes, but they are probably equally, if not more difficult without it. Kubernetes is a container orchestration platform, so it's really good at managing containers - but it won't automagically solve all your other difficult infrastructure problems. If you're looking for something to solve all your problems, then you need Jesus, not Kubernetes.
 
 ## Cloud Native
 
-Cloud Native is one of those bullshit-sounding phrases that make it seem like a random SEO buzzword.
+The definition of cloud native is as follows:
+
+> Cloud-native technologies empower organizations to build and run scalable applications in modern, dynamic environments such as public, private, and hybrid clouds. 
+
+It sounds like one of those bullshit-sounding SEO buzzwords, but it essentially boils down to being designed to be deployed to a cloud, first and foremost. However, there's some subtleties around its meaning which I didn't appreciate prior to working with Kube:
+- It relies on the cloud provider for certain features, so you _cannot_ run an isomorphic stack on your local machine. A good example of this is a load balancer - a lot of Kube documentation just assumes you're running in the cloud, and tells you to create or use the provider-specific load balancer. Well, that wasn't too useful when playing around in minikube on my local Macbook...
+- It scales horizontally, from day 1. Lots of tech has been designed to run on a single machine that would vertically scale, and only retroactively (with limited success) was there work on making them work in distributed clusters. Kubernetes doesn't fall into that trap - whilst there are certain complications around master and worker nodes, it has been designed to run in a distributed manner from the ground up, so you're never going to run into scaling limits that stem from its own fundamental design.
+
+## Some managed Kubernetes clouds are better than others
+
+Amazon's managed Kubernetes service, [EKS](https://aws.amazon.com/eks/) is what we ended up using, as we were already on AWS. As it turns out, EKS is generally considered to be the worst Kubernetes provider out of all the major players. I've experienced two _major_ flaws with it so far:
+1. There's a rather absurdly low limit of pods per node, as described in [this Stackoverflow post](https://stackoverflow.com/questions/57970896/pod-limit-on-node-aws-eks). The reason behind this seems quite stupid to me, as the biggest advantage of Kubernetes would've been the ability to deploy large numbers of low-resource pods (like, 0.01 CPU) at a much lower cost than doing the same in cloud services with a minimum per-container cost.
+2. There's some weird ownership shenanigans that goes on with the cluster and node group, which means that if we provision the node group via a Terraform user, then no one else except that Terraform user can access the cluster (and the Terraform user also cannot themselves add any other users afterwards either). We had to resort to using this weird [hack](https://medium.com/@alex.veprik/setting-up-aws-eks-cluster-entirely-with-terraform-e90f50ab7387) where we create the cluster first, then modify the authentication rules, _then_ instantiate the node group. There are [ terraform modules ](https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest) that manage this for you, but as we were using Terraform CDK we had to handwrite this ourselves. It's not the end of the world, but it _just_ feels dumb for no reason.
+
+![It's just dumb](https://media.tenor.com/OghEspcGUhEAAAAC/its-so-dumb-so-dumb.gif)
+
+Aside from that, I haven't faced anything too critical, but looking at the [memes](https://www.reddit.com/r/kubernetes/comments/12dd2ri/hearing_about_eks_after_transitioning_to_gke/) from the Kubernetes subreddit has made me nervous about EKS in general...
+
+## Updating Kubernetes versions
+
+This one is an honorary mention because it's not something I've had to deal with (yet). But apparently, upgrading Kubernetes versions can be a complete nightmare. [Reddit recently had an outage because of it](https://www.reddit.com/r/RedditEng/comments/11xx5o0/you_broke_reddit_the_piday_outage/), and whilst I appreciate that most people reading this are probably not working at that scale, it is nonetheless a scary thought.
+
+# So, should you use Kubernetes?
+
+Honestly, that's up to you. If your infrastructure is already at a multi-service level and growing rapidly, and you are happy to spend some time digging into it, then there's little reason not to at least _try_ building out an MVP/experimental cluster. There's a reason Kube has become so popular these last few years - it _does_ make lots of things easier in the long term. That said, don't feel like you _need_ to switch over just for the sake of it. The best piece of technology is one that works, and if whatever you're using now works, is there truly a need to spend lots of time and effort switching to something else? Plus, it's not a decision that you have to make _once_. You can _always_ try Kubernetes again at a later time, and I suspect that it's highly likely to get even easier in the future, as it becomes an even more mainstream technology.
