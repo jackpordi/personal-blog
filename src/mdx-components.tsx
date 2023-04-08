@@ -6,7 +6,7 @@ interface Components {
   [index: string]: ComponentType;
 }
 
-const codeColors = "bg-gray-100 dark:bg-grey-600";
+const codeColors = "bg-gray-100 dark:bg-gray-600";
 
 export const MDXComponents: Components = {
   img: ({ src, alt }) => (
@@ -38,7 +38,7 @@ export const MDXComponents: Components = {
       }}>
       { children }
     </li>),
-  blockquote: ({ children }) => <blockquote className="bg-gray-100 my-2 px-4 py-1 rounded-md italic items-center">{children}</blockquote>,
+  blockquote: ({ children }) => <blockquote className="bg-gray-100 dark:bg-gray-600 my-2 px-4 py-1 rounded-md italic items-center">{children}</blockquote>,
   // @ts-ignore href not part of FunctionComponent props
   a: ({ children, href }) => <a href={href} className="hover:underline dark:text-cyan-400 text-blue-600">{children}</a>,
 };

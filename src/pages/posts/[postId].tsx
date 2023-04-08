@@ -61,7 +61,7 @@ const PostPage: NextPage<Post> = ({
               <Image
                 className="rounded-sm mb-2"
                 src={info.image}
-                alt={info.image}
+                alt={info.title}
                 height={320}
                 width={800}
                 style={{
