@@ -8,9 +8,12 @@ export interface FrontMatter {
   disableCoffee?: boolean;
 }
 
-export interface Post {
+export interface PostDetails {
   id: string;
   info: FrontMatter;
-  mdx: MDXRemoteSerializeResult;
   readingTime: number;
+}
+
+export interface Post extends PostDetails {
+  mdx: MDXRemoteSerializeResult;
 }

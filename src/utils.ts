@@ -6,7 +6,8 @@ import { serialize } from "next-mdx-remote/serialize";
 import rehypeHighlight from "rehype-highlight";
 import readingTime from "reading-time";
 
-import { FrontMatter, Post } from "types";
+import { FrontMatter, Post, PostDetails } from "types";
+import dayjs from "dayjs";
 
 export async function getPost(postId: string): Promise<Post> {
 
@@ -37,12 +38,24 @@ export async function getAllPostPaths(): Promise<string[]> {
     .map((fileName) => fileName.split(".")[0]);
 }
 
-export async function getAllPosts(): Promise<Post[]> {
+export async function getAllPosts(): Promise<PostDetails[]> {
 
   const files = await getAllPostPaths();
 
-  const posts = files
-    .map((filename: string) => (getPost(filename)));
+  const posts = await Promise.all(
+    files
+      .map(getPost),
+  );
 
-  return Promise.all(posts);
+  return posts.map(({ mdx, ...postInfo }) => postInfo);
+}
+
+export async function getLatestPosts(): Promise<PostDetails[]> {
+
+  const posts = await getAllPosts();
+  posts.sort((a, b) => dayjs(b.info.date).diff(dayjs(a.info.date)));
+
+  const latest = posts.slice(0, 3);
+
+  return latest;
 }

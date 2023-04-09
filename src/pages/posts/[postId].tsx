@@ -10,23 +10,34 @@ import {
 } from "next";
 import Head from "next/head";
 
-import { Post } from "types";
+import { Post, PostDetails } from "types";
 import { MDXComponents } from "mdx-components";
 import { useDisplayDate } from "hooks/useDisplayDate";
-import { getAllPostPaths, getPost } from "utils";
+import { getAllPostPaths, getLatestPosts, getPost } from "utils";
 import { Comments } from "components/Comments";
 import { Sponsorship } from "components/Sponsorship";
 import { StickyButtons } from "components/StickyButtons";
+import { LatestArticles } from "components/LatestArticles";
 
 interface PostPath extends ParsedUrlQuery {
   postId: string;
 }
 
-export const getStaticProps: GetStaticProps<Post, PostPath> = async (ctx: GetStaticPropsContext<PostPath>) => {
+interface PageProps {
+  post: Post;
+  latest: PostDetails[];
+}
+
+export const getStaticProps: GetStaticProps<PageProps, PostPath> = async (ctx: GetStaticPropsContext<PostPath>) => {
   const { postId } = ctx.params!;
 
   const post: Post = await getPost(postId);
-  return { props: post };
+  const latest = await getLatestPosts();
+  return {
+    props: {
+      post, latest,
+    },
+  };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -40,9 +51,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-const PostPage: NextPage<Post> = ({
-  info, mdx, id,
-}) => {
+const PostPage: NextPage<PageProps> = ({ post, latest }) => {
+
+  const {
+    info, mdx, id,
+  } = post;
 
   const { displayDate } = useDisplayDate(info.date);
 
@@ -80,6 +93,7 @@ const PostPage: NextPage<Post> = ({
             components={MDXComponents}
           />
           { !info.disableCoffee && <Sponsorship /> }
+          <LatestArticles latest={latest} />
           <Comments />
         </div>
         <StickyButtons
