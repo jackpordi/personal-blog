@@ -32,7 +32,7 @@ export const getStaticProps: GetStaticProps<PageProps, PostPath> = async (ctx: G
   const { postId } = ctx.params!;
 
   const post: Post = await getPost(postId);
-  const latest = await getLatestPosts();
+  const latest = await getLatestPosts(post.id);
   return {
     props: {
       post, latest,

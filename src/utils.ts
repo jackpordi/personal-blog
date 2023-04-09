@@ -5,9 +5,9 @@ import matter from "gray-matter";
 import { serialize } from "next-mdx-remote/serialize";
 import rehypeHighlight from "rehype-highlight";
 import readingTime from "reading-time";
+import dayjs from "dayjs";
 
 import { FrontMatter, Post, PostDetails } from "types";
-import dayjs from "dayjs";
 
 export async function getPost(postId: string): Promise<Post> {
 
@@ -50,12 +50,12 @@ export async function getAllPosts(): Promise<PostDetails[]> {
   return posts.map(({ mdx, ...postInfo }) => postInfo);
 }
 
-export async function getLatestPosts(): Promise<PostDetails[]> {
+export async function getLatestPosts(excludeId: string): Promise<PostDetails[]> {
 
   const posts = await getAllPosts();
   posts.sort((a, b) => dayjs(b.info.date).diff(dayjs(a.info.date)));
 
-  const latest = posts.slice(0, 3);
+  const latest = posts.filter((p) => p.id !== excludeId).slice(0, 3);
 
   return latest;
 }
