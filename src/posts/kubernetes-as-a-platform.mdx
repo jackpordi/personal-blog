@@ -1,17 +1,37 @@
 ---
 title: "Kubernetes as a Platform"
-abstract: Kubernetes is simultaneously one of the most beloved and controversial bits of tooling in industry. A few months ago, I finally bit the bullet and started switching to Kubernetes. Here are the gains, pains and learnings I gathered from the process.
+abstract: Since its inception, Kubernetes has been known and thought of as being a "container orchestration platform". Whilst this is still undoubtedly true, its also not the full picture anymore - Kubernetes can be used for so much more.
 date: 2023-04-08T22:30:00+0700
 image: /images/kube.webp
 ---
 
-Since its inception, Kubernetes has been known and thought of as being a "container orchestration platform". Whilst this is still undoubtedly true, its also a disservice to all the additional progress that has been made in the past few years.
+Since its inception, Kubernetes has been known and thought of as being a "container orchestration platform". Whilst this is still undoubtedly true, its also not the full picture anymore. In fact, I'm going to argue that Kubernetes can now be thought of as a full fat, highly configurable infrastructure platform.
+
+I previously wrote about my experiences diving into Kubernetes for the first time, and the various pros and cons that I encountered. Everything I opinion I had there still holds true, however after some further experimentation and tinkering, I’m even more inclined to go _all in_ on Kube now - not just as a a platform for running applications, but for running _everything_ one would need in a cloud environment.
 
 # Managed Kubernetes Services that give you everything
+
+In the early days of Kubernetes, you had to manage _everything_ yourself. Install `kubeadm` on some baremetal machines or EC2 instances, upgrade control plane nodes, all whilst trying to minimize downtime and interruptions - you get the idea. You needed not just a good understanding of how to use Kubernetes, but also how it worked under the hood in order to administrate and troubleshoot a cluster.
+
+These days, the story is very different. Every major cloud provider now has a "managed" Kubernetes service that handles almost everything for you - from control plane management, worker node provisioning, and version upgrades. 
+
+ If you don't want to go with managed cloud solutions, various alternative "distributions" to `kubeadm` have also cropped up, i.e. Microk8s, k3s, Rancher. These distros have massively simplified installation and management processes if you wanted to run on baremetal or your own self-managed cluster, often allowing you to get a fresh node up and running within a few minutes.
+
+Sure there are still _some_ complicated bits, but its nothing like it used to be - and over time, these complexities are only going to get easier and more abstracted away from end users. I’ll be talking mostly in terms of running inside a managed cloud environment for the rest of the article, but what I say should also apply with on-perm installations with a few extra steps.
+
+## The beginning
+
+First, you need to run a stateless application - say, a super basic “Hello World” HTTP server. You set up a deployment, and a service. You then expose your service via an `Ingress`. Your `Ingress` of course needs a `LoadBalancer` to make it publicly accessible, so you provision your favorite one as well (e.g. NGINX or Traefik). Bam, your cloud provider has detected this and has automatically created a backing load balancer for your Kubernetes load balancer as well.
+
 # Helm
+
+Need
+
 # Operators and CRDs
+
 # Underlying infrastructure agnostic
 
-# What's it back?
+# What's holding it back?
 ## Universal CI/CD
+
 ## Secrets Management
