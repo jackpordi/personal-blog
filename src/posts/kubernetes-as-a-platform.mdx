@@ -69,13 +69,55 @@ In large productionised clusters, you may want to use service meshes to facilita
 - Istio
 - Cillium
 
-  
+## Infrastructure Access
 
-# Operators and CRDs
+So, now you’ve got a number of clusters set up. How are your engineers going to access these clusters, and how are you going to manage their permissions. The Kubernetes-native way is to setup signed certificates and RBAC roles per user, per cluster, or you can use your cloud platform to generate access kubeconfigs. Neither of these are particularly automatic or idiosyncratic, but that’s where “Infrastructure Access Platform”s come in. IAPs basically aim to simplify access control over a number of different pieces of infrastructure (i.e. Kube clusters, or SSH servers), and usually via accessible methods like SSO. There’s a number of IAPs out there, some of which you can self-host inside your own cluster:
 
-# Underlying infrastructure agnostic
+- Teleport
+- Infra
+- HashiCorp Boundary
+- StrongDM
+ 
+I use Teleport, as it’s open source yet has really good support for self-hosting, and can also manage non-Kubernetes infrastructure like Postgres databases as well as having a bunch of other features like auditing and a nice UI for management as well as a Kubernetes operator.
+ 
+## CI/CD
+ 
+By this point you’ve already got at least one cluster running, with quite a few resources. You know what would save money? Hosting your CI/CD pipelines within one of your clusters, on hardware that you’re probably already paying for! Once again, our options are plenty more:
+ 
+ - GitHub Actions are free for self hosted runners, which you can host with the Actions Runner Controller chart.
+ - GitLab is entirely self-hostable, and that of course comes with GitLab CI/CD.
+ - Unsurprisingly, Jenkins can run in a self hosted cluster too.
+ - CircleCI runners can be self hosted
+ - Tekton and Concourse are other good examples of up-and-coming Kubernetes-native CI solutions.
+ - A quick google search yields a large number of other options you may want to explore.
+ 
+In addition to “traditional” CI/CD platforms, it’s also worth mentioning the Kubernetes-specific CI platforms ArgoCD and Flux (which are of course, self-hostable).
+
+If you use [Terraform](TODO), you might also want to think about using [Atlantis](TODO) as well.
+
+## Version Control
+
+By this point, since you’re self hosting so much already, why not throw in Git platforms?
+
+- GitLab, as previously mentioned
+- Gitea
+- GitBucket
+
+## Operators and CRDs
+
+I’ve used the word “operator” quite a bit throughout this article. If you already know what a Kubernetes operator is, then you can skip this bit. Otherwise, this might be the most important takeaway from this article for you.
+
+## Crossplane
+
+Say you _don’t_ want to put everything inside a cluster, or have vendor-specific services like SQS that you can’t afford to migrate away from. By this point, almost all of your infrastructure is in Kubernetes already, so having some configuration _outside_ of Kubernetes might be a little annoying at this point. Worry not - because with the power of Kubernetes operators, we can manage resources external of Kubernetes from inside Kubernetes!
+
+More specifically, [Crossplane](TODO) is a tool that creates CRDs that allow you to manage vendor-specific cloud services.
 
 # What's holding it back?
 ## Universal CI/CD
 
 ## Secrets Management
+
+# TL;DR
+
+Just self host _every damn thing_ you need inside Kubernetes.
