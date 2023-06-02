@@ -21,11 +21,55 @@ Sure there are still _some_ complicated bits, but its nothing like it used to be
 
 ## The beginning
 
-First, you need to run a stateless application - say, a super basic “Hello World” HTTP server. You set up a deployment, and a service. You then expose your service via an `Ingress`. Your `Ingress` of course needs a `LoadBalancer` to make it publicly accessible, so you provision your favorite one as well (e.g. NGINX or Traefik). Bam, your cloud provider has detected this and has automatically created a backing load balancer for your Kubernetes load balancer as well.
+First, you need to run a stateless application - say, a super basic “Hello World” HTTP server. You set up a deployment, and a service. You then expose your service via an `Ingress`. Your `Ingress` of course needs a `LoadBalancer` to make it publicly accessible, so you provision your favorite one as well (e.g. NGINX or Traefik). Bam, your cloud provider has detected this and has automatically created a cloud load balancer for your Kubernetes load balancer as well.
 
-# Helm
+Then, you realize you need to attach a custom domain to this endpoint. Traditionally, you’d go into the DNS provider of your choice, and manually attach an A or CNAME record to map the custom domain. But wait! If you have multiple environments/domains, or like to spin new environments up and down on demand, doing this manually isn’t a very scalable method.
 
-Need
+There is where our first operator, [External DNS](TODO) comes in. External DNS does the following:
+
+- It can interface with, and control external DNS providers (i.e. Route 53, Godaddy, etc).
+- It can watch your internal Kube resources such as ingressses to decide which domains should map to which load balancers, and automatically manage DNS records for you.
+
+## Databases and Storage
+
+Having some stateless containerized applications and automatic DNS management is great, but that’s not going to be enough for your next billion dollar startup. You need persistent storage, such as databases or object storage.
+
+In the early days, the consensus was that you shouldn’t put anything stateful inside Kube at all, because Kubernetes itself doesn’t have any mechanism of persistent storage or backups. For databases, you’d be advised to spin up a cloud managed database like RDS or Cloud SQL, whilst if you wanted object store you’d gear towards S3 or equivalent.
+
+Whilst Kubernetes itself hasn’t necessarily improved its built-in storage management capabilities (well, it doesn’t really have any) - the general knowledge and understanding around handling storage via Kubernetes has improved drastically, and so has the tools and plugins in the ecosystem. Managed Kube services also have improved in terms of automatic provisioning of storage volumes (i.e. EFS/EBS on AWS). [This video](TODO) summarizes pretty well what’s changed in the past few years in this space.
+
+Take PostgreSQL for an example - we can use [Cloud Native PG](TODO) operator to provision high-availability, multi-replica PostgreSQL installation within a cluster. All that needs to be done is to configure what `PersistentVolumeClaim`s/`StorageClass`es to use, and where to back up data. I won’t go into too much specific detail of different operators, but you can also do things with this CloudNativePG that may not be possible out of the box with cloud-managed databases like RDS - for example, setting up an entire replica cluster of any other arbitrarily-hosted Postgres database.
+
+Of course, Postgres isn’t the only option here - whatever your database needs, there’s probably a production-ready operator or Helm chart for it:
+
+- Redis
+- MySQL
+- MongoDB
+
+Well, what about object storage? Turns out there’s also [`MinIO`](TODO) - an open source, S3-compatible object storage system that - you guessed it - can be self hosted inside Kube.
+
+## Message Queues and Streams
+
+You can also rejoice with your message queue and pub/sub needs, as the following are also available:
+
+- RabbitMQ Cluster Operator
+- Kafka
+
+## Honorary mention - data pipeline tools
+
+I’m not a data engineer, so my knowledge on data ETL/pipeline tooling is pretty sparse. That said, a quick google search yielded that the following tools can also be self-hosted in Kubernetes
+
+- Airbyte
+- Airflow
+
+## Networking and Service Meshes
+
+In large productionised clusters, you may want to use service meshes to facilitate and monitor service-to-service communication. Fortunately, these tools have been around for years in the Kubernetes world:
+
+- Istio
+- Cillium
+
+  
 
 # Operators and CRDs
 
