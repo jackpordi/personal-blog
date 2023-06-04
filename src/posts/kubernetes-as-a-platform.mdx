@@ -114,9 +114,17 @@ Say you _don’t_ want to put everything inside a cluster, or have vendor-specif
 More specifically, [Crossplane](TODO) is a tool that creates CRDs that allow you to manage vendor-specific cloud services.
 
 # What's holding it back?
-## Universal CI/CD
+
+## Good IaaC
 
 ## Secrets Management
+
+One thing Kube isn’t great at yet, is secrets management. To be clear - Kube _does_ offer `Secret`s in its native API. However, the secrets aren’t encrypted by default. You _can_ set up [encryption at rest](TODO) in Kube, but it’s not entirely a straightforward/managed solution like HashiCorp Vault or AWS Secrets Manager is. Secure secrets management is, generally speaking a pretty difficult beast. That said, the ecosystem does have a number of great tooling around secrets:
+
+- Random secrets TODO
+- Sealed secrets.
+- Reloader, for refreshing your pods whenever secrets are updated
+- 
 
 # TL;DR
 
