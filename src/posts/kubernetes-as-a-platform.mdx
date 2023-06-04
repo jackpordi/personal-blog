@@ -115,14 +115,35 @@ More specifically, [Crossplane](TODO) is a tool that creates CRDs that allow you
 
 # What's holding it back?
 
-## Good IaaC
+## Good, reusable and sane IaaC
+
+This isn’t a Kube-specific problem, but in my opinion, infrastructure-as-code tooling could be a _lot_ better than it is currently. Yaml-based manifests are great for versatility and quick testing, having no type-checking or validity guarantees at static time in 2023 feels a little outdated. Raw yaml also offers no way to share or re-use constructs. Terraform HCL offers an improved experience in some ways, but 1.) can still feel clunky in other ways and 2.) the Kube community seems to have a conceptual dislike of using Terraform for Kube.
+
+[Helm](TODO) and [Kustomize](TODO) do help on the reusability aspect, but does not solve the typechecking/static-time validity issues. Furthermore - Helm charts are awkward as hell to write, with weird `{{ .Values.something.someOtherThing }}` syntax everywhere in yaml. There’s a great discussion [here](TODO) on the fact that Helm charts were designed this way because of the pre-existing yaml interpolation in tooling the Go standard lib, rather than it being a user-focused design choice.
+
+Cloud Development Kits, like [AWS CDK](TODO), [Terraform CDK](TODO) and [CDK8s](TODO) have grown rapidly on popularity for the last few years, and enables infrastructure to be described in a programming language of your choice i.e. TypeScript or Go. This provides a number of advantages, such as:
+
+- Static type checking on infrastructure constructs
+- Easier code re-use and templating options.
+
+However, CDKs are still very young and still suffer from early-stage issues:
+
+- Each only has one target, i.e. Terraform, or AWS, or raw Kubernetes manifests, and there’s currently no good way to use them together without having to write multiple scripts.
+- A plethora of bugs and unclear documentation
+- No good way to pull in CRDs as custom constructs. (Note - CDK8s is an exception to this, but is still very awkward to do this and requires some manual specifying of CRD templates, which is a huge pain if an operator has declared multiple different CRDs in different files).
+
+## All-in-one CI/CD platform.
+
+As previously mentioned, many CI/CD tools can work with and be deployed onto Kube. However, none of them can handle _everything_ that is needed in a real environment. Common setups usually involve using one platform for building and testing applications (CI, i.e. Jenkins) and another for handling deployments or infrastructure changes (CD, i.e. ArgoCD, Flux or Terraform Cloud). Whilst I don’t disagree with the rise of [GitOps](TODO) processes that prioritize reproducibility and snapshotting/rollbacks by separating CI from CD, I do think it is a shame that no single tool can handle both together in a GitOps manner (think, if you could run GitHub actions in Argo!). GitOps itself isn’t a particularly complicated idea, but looking at [this video](TODO) trying to explain the tools and processes required, it certainly does feel like a heavier commitment than it should be.
+
+This is definitely neither a show stopper nor a big deal in the grand scheme of things, and many of you reading this have already successfully overcome these obstacles before. I just think it would be a _nice_ bonus that makes it easier for people to adopt GitOps and Kube together as a platform. 
 
 ## Secrets Management
 
 One thing Kube isn’t great at yet, is secrets management. To be clear - Kube _does_ offer `Secret`s in its native API. However, the secrets aren’t encrypted by default. You _can_ set up [encryption at rest](TODO) in Kube, but it’s not entirely a straightforward/managed solution like HashiCorp Vault or AWS Secrets Manager is. Secure secrets management is, generally speaking a pretty difficult beast. That said, the ecosystem does have a number of great tooling around secrets:
 
 - Random secrets TODO
-- Sealed secrets.
+- Sealed secrets. Sealed secrets are _very_ secure - in fact so secure that after creation, not even cluster admins can view them afterwards. This is great for security, but not always practical.
 - Reloader, for refreshing your pods whenever secrets are updated
 - 
 
