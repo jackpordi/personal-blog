@@ -5,40 +5,40 @@ date: 2023-06-06T22:30:00+0000
 image: /images/kube-as-a-platform.webp
 ---
 
-Since its inception, Kubernetes has been known and thought of as being a "container orchestration platform". Whilst this is still undoubtedly true, its also not the full picture anymore. In fact, the direction that Kubernetes is heading towards can now be thought of as a full fat, highly configurable infrastructure platform.
+Since its inception, Kubernetes has been known and thought of as being a "container orchestration platform". Whilst this is still undoubtedly true, it's also not the full picture anymore. In fact, the direction that Kubernetes is heading towards can now be thought of as a full-fat, highly configurable infrastructure platform.
 
-I previously wrote about my experiences diving into Kubernetes for the first time, and the various pros and cons that I encountered. Everything I opinion I had there still holds true, however after some further experimentation and tinkering, I’m even more inclined to go _all in_ on Kube now - not just as a a platform for running applications, but for running _everything_ one would need in a cloud environment.
+I previously wrote about my experiences diving into Kubernetes for the first time, and the various pros and cons that I encountered. Everything I opinion I had there still holds true, however after some further experimentation and tinkering, I’m even more inclined to go _all in_ on Kube now - not just as a platform for running applications, but for running _everything_ one would need in a cloud environment.
 
 # Managed Kubernetes Services that give you everything
 
-In the early days of Kubernetes, you had to manage _everything_ yourself. Install `kubeadm` on some baremetal machines or EC2 instances, upgrade control plane nodes, all whilst trying to minimize downtime and interruptions - you get the idea. You needed not just a good understanding of how to use Kubernetes, but also how it worked under the hood in order to administrate and troubleshoot a cluster.
+In the early days of Kubernetes, you had to manage _everything_ yourself. Install `kubeadm` on some bare-metal machines or EC2 instances, and upgrade control plane nodes, all whilst trying to minimize downtime and interruptions - you get the idea. You needed not just a good understanding of how to use Kubernetes, but also how it worked under the hood to administrate and troubleshoot a cluster.
 
 These days, the story is very different. Every major cloud provider now has a "managed" Kubernetes service that handles almost everything for you - from control plane management, worker node provisioning, and version upgrades. 
 
  If you don't want to go with managed cloud solutions, various alternative "distributions" to `kubeadm` have also cropped up, i.e. Microk8s, k3s, Rancher. These distros have massively simplified installation and management processes if you wanted to run on baremetal or your own self-managed cluster, often allowing you to get a fresh node up and running within a few minutes.
 
-Sure there are still _some_ complicated bits, but its nothing like it used to be - and over time, these complexities are only going to get easier and more abstracted away from end users. I’ll be talking mostly in terms of running inside a managed cloud environment for the rest of the article, but what I say should also apply with on-perm installations with a few extra steps.
+Sure there are still _some_ complicated bits, but it's nothing like it used to be - and over time, these complexities are only going to get easier and more abstracted away from end users. I’ll be talking mostly in terms of running inside a managed cloud environment for the rest of the article, but what I say should also apply with on-prem installations with a few extra steps.
 
 ## The beginning
 
-First, you need to run a stateless application - say, a super basic “Hello World” HTTP server. You set up a deployment, and a service. You then expose your service via an `Ingress`. Your `Ingress` of course needs a `LoadBalancer` to make it publicly accessible, so you provision your favorite one as well (e.g. NGINX or Traefik). Bam, your cloud provider has detected this and has automatically created a cloud load balancer for your Kubernetes load balancer as well.
+First, you need to run a stateless application - say, a super basic “Hello World” HTTP server. You set up a deployment and a service. You then expose your service via an `Ingress`. Your `Ingress` of course needs a `LoadBalancer` to make it publicly accessible, so you provision your favorite one as well (e.g. NGINX or Traefik). Bam, your cloud provider has detected this and has automatically created a cloud load balancer for your Kubernetes load balancer as well.
 
 Then, you realize you need to attach a custom domain to this endpoint. Traditionally, you’d go into the DNS provider of your choice, and manually attach an A or CNAME record to map the custom domain. But wait! If you have multiple environments/domains, or like to spin new environments up and down on demand, doing this manually isn’t a very scalable method.
 
 There is where our first operator, [External DNS](https://github.com/kubernetes-sigs/external-dns) comes in. External DNS does the following:
 
 - It can interface with, and control external DNS providers (i.e. Route 53, Godaddy, etc).
-- It can watch your internal Kube resources such as ingressses to decide which domains should map to which load balancers, and automatically manage DNS records for you.
+- It can watch your internal Kube resources such as ingresses to decide which domains should map to which load balancers, and automatically manage DNS records for you.
 
 ## Databases and Storage
 
-Having some stateless containerized applications and automatic DNS management is great, but that’s not going to be enough for your next billion dollar startup. You need persistent storage, such as databases or object storage.
+Having some stateless containerized applications and automatic DNS management is great, but that’s not going to be enough for your next billion-dollar startup. You need persistent storage, such as databases or object storage.
 
-In the early days, the consensus was that you shouldn’t put anything stateful inside Kube at all, because Kubernetes itself doesn’t have any mechanism of persistent storage or backups. For databases, you’d be advised to spin up a cloud managed database like RDS or Cloud SQL, whilst if you wanted object store you’d gear towards S3 or equivalent.
+In the early days, the consensus was that you shouldn’t put anything stateful inside Kube at all, because Kubernetes itself doesn’t have any mechanism of persistent storage or backups. For databases, you’d be advised to spin up a cloud-managed database like RDS or Cloud SQL, whilst if you wanted an object store you’d gear towards S3 or equivalent.
 
-Whilst Kubernetes itself hasn’t necessarily improved its built-in storage management capabilities (well, it doesn’t really have any) - the general knowledge and understanding around handling storage via Kubernetes has improved drastically, and so has the tools and plugins in the ecosystem. Managed Kube services also have improved in terms of automatic provisioning of storage volumes (i.e. EFS/EBS on AWS). [This video](https://www.youtube.com/watch?v=Ny9RxM6H6Hg) summarizes pretty well what’s changed in the past few years in this space.
+Whilst Kubernetes itself hasn’t necessarily improved its built-in storage management capabilities (well, it doesn’t really have any) - the general knowledge and understanding around handling storage via Kubernetes has improved drastically, and so have the tools and plugins in the ecosystem. Managed Kube services also have improved in terms of automatic provisioning of storage volumes (i.e. EFS/EBS on AWS). [This video](https://www.youtube.com/watch?v=Ny9RxM6H6Hg) summarizes pretty well what’s changed in the past few years in this space.
 
-Take PostgreSQL for an example - we can use [Cloud Native PG](https://cloudnative-pg.io/) operator to provision high-availability, multi-replica PostgreSQL installation within a cluster. All that needs to be done is to configure what `PersistentVolumeClaim`s/`StorageClass`es to use, and where to back up data. I won’t go into too much specific detail of different operators, but you can also do things with this CloudNativePG that may not be possible out of the box with cloud-managed databases like RDS - for example, setting up an entire replica cluster of any other arbitrarily-hosted Postgres database.
+Take PostgreSQL for an example - we can use [Cloud Native PG](https://cloudnative-pg.io/) operator to provision high-availability, multi-replica PostgreSQL installation within a cluster. All that needs to be done is to configure what `PersistentVolumeClaim`s/`StorageClass`es to use, and where to back up data. I won’t go into too much specific detail about different operators, but you can also do things with CloudNativePG that may not be possible out of the box with cloud-managed databases like RDS - for example, setting up an entire replica cluster of any other arbitrarily-hosted Postgres database.
 
 Of course, Postgres isn’t the only option here - whatever your database needs, there’s probably a production-ready operator or Helm chart for it:
 
@@ -46,7 +46,7 @@ Of course, Postgres isn’t the only option here - whatever your database needs,
 - [MySQL](https://github.com/mysql/mysql-operator) has an official operator
 - [MongoDB](https://artifacthub.io/packages/helm/mongodb-helm-charts/community-operator) of course also has one
 
-Well, what about object storage? Turns out there’s also [`MinIO`](https://min.io/) - an open source, S3-compatible object storage system that - you guessed it - can be self hosted inside Kube.
+Well, what about object storage? Turns out there’s also [`MinIO`](https://min.io/) - an open source, S3-compatible object storage system that - you guessed it - can be self-hosted inside Kube.
 
 ## Message Queues and Streams
 
@@ -66,7 +66,7 @@ If you prefer to use an external managed service, [Dynatrace](https://github.com
 
 ## Honorary mention - data pipeline tools
 
-I’m not a data engineer, so my knowledge on data ETL/pipeline tooling is pretty sparse. That said, a quick google search yielded that the following tools can also be self-hosted in Kubernetes
+I’m not a data engineer, so my knowledge of data ETL/pipeline tooling is pretty sparse. That said, a quick Google search yielded that the following tools can also be self-hosted in Kubernetes
 
 - [Airbyte](https://docs.airbyte.com/deploying-airbyte/on-kubernetes-via-helm/)
 - [Airflow](https://airflow.apache.org/docs/apache-airflow/stable/administration-and-deployment/kubernetes.html)
@@ -86,7 +86,7 @@ If you want to know more about service meshes, Istio has a pretty good explanati
 
 ## Infrastructure Access
 
-So, now you’ve got a number of clusters set up. How are your engineers going to access these clusters, and how are you going to manage their permissions. The Kubernetes-native way is to setup signed certificates and RBAC roles per user, per cluster, or you can use your cloud platform to generate access kubeconfigs. Neither of these are particularly automatic or idiosyncratic, but that’s where “Infrastructure Access Platform”s come in. IAPs basically aim to simplify access control over a number of different pieces of infrastructure (i.e. Kube clusters, or SSH servers), and usually via accessible methods like SSO. There’s a number of IAPs out there, some of which you can self-host inside your own cluster:
+So, now you’ve got a number of clusters set up. How are your engineers going to access these clusters, and how are you going to manage their permissions. The Kubernetes-native way is to setup signed certificates and RBAC roles per user, per cluster, or you can use your cloud platform to generate access kubeconfigs. Neither of these is particularly automatic or idiosyncratic, but that’s where “Infrastructure Access Platform”s come in. IAPs basically aim to simplify access control over a number of different pieces of infrastructure (i.e. Kube clusters, or SSH servers), and usually via accessible methods like SSO. There are a number of IAPs out there, some of which you can self-host inside your own cluster:
 
 - [Teleport](https://goteleport.com/)
 - [Infra](https://infrahq.com/)
@@ -97,14 +97,14 @@ I use Teleport, as it’s open source yet has really good support for self-hosti
  
 ## CI/CD
  
-By this point you’ve already got at least one cluster running, with quite a few resources. You know what would save money? Hosting your CI/CD pipelines within one of your clusters, on hardware that you’re probably already paying for! Once again, our options are plenty more:
+By this point, you’ve already got at least one cluster running, with quite a few resources. Do you know what would save money? Hosting your CI/CD pipelines within one of your clusters, on hardware that you’re probably already paying for! Once again, our options are plenty more:
  
-- GitHub Actions are free for self hosted runners, which you can host with the [Actions Runner Controller chart](https://github.com/actions/actions-runner-controller).
+- GitHub Actions are free for self-hosted runners, which you can host with the [Actions Runner Controller chart](https://github.com/actions/actions-runner-controller).
  - GitLab is entirely self-hostable, and that of course comes with GitLab CI/CD
- - Unsurprisingly, [Jenkins](https://github.com/jenkinsci/helm-charts) can run in a self hosted cluster too
- - [CircleCI runners can be self hosted](https://circleci.com/docs/runner-on-kubernetes/)
+ - Unsurprisingly, [Jenkins](https://github.com/jenkinsci/helm-charts) can run in a self-hosted cluster too
+ - [CircleCI runners can be self-hosted](https://circleci.com/docs/runner-on-kubernetes/)
  - [Tekton](https://tekton.dev/) and [Concourse](https://concourse-ci.org/) are other good examples of up-and-coming Kubernetes-native CI solutions
- - A quick google search yields a large number of other options you may want to explore.
+ - A quick Google search yields a large number of other options you may want to explore.
  
 In addition to “traditional” CI/CD platforms, it’s also worth mentioning the Kubernetes-specific CI platforms [ArgoCD](https://argo-cd.readthedocs.io/en/stable/) and [Flux](https://fluxcd.io/) (which are of course, self-hostable).
 
@@ -112,7 +112,7 @@ If you use [Terraform](https://www.terraform.io/), you might also want to think 
 
 ## Version Control
 
-By this point, since you’re self hosting so much already, why not throw in Git platforms?
+By this point, since you’re self-hosting so much already, why not throw in Git platforms?
 
 - [GitLab](https://docs.gitlab.com/charts/), as previously mentioned
 - [Gitea](https://gitea.com/gitea/helm-chart/)
@@ -125,13 +125,13 @@ I’ve used the word “operator” quite a bit throughout this article. If you 
 > A Kubernetes operator is an application-specific controller that extends the functionality of the Kubernetes API to create, configure, and manage instances of complex applications on behalf of a Kubernetes user.
 > It builds upon the basic Kubernetes resource and controller concepts, but includes domain or application-specific knowledge to automate the entire life cycle of the software it manages. 
 
-In other words, operators allow you to define the _application or resource_ that you want, instead of the usual lower-level building-blocks (i.e. deployments, services). The operator will then work behind the scenes to make sure that the specified application or resource exists. The key bit - operators can operate on existing Kube primitives, but are not limited to them - meaning that they can manipulate _any_ resource outside of Kubernetes as well! That's exactly how External DNS works, and is _incredibly_ powerful - as we'll see in the next section.
+In other words, operators allow you to define the _application or resource_ that you want, instead of the usual lower-level building blocks (i.e. deployments, services). The operator will then work behind the scenes to make sure that the specified application or resource exists. The key bit - operators can operate on existing Kube primitives, but are not limited to them - meaning that they can manipulate _any_ resource outside of Kubernetes as well! That's exactly how External DNS works, and is _incredibly_ powerful - as we'll see in the next section.
 
 ## Crossplane
 
 Say you _don’t_ want to put everything inside a cluster, or have vendor-specific services like SQS that you can’t afford to migrate away from. By this point, almost all of your infrastructure is in Kubernetes already, so having some configuration _outside_ of Kubernetes might be a little annoying at this point. Worry not - because with the power of Kubernetes operators, we can manage resources external of Kubernetes from inside Kubernetes!
 
-[Crossplane](https://www.crossplane.io/) is a tool that creates CRDs that allow you to manage vendor-specific cloud services. More importantly, it also allows you to create an abstraction layer for those who need specific, pre-defined setups inside your company or team. For example, if you want to allow your software engineers to provision new stacks that consist of a number of vendor-specific services that interact in a certain way, you can define a CRDs that act as templates for this, so that they don't even have to touch the AWS or GCP console, or even write any vendor-specific configs.
+[Crossplane](https://www.crossplane.io/) is a tool that creates CRDs that allow you to manage vendor-specific cloud services. More importantly, it also allows you to create an abstraction layer for those who need specific, pre-defined setups inside your company or team. For example, if you want to allow your software engineers to provision new stacks that consist of several vendor-specific services that interact in a certain way, you can define a CRDs that act as templates for this, so that they don't even have to touch the AWS or GCP console, or even write any vendor-specific configs.
 
 # What's holding it back?
 
@@ -139,16 +139,16 @@ Say you _don’t_ want to put everything inside a cluster, or have vendor-specif
 
 This isn’t a Kube-specific problem, but in my opinion, infrastructure-as-code tooling could be a _lot_ better than it is currently. Yaml-based manifests are great for versatility and quick testing, having no type-checking or validity guarantees at static time in 2023 feels a little outdated. Raw yaml also offers no way to share or re-use constructs. Terraform HCL offers an improved experience in some ways, but 1.) can still feel clunky in other ways and 2.) the Kube community seems to have a conceptual dislike of using Terraform for Kube.
 
-[Helm](https://helm.sh/) and [Kustomize](https://kustomize.io/) do help on the reusability aspect, but does not solve the typechecking/static-time validity issues. Furthermore - Helm charts are awkward as hell to write, with weird `{{ .Values.something.someOtherThing }}` syntax everywhere in yaml. There’s a great discussion [here](https://www.reddit.com/r/kubernetes/comments/wkqzw2/helm_is_both_package_manager_and_templating/) where someone mentions the fact that Helm charts were designed this way because of the pre-existing templating tooling the Go standard lib, rather than it being a user-focused design choice.
+[Helm](https://helm.sh/) and [Kustomize](https://kustomize.io/) do help on the reusability aspect but does not solve the typechecking/static-time validity issues. Furthermore - Helm charts are awkward as hell to write, with weird `{{ .Values.something.someOtherThing }}` syntax everywhere in yaml. There’s a great discussion [here](https://www.reddit.com/r/kubernetes/comments/wkqzw2/helm_is_both_package_manager_and_templating/) where someone mentions the fact that Helm charts were designed this way because of the pre-existing templating tooling the Go standard lib, rather than it being a user-focused design choice.
 
-Cloud Development Kits, like [AWS CDK](https://aws.amazon.com/cdk/), [Terraform CDK](https://developer.hashicorp.com/terraform/cdktf) and [CDK8s](https://cdk8s.io/) have grown rapidly on popularity for the last few years, and enables infrastructure to be described in a programming language of your choice i.e. TypeScript or Go. This provides a number of advantages, such as:
+Cloud Development Kits, like [AWS CDK](https://aws.amazon.com/cdk/), [Terraform CDK](https://developer.hashicorp.com/terraform/cdktf) and [CDK8s](https://cdk8s.io/) have grown rapidly in popularity over the last few years and enables infrastructure to be described in a programming language of your choice i.e. TypeScript or Go. This provides numerous advantages, such as:
 
 - Static type checking on infrastructure constructs
-- Easier code re-use and templating options.
+- Easier code reuse and templating options.
 
 However, CDKs are still very young and still suffer from early-stage issues:
 
-- Each only has one target, i.e. Terraform, or AWS, or raw Kubernetes manifests, and there’s currently no good way to use them together without having to write multiple scripts.
+- Each only has one target, i.e. Terraform, AWS, or raw Kubernetes manifests, and there’s currently no good way to use them together without having to write multiple scripts.
 - A plethora of bugs and unclear documentation
 - No good way to pull in CRDs as custom constructs. (Note - CDK8s is an exception to this, but is still very awkward to do this and requires some manual specifying of CRD templates, which is a huge pain if an operator has declared multiple different CRDs in different files).
 
@@ -160,13 +160,13 @@ This is definitely neither a show stopper nor a big deal in the grand scheme of 
 
 ## Secrets Management
 
-One thing Kube isn’t great at yet, is secrets management. To be clear - Kube _does_ offer `Secret`s in its native API. However, the secrets aren’t encrypted by default. You _can_ set up [encryption at rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/) in Kube, but it’s not entirely a straightforward/managed solution like HashiCorp Vault or AWS Secrets Manager is. Secure secrets management is, generally speaking a pretty difficult beast. 
+One thing Kube isn’t great at yet is secrets management. To be clear - Kube _does_ offer `Secret`s in its native API. However, the secrets aren’t encrypted by default. You _can_ set up [encryption at rest](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/) in Kube, but it’s not entirely a straightforward/managed solution like HashiCorp Vault or AWS Secrets Manager. Secure secrets management is, generally speaking a pretty difficult beast. 
 
 That said, the ecosystem _does_ have a number of great tooling around secrets:
-- [Random secrets](https://github.com/mittwald/kubernetes-secret-generator) allows you to generate random secrets
-- [Sealed secrets](https://github.com/bitnami-labs/sealed-secrets). Sealed secrets are _very_ secure - in fact so secure that after creation, not even cluster admins can view them afterwards. This is great for security, but not always practical.
+- [Random secrets](https://github.com/mittwald/kubernetes-secret-generator) allow you to generate random secrets
+- [Sealed secrets](https://github.com/bitnami-labs/sealed-secrets). Sealed secrets are _very_ secure - in fact so secure that after creation, not even cluster admins can view them afterward. This is great for security, but not always practical.
 - [Reloader](https://github.com/stakater/Reloader), for refreshing your pods whenever secrets are updated
 
 # TL;DR
 
-Just self host _every damn thing_ you need inside Kubernetes, it's pretty easy and will also help you avoid vendor lock-in.
+Just self-host _every damn thing_ you need inside Kubernetes, it's pretty easy and will also help you avoid vendor lock-in.
