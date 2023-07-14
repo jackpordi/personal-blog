@@ -18,7 +18,6 @@ class MyDocument extends Document {
     const meta = {
       title: "Jack Pordi",
       description: "Software Engineering Blog",
-      // TODO
       image:
         "https://assets.vercel.com/image/upload/q_auto/front/vercel/dps.png",
     };
@@ -35,6 +34,7 @@ class MyDocument extends Document {
           <meta name="twitter:title" content={meta.title} />
           <meta name="twitter:description" content={meta.description} />
           <meta name="twitter:image" content={meta.image} />
+          <meta name="og:image" content={meta.image} />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
           <link
