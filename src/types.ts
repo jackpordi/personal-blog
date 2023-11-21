@@ -3,9 +3,10 @@ import { MDXRemoteSerializeResult } from "next-mdx-remote";
 export interface FrontMatter {
   title: string;
   date: string;
-  "abstract": string;
+  "abstract"?: string;
   image?: string;
   disableCoffee?: boolean;
+  hidden?: boolean;
 }
 
 export interface PostDetails {

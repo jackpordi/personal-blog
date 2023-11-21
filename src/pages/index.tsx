@@ -57,9 +57,11 @@ const Home = ({ posts }: Props) => (
 export const getStaticProps: GetStaticProps = async () => {
   const posts = await getAllPosts();
 
-  posts.sort((a, b) => dayjs(b.info.date).diff(dayjs(a.info.date)));
+  const postsToDisplay = posts
+    .filter((post) => post.info.hidden !== true)
+    .sort((a, b) => dayjs(b.info.date).diff(dayjs(a.info.date)));
 
-  return { props: { posts } };
+  return { props: { posts: postsToDisplay } };
 };
 
 export default Home;

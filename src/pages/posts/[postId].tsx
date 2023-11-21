@@ -64,7 +64,9 @@ const PostPage: NextPage<PageProps> = ({ post, latest }) => {
       <Head>
         <title>{info.title}</title>
         <meta property="og:title" content={info.title} key="title" />
-        <meta name="description" content={info.abstract} />
+        { info.abstract && (
+          <meta name="description" content={info.abstract} />
+        )}
         <meta name="author" content="Jack Pordi" />
       </Head>
       <div className="flex flex-row">
@@ -85,7 +87,11 @@ const PostPage: NextPage<PageProps> = ({ post, latest }) => {
             )}
             <p className="text-gray-500 text-left dark:text-gray-300">{displayDate}</p>
             <h1 className="font-semibold text-4xl mb-2 dark:text-gray-200">{info.title}</h1>
-            <h2 className="font-semibold text-xl text-gray-700 mb-4 dark:text-gray-200">{info.abstract}</h2>
+            { info.abstract && (
+              <h2 className="font-semibold text-xl text-gray-700 mb-4 dark:text-gray-200">
+                {info.abstract}
+              </h2>
+            )}
           </div>
           <MDXRemote
             {...mdx}
